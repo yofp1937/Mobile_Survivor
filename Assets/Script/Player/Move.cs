@@ -40,6 +40,8 @@ public class Move : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigid.velocity = inputVec * moveSpeed;
+        Vector2 nextVec = inputVec.normalized * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+        rigid.MovePosition(rigid.position + nextVec); // 이동
+        rigid.velocity = Vector2.zero; // 충돌로 밀려나는걸 없애기위함
     }
 }
