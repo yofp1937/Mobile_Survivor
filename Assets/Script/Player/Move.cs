@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Move : MonoBehaviour
@@ -8,6 +9,7 @@ public class Move : MonoBehaviour
     public Vector2 inputVec;
     Rigidbody2D rigid;
     private Animator ani;
+    public GameObject body;
 
     void Start()
     {
@@ -22,9 +24,11 @@ public class Move : MonoBehaviour
 
         if(inputVec.x > 0){ // 왼쪽으로 이동할때 뒷모습 보여줌
             transform.rotation = Quaternion.Euler(0, 180, 0);
+            body.transform.rotation = Quaternion.Euler(0, 0, body.transform.eulerAngles.z);
         }
         else { // 정지상태일때나 오른쪽으로 이동할때 앞을 바라봄
             transform.rotation = Quaternion.Euler(0, 0, 0);
+            body.transform.rotation = Quaternion.Euler(0, 0, body.transform.eulerAngles.z);
         }
 
         // Vector의 크기가 0보다 크면(움직이는 상태면) move_bool 값을 true로 변경(walk 애니메이션 동작)

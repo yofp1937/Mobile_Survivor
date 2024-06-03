@@ -7,7 +7,10 @@ public class Enemy : MonoBehaviour
 {
     public float moveSpeed = 3.8f; // 이동속도
     public Rigidbody2D target; // 목표
-    bool isLive = true; // 죽었는지 살았는지 체크용
+    public float health;
+    public float maxHealth;
+
+    bool isLive; // 죽었는지 살았는지 체크용
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -40,5 +43,34 @@ public class Enemy : MonoBehaviour
     void OnEnable()
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+        isLive = true;
+        health = maxHealth;
+    }
+
+    public void Init(SpawnData data)
+    {
+        moveSpeed = data.speed;
+        maxHealth = data.health;
+        health = data.health;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(!collision.CompareTag("RotateSword"))
+            return;
+
+        health -= collision.GetComponent<RotateSword>().damage;
+
+        if(health > 0){
+            // hit
+        } else {
+            // die
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
     }
 }
