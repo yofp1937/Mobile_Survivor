@@ -20,7 +20,7 @@ public class Reposition : MonoBehaviour
             return;
 
         GameObject playerObj = GameManager.instance.player;
-        Move playerMove = playerObj.GetComponent<Move>();
+        Player playerMove = playerObj.GetComponent<Player>();
 
         Vector3 playerPos = playerObj.transform.position;
         Vector3 myPos = transform.position;
@@ -35,7 +35,7 @@ public class Reposition : MonoBehaviour
             case "Ground":
                 if(diffX > diffY){
                     transform.Translate(Vector3.right * dirX * 136);
-                } else if(diffX < diffY){
+                } else {
                     transform.Translate(Vector3.up * dirY * 136);
                 }
                 break;

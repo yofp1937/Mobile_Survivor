@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 [Serializable]
@@ -12,6 +13,7 @@ public class WeaponData
     public float duration = 0;
     public int count = 0;
     public float speed = 0;
+    public float knockback = 0;
 }
 
 public class Weapon : MonoBehaviour
@@ -20,15 +22,17 @@ public class Weapon : MonoBehaviour
     public int prefabId;
     float lastATKtime;
     public WeaponData data;
-    List<RotateSword> rotateSwords;
+    List<WeaponSetting> rotateSwords;
     List<Coroutine> coroutines;
 
+    Player player;
     Status playerstat;
 
     void Start()
     {
+        player = GetComponentInParent<Player>();
         playerstat = GameManager.instance.player.GetComponent<Status>();
-        rotateSwords = new List<RotateSword>();
+        rotateSwords = new List<WeaponSetting>();
         coroutines = new List<Coroutine>();
         // Test Code
         Init();
@@ -45,6 +49,14 @@ public class Weapon : MonoBehaviour
                         AttackRotateSword();
                         lastATKtime = 0;
                     }
+                break;
+            case 1:
+                lastATKtime += Time.deltaTime;
+
+                if(lastATKtime >= data.coolTime * playerstat.CoolTime){
+                    AttackThrowWeapon();
+                    lastATKtime = 0;
+                }
                 break;
             default:
                 break;
@@ -78,7 +90,7 @@ public class Weapon : MonoBehaviour
             } else { // index가 Weapon0의 자식 수보다 높으면 새로운 rotatesword 생성(count 갯수 추가)
                 weaponT = GameManager.instance.weapon.Get(prefabId).transform;
                 weaponT.parent = transform; // rotatesword 만든후 부모를 weapon0으로 설정
-                var rotatesword = weaponT.GetComponent<RotateSword>();
+                var rotatesword = weaponT.GetComponent<WeaponSetting>();
                 rotateSwords.Add(rotatesword);
             }
             weaponT.localPosition = Vector3.zero; // 레벨업하면 위치 초기화
@@ -88,22 +100,37 @@ public class Weapon : MonoBehaviour
             weaponT.Rotate(rotVec); // 위 공식대로 회전하게 만듦
             weaponT.Translate(weaponT.up * data.area * playerstat.Area, Space.World); // 플레이어와 무기 사이의 거리
 
-            weaponT.GetComponent<RotateSword>().Init(data.damage * playerstat.Damage, -1); // 무한 관통이라 per는 -1로 설정
+            weaponT.GetComponent<WeaponSetting>().Init(data.damage * playerstat.Damage, -1, data.knockback, Vector3.zero); // 무한 관통이라 per는 -1로 설정
         }
         AttackRotateSword();
     }
 
     void AttackRotateSword()
     {
-        foreach(var coroutine in coroutines)
+        foreach(var coroutine in coroutines) // 이미 무기공격이 진행중일경우 전부 취소
         {
             StopCoroutine(coroutine);
         }
         coroutines.Clear();
-        foreach(var rotateSword in rotateSwords)
+        foreach(var rotateSword in rotateSwords) // rotatesword의 각 객체(검)마다 지속시간, 쿨타임 부여하고 동작시킴
         {
             coroutines.Add(StartCoroutine(rotateSword.AttackWhileDuration(data.duration * playerstat.Duration)));  // duration 값만큼 무기 지속시킴
         }
+    }
+
+    void AttackThrowWeapon()
+    {
+        if(!player.scanner.nearestTarget) // 대상 없으면 실행 X
+            return;
+
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        Vector3 dir = targetPos - transform.position;
+        dir = dir.normalized;
+
+        Transform weaponT = GameManager.instance.weapon.Get(prefabId).transform;
+        weaponT.position = transform.position;
+        weaponT.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        weaponT.GetComponent<WeaponSetting>().Init(data.damage * playerstat.Damage, 0, data.knockback, dir);
     }
 
     public void LevelUp(WeaponData weapon)

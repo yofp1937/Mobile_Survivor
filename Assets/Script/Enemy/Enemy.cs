@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     public float maxHealth;
 
     bool isLive; // 죽었는지 살았는지 체크용
+    bool isKnockback; // 넉백 상태 체크용
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -23,13 +24,12 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(!isLive) 
-            return; // 죽어있으면 리턴
+        if(!isLive || isKnockback) 
+            return; // 죽어있거나 넉백 적용중이면 리턴
 
         Vector2 dirVec = target.position - rigid.position; // 방향 구하기
         Vector2 nextVec = dirVec.normalized * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
-        rigid.MovePosition(rigid.position + nextVec); // 이동
-        rigid.velocity = Vector2.zero; // 충돌로 밀려나는걸 없애기위함
+        rigid.MovePosition(rigid.position + nextVec);
     }
 
     void LateUpdate()
@@ -54,19 +54,34 @@ public class Enemy : MonoBehaviour
         health = data.health;
     }
 
-    void OnTriggerEnter2D(Collider2D collision)
+    public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition)
     {
-        if(!collision.CompareTag("RotateSword"))
-            return;
+        health -= damage;
 
-        health -= collision.GetComponent<RotateSword>().damage;
-
-        if(health > 0){
-            // hit
-        } else {
-            // die
+        if (health > 0)
+        {
+            Knockback(knockbackForce, attackerPosition);
+        }
+        else
+        {
             Dead();
         }
+    }
+
+    void Knockback(float knockbackForce, Vector3 attackerPosition)
+    {
+        Vector2 knockbackDirection = ((Vector2)transform.position - (Vector2)attackerPosition).normalized;
+        StartCoroutine(ApplyKnockback(knockbackDirection, knockbackForce));
+        // rigid.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
+    }
+
+    IEnumerator ApplyKnockback(Vector2 direction, float force)
+    {
+        isKnockback = true;
+        rigid.velocity = Vector2.zero; // 기존 속도 제거
+        rigid.AddForce(direction * force, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(0.3f); // 넉백 효과를 0.5초 동안 유지 (원하는 시간으로 조절 가능)
+        isKnockback = false;
     }
 
     void Dead()
