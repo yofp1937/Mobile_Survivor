@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     Rigidbody2D rigid;
     private Animator ani;
-    public GameObject body;
+    public GameObject weapon;
     public Scanner scanner;
 
     void Start()
@@ -24,13 +24,13 @@ public class Player : MonoBehaviour
         inputVec.x = Input.GetAxis("Horizontal");
         inputVec.y = Input.GetAxis("Vertical");
 
-        if(inputVec.x > 0){ // 왼쪽으로 이동할때 뒷모습 보여줌
+        if(inputVec.x > 0){ // 오른쪽으로 이동할때 뒷모습 보여줌
             transform.rotation = Quaternion.Euler(0, 180, 0);
-            body.transform.rotation = Quaternion.Euler(0, 0, body.transform.eulerAngles.z);
+            weapon.transform.rotation = Quaternion.Euler(0, 0, weapon.transform.eulerAngles.z);
         }
-        else { // 정지상태일때나 오른쪽으로 이동할때 앞을 바라봄
+        else { // 정지상태일때나 왼쪽으로 이동할때 앞을 바라봄
             transform.rotation = Quaternion.Euler(0, 0, 0);
-            body.transform.rotation = Quaternion.Euler(0, 0, body.transform.eulerAngles.z);
+            weapon.transform.rotation = Quaternion.Euler(0, 0, weapon.transform.eulerAngles.z);
         }
 
         // Vector의 크기가 0보다 크면(움직이는 상태면) move_bool 값을 true로 변경(walk 애니메이션 동작)

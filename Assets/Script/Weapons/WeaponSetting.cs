@@ -34,6 +34,7 @@ public class WeaponSetting : MonoBehaviour
             {
                 enemy.TakeDamage(damage, knockbackForce, transform.position);
             }
+            
             if(per > -1){ // 관통이 무한이 아니면 수치를 1 줄이고
                 per--;
                 if(per == -1){ // 관통 수치가 끝나면 무기 사라짐

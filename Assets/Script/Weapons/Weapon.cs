@@ -63,7 +63,7 @@ public class Weapon : MonoBehaviour
         }
         // Test Code
         if(Input.GetButtonDown("Jump")){
-            var levelupdata = new WeaponData{ damage = 1, count = 1 };
+            var levelupdata = new WeaponData{ damage = 1, count = 1, speed = 1 };
             LevelUp(levelupdata);
         }
     }
@@ -118,19 +118,36 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    IEnumerator AttackThrowWeaponCoroutine()
+    {
+        for(int i = 0; i < data.count + playerstat.Amount; i++)
+        {
+            Vector3 targetPos = player.scanner.nearestTarget.position;
+            Vector3 dir = targetPos - transform.position;
+            dir = dir.normalized;
+
+            Transform weaponT = GameManager.instance.weapon.Get(prefabId).transform;
+            weaponT.parent = transform;
+            weaponT.position = transform.position;
+            weaponT.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+            weaponT.GetComponent<WeaponSetting>().Init(data.damage * playerstat.Damage, 0, data.knockback, dir);
+
+            Rigidbody2D rb = weaponT.GetComponent<Rigidbody2D>();
+            if (rb != null)
+            {
+                rb.velocity = dir * data.speed * playerstat.AttackSpeed;
+            }
+
+            yield return new WaitForSeconds(0.35f);
+        }
+    }
+
     void AttackThrowWeapon()
     {
         if(!player.scanner.nearestTarget) // 대상 없으면 실행 X
             return;
 
-        Vector3 targetPos = player.scanner.nearestTarget.position;
-        Vector3 dir = targetPos - transform.position;
-        dir = dir.normalized;
-
-        Transform weaponT = GameManager.instance.weapon.Get(prefabId).transform;
-        weaponT.position = transform.position;
-        weaponT.rotation = Quaternion.FromToRotation(Vector3.up, dir);
-        weaponT.GetComponent<WeaponSetting>().Init(data.damage * playerstat.Damage, 0, data.knockback, dir);
+        StartCoroutine(AttackThrowWeaponCoroutine());
     }
 
     public void LevelUp(WeaponData weapon)
