@@ -201,6 +201,7 @@ MonoBehaviour:
   target: {fileID: 0}
   health: 0
   maxHealth: 0
+  damagePopupPrefab: {fileID: 4061410090215291239, guid: ca1e081de3c295346be76c44ed98706c, type: 3}
 --- !u!1 &8865202675559022845
 GameObject:
   m_ObjectHideFlags: 0

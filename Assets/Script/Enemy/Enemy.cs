@@ -12,14 +12,17 @@ public class Enemy : MonoBehaviour
 
     bool isLive; // 죽었는지 살았는지 체크용
     bool isKnockback; // 넉백 상태 체크용
+    public GameObject damagePopupPrefab; // 데미지 팝업 프리팹
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
+    Animator anim;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -57,6 +60,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition)
     {
         health -= damage;
+        ShowDamagePopup(damage); // 데미지 팝업 생성
 
         if (health > 0)
         {
@@ -64,6 +68,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
+            // anim.SetTrigger("hp_zero");
             Dead();
         }
     }
@@ -72,7 +77,6 @@ public class Enemy : MonoBehaviour
     {
         Vector2 knockbackDirection = ((Vector2)transform.position - (Vector2)attackerPosition).normalized;
         StartCoroutine(ApplyKnockback(knockbackDirection, knockbackForce));
-        // rigid.AddForce(knockbackDirection * knockbackForce, ForceMode2D.Impulse);
     }
 
     IEnumerator ApplyKnockback(Vector2 direction, float force)
@@ -82,6 +86,13 @@ public class Enemy : MonoBehaviour
         rigid.AddForce(direction * force, ForceMode2D.Impulse);
         yield return new WaitForSeconds(0.3f); // 넉백 효과를 0.5초 동안 유지 (원하는 시간으로 조절 가능)
         isKnockback = false;
+    }
+
+    void ShowDamagePopup(float damage)
+    {
+        Vector3 popupPosition = transform.position + new Vector3(0, 0.3f, 0);
+        GameObject damagePopup = Instantiate(damagePopupPrefab, popupPosition, Quaternion.identity);
+        damagePopup.GetComponent<DamagePopup>().Setup(damage);
     }
 
     void Dead()
