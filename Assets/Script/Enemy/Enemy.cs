@@ -12,7 +12,6 @@ public class Enemy : MonoBehaviour
 
     bool isLive; // 죽었는지 살았는지 체크용
     bool isKnockback; // 넉백 상태 체크용
-    public GameObject damagePopupPrefab; // 데미지 팝업 프리팹
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -90,9 +89,8 @@ public class Enemy : MonoBehaviour
 
     void ShowDamagePopup(float damage)
     {
-        Vector3 popupPosition = transform.position + new Vector3(0, 0.3f, 0);
-        GameObject damagePopup = Instantiate(damagePopupPrefab, popupPosition, Quaternion.identity);
-        damagePopup.GetComponent<DamagePopup>().Setup(damage);
+        Vector3 popupPosition = transform.position + new Vector3(0, 0.3f, 0); // 데미지 팝업 생성 위치 조정
+        PopupManager.instance.Get(damage, popupPosition); // 데미지 팝업 생성
     }
 
     void Dead()
