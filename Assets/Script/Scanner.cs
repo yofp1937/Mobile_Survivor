@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 가장 가까운적을 찾아주는 스크립트 
 public class Scanner : MonoBehaviour
 {
     public float scanRange;

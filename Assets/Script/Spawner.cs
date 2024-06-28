@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// 몬스터의 소환을 담당하는 스크립트
 public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;

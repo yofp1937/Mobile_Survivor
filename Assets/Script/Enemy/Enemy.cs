@@ -15,13 +15,11 @@ public class Enemy : MonoBehaviour
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
-    Animator anim;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -58,6 +56,9 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition)
     {
+        if(!isLive)
+            return;
+
         health -= damage;
         ShowDamagePopup(damage); // 데미지 팝업 생성
 
@@ -67,8 +68,10 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            // anim.SetTrigger("hp_zero");
+            isLive = false;
             Dead();
+            GameManager.instance.kill++;
+            GameManager.instance.GetExp();
         }
     }
 

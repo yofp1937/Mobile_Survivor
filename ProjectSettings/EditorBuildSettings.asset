@@ -6,7 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Aseets/Items/Pixel Art Icon Pack - RPG/Scene/SC Pixel Art Icon Pack
+      - RPG.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: dec7188ac3e1f234d8cf24ade9e631d7, type: 2}

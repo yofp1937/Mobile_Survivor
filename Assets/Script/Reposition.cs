@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// 플레이어의 이동에 따라 몬스터와 인게임 땅바닥을 재위치시키는 스크립트
 public class Reposition : MonoBehaviour
 {
     Collider2D coll;

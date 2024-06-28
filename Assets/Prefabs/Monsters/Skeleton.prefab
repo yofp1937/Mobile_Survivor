@@ -201,7 +201,6 @@ MonoBehaviour:
   target: {fileID: 0}
   health: 0
   maxHealth: 0
-  damagePopupPrefab: {fileID: 4061410090215291239, guid: ca1e081de3c295346be76c44ed98706c, type: 3}
 --- !u!1 &5512854682514522734
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +227,7 @@ Transform:
   m_GameObject: {fileID: 5512854682514522734}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.033, y: -0.259, z: 0}
+  m_LocalPosition: {x: 0.027, y: -0.259, z: 0}
   m_LocalScale: {x: 0.6355483, y: 0.18454446, z: 0.40173605}
   m_ConstrainProportionsScale: 0
   m_Children: []

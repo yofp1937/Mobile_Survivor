@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+// 플레이어가 입힌 데미지를 화면에 띄우고 설정시간이 지나면 사라지게하는 스크립트
 public class DamagePopup : MonoBehaviour
 {
     public TextMeshProUGUI damageText; // 입은 데미지량 표시해주는 Text 객체
@@ -12,7 +13,7 @@ public class DamagePopup : MonoBehaviour
     public void Setup(float damage) // 표시 데미지 설정, 사라지는 시간 설정
     {
         damageText.text = damage.ToString();
-        disappearTimer = 1f;
+        disappearTimer = 1f; // 시간 설정
     }
 
     void Update()
