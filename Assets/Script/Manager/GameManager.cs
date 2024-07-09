@@ -2,53 +2,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 게임의 중요 변수들을 갖고있는 스크립트
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("# Game Control")]
     public float gameTime; // 현재 게임 시간
-    public float maxGameTime = 6 * 10f; // 최대 게임 시간
+    public float maxGameTime = 30 * 60f; // 최대 게임 시간
+    public int kill; // 잡은 몬스터 수
 
-    [Header("# Player Info")]
-    public int health;
-    public int maxHealth = 100;
-    public int level;
-    public int kill;
-    public int exp;
-    public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
+    [Header("# Player Select")]
+    public GameObject Character;
 
-    [Header("# GameObject")]
-    public GameObject player;
-    public PoolManager pool;
-    public WeaponManager weapon;
-    public GameObject LevelUpPanel;
+    private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
 
-    void Awake(){
-        instance = this;
-        health = maxHealth;
-        LevelUpPanel.SetActive(false);
+
+    void Awake()
+    {
+        instance = this; // 싱글톤 패턴 구현
+
+        var obj = FindObjectsOfType<GameManager>(); // obj로 GameManager를 전부 찾아와 배열로 변환
+        if(obj.Length == 1) // obj가 1개면 씬 전환에도 값이 유지되게 설정
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+        else // obj가 1개보다 많으면 현재 obj 파괴
+        {
+            Destroy(gameObject);
+        }
     }
-    
+
     void Update()
     {
-        gameTime += Time.deltaTime;
-        
-        if(gameTime > maxGameTime){
-            gameTime = maxGameTime;
+        if(timerrunning)
+        {
+            gameTime += Time.deltaTime;
         }
     }
 
-    public void GetExp()
+    public void TimerStart()
     {
-        exp++;
+        timerrunning = true;
+    }
 
-        if(exp == nextExp[level]){
-            level++;
-            LevelUpPanel.SetActive(true);
-            Time.timeScale = 0;
-            exp = 0;
-
-        }
+    public void TimerStop()
+    {
+        timerrunning = false;
     }
 }
