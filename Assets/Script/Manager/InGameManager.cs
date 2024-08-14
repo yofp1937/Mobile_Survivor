@@ -4,12 +4,21 @@ using UnityEngine;
 
 public class InGameManager : MonoBehaviour
 {
-    
+    public static InGameManager instance;
+
     [Header("# GameObject")]
     public Player player;
+    public EnemyPoolManager EnemyPoolManager;
+    public WeaponManager WeaponManager;
     public GameObject LevelUpPanel;
+    public GameObject PoolParent;
 
     void Awake()
+    {
+        instance = this;
+    }
+
+    void Start()
     {
         GameManager.instance.TimerStart();
         LevelUpPanel.SetActive(false);
@@ -18,8 +27,8 @@ public class InGameManager : MonoBehaviour
 
     public void CreatePlayerCharacter()
     {
-        GameObject characterinstance = Instantiate(GameManager.instance.Character, player.gameObject.transform.position, Quaternion.identity);
-        Debug.Log(player.gameObject.transform.position);
-        characterinstance.transform.SetParent(player.gameObject.transform);
+        // 1번 인자(오브젝트)를 2번 인자 위치에, 3번 인자로 설정한 회전값으로 생성한다 부모 객체는 4번 인자
+        GameObject character = Instantiate(GameManager.instance.SelectCharacter, player.gameObject.transform.position, Quaternion.identity, player.gameObject.transform);
+        character.name = "character"; // 객체의 hierarchy상 이름을 character로 설정
     }
 }

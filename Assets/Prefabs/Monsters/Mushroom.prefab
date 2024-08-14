@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 268131317450664613}
   - component: {fileID: 5468261393565583513}
   - component: {fileID: 3011340060282073738}
-  - component: {fileID: 3270662933294669550}
-  - component: {fileID: 1571380330575710788}
+  - component: {fileID: -7261507690443791157}
+  - component: {fileID: 4027969355198147311}
   m_Layer: 6
   m_Name: Mushroom
   m_TagString: Enemy
@@ -173,7 +173,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.05}
   m_Size: {x: 0.2, y: 0.35}
   m_Direction: 0
---- !u!114 &3270662933294669550
+--- !u!114 &-7261507690443791157
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,10 +182,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3655019096997878352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d6aad938ffb24941a8593210ff89876, type: 3}
+  m_Script: {fileID: 11500000, guid: cf34c2f984380e04aa00a37f58b07673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1571380330575710788
+--- !u!114 &4027969355198147311
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,14 +194,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3655019096997878352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2899449b40966ef49b57f9268f6ac778, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f35b730efe3e734c8f8310941a6ae98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 3.8
   target: {fileID: 0}
   health: 0
   maxHealth: 0
-  damagePopupPrefab: {fileID: 4061410090215291239, guid: ca1e081de3c295346be76c44ed98706c, type: 3}
 --- !u!1 &8865202675559022845
 GameObject:
   m_ObjectHideFlags: 0

@@ -97,8 +97,8 @@ GameObject:
   - component: {fileID: 4339937433233682784}
   - component: {fileID: 8435338716075388579}
   - component: {fileID: 6586501828492416505}
-  - component: {fileID: 5807770468177216574}
-  - component: {fileID: 2887399963776052638}
+  - component: {fileID: -7944342883933244095}
+  - component: {fileID: -2657748179778343242}
   m_Layer: 6
   m_Name: FlyEye
   m_TagString: Enemy
@@ -257,7 +257,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.3, y: 0.2}
   m_Direction: 0
---- !u!114 &5807770468177216574
+--- !u!114 &-7944342883933244095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,23 +266,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 4592865743366385641}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2899449b40966ef49b57f9268f6ac778, type: 3}
+  m_Script: {fileID: 11500000, guid: cf34c2f984380e04aa00a37f58b07673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0
+--- !u!114 &-2657748179778343242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4592865743366385641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f35b730efe3e734c8f8310941a6ae98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 3.8
   target: {fileID: 0}
   health: 0
   maxHealth: 0
-  damagePopupPrefab: {fileID: 4061410090215291239, guid: ca1e081de3c295346be76c44ed98706c, type: 3}
---- !u!114 &2887399963776052638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4592865743366385641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d6aad938ffb24941a8593210ff89876, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
     public int kill; // 잡은 몬스터 수
 
     [Header("# Player Select")]
-    public GameObject Character;
+    public GameObject SelectCharacter;
+    public int SelectWeaponId;
+    public int SelectArtifactId;
 
     private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
 
@@ -39,12 +41,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void TimerStart()
+    public void TimerStart() // InGame Scene에 입장하면 실행됨
     {
         timerrunning = true;
     }
 
-    public void TimerStop()
+    public void TimerStop() // InGame Scene에서 Player의 hp가 0이되면 실행됨
     {
         timerrunning = false;
     }

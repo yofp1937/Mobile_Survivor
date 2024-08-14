@@ -1,0 +1,90 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8c3f0c1f418b014eaa63784c91b81ba, type: 3}
+  m_Name: Weapon1_ThrowWeapon
+  m_EditorClassIdentifier: 
+  itemType: 0
+  itemId: 1
+  itemName: ThrowWeapon
+  itemDesc: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC5D0\uAC8C \uBB34\uAE30\uB97C
+    \uB358\uC9D1\uB2C8\uB2E4."
+  maxlevel: 8
+  itemIcon: {fileID: 639922747271519384, guid: 0c8a2a7c17c325746bfbfb846fd72970, type: 3}
+  weaponData:
+    damage: 3
+    coolTime: 5
+    area: 0
+    duration: 0
+    count: 1
+    speed: 5
+    knockback: 5
+  acceData: 0
+  levelupdata_weapon:
+  - damage: 1
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 2
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 1
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 2
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 1
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 2
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 3
+    coolTime: 0
+    area: 0
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  levelupdata_acce: 
+  descriptions:
+  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00"
+  projectile: {fileID: 3935420936971645591, guid: 84588ec76e5a12a4c9b1c46a930bf908, type: 3}

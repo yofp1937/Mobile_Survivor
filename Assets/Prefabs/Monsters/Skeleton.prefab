@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 3261348200440871096}
   - component: {fileID: 8569516082515339759}
   - component: {fileID: 8304452513251215272}
-  - component: {fileID: 4956276665237483449}
-  - component: {fileID: 1225823630027806871}
+  - component: {fileID: -4324494691158035344}
+  - component: {fileID: 5340535402338971890}
   m_Layer: 6
   m_Name: Skeleton
   m_TagString: Enemy
@@ -173,7 +173,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.3, y: 0.45}
   m_Direction: 0
---- !u!114 &4956276665237483449
+--- !u!114 &-4324494691158035344
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,10 +182,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1593822989862331097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d6aad938ffb24941a8593210ff89876, type: 3}
+  m_Script: {fileID: 11500000, guid: cf34c2f984380e04aa00a37f58b07673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1225823630027806871
+--- !u!114 &5340535402338971890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,10 +194,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1593822989862331097}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2899449b40966ef49b57f9268f6ac778, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f35b730efe3e734c8f8310941a6ae98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 3.8
   target: {fileID: 0}
   health: 0
   maxHealth: 0
