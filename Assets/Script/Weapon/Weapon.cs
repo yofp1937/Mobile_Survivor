@@ -30,26 +30,29 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        switch(itemdata.itemId){
-            case 0:
-                transform.Rotate(Vector3.back * weapondata.speed * playerstat.AttackSpeed * Time.deltaTime);
-                lastATKtime += Time.deltaTime;
-                if (lastATKtime >= weapondata.coolTime * playerstat.CoolTime)
-                    {
-                        AttackRotateSword();
+        if(itemdata.itemType == ItemData.ItemType.Weapon)
+        {
+            switch(itemdata.itemId){
+                case 0:
+                    transform.Rotate(Vector3.back * weapondata.speed * playerstat.AttackSpeed * Time.deltaTime);
+                    lastATKtime += Time.deltaTime;
+                    if (lastATKtime >= weapondata.coolTime * playerstat.CoolTime)
+                        {
+                            AttackRotateSword();
+                            lastATKtime = 0;
+                        }
+                    break;
+                case 1:
+                    lastATKtime += Time.deltaTime;
+
+                    if(lastATKtime >= weapondata.coolTime * playerstat.CoolTime){
+                        AttackThrowWeapon();
                         lastATKtime = 0;
                     }
-                break;
-            case 1:
-                lastATKtime += Time.deltaTime;
-
-                if(lastATKtime >= weapondata.coolTime * playerstat.CoolTime){
-                    AttackThrowWeapon();
-                    lastATKtime = 0;
-                }
-                break;
-            default:
-                break;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -67,15 +70,23 @@ public class Weapon : MonoBehaviour
                 AttackThrowWeapon();
                 break;
             default:
+                BaseSetting(data);
                 break;
         }
     }
+
+    public void InitAcce(ItemData data)
+    {
+        itemdata = data;
+        InGameManager.instance.player.accesorries.Add(data.itemId);
+        InGameManager.instance.player.stat.LevelUp(data.acceData);
+    }
+
 
     void BaseSetting(ItemData data)
     {
         itemdata = data;
         weapondata = data.weaponData.Clone();
-        level++;
         InGameManager.instance.player.weapon.Add(data.itemId);
     }
 
@@ -88,6 +99,11 @@ public class Weapon : MonoBehaviour
         weapondata.duration += weapon.duration;
         weapondata.count += weapon.count;
         weapondata.speed += weapon.speed;
+
+        if(itemdata.itemType == ItemData.ItemType.Weapon && level == 7)
+        {
+            InGameManager.instance.player.maxlevelcount++;
+        }
 
         switch(itemdata.itemId)
         {
@@ -102,7 +118,6 @@ public class Weapon : MonoBehaviour
 
     void BatchRotateSword() // RotateSword 레벨업할때 실행하는 함수(RotateSword 1 사이클 실행)
     {
-        Debug.Log(InGameManager.instance);
         for(int index=0; index < weapondata.count + playerstat.Amount; index++){
             Transform weaponT;
             

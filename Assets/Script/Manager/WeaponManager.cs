@@ -9,6 +9,7 @@ public class WeaponManager : MonoBehaviour
     // ItemData를 보관할 변수
     public ItemData[] weapons;
     public ItemData[] accessories;
+    public ItemData[] etcs;
 
     // 풀을 담당하는 변수
     List<GameObject>[] pools;

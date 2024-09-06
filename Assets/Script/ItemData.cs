@@ -24,7 +24,7 @@ public class WeaponData
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData", order = 1)]
 public class ItemData : ScriptableObject
 {
-    public enum ItemType { Weapon, Accessories, Artifacts }
+    public enum ItemType { Weapon, Accessories, Artifacts, ETC }
 
     [Header("# Main Info")]
     public ItemType itemType;
@@ -62,6 +62,9 @@ public class ItemData : ScriptableObject
                 break;
             case ItemType.Artifacts:
                 maxlevel = 1;
+                break;
+            case ItemType.ETC:
+                maxlevel = 0;
                 break;
         }
     }

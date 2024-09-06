@@ -6,7 +6,7 @@ using UnityEngine.UI;
 // 각 정보를 화면에 표시
 public class HUD : MonoBehaviour
 {
-    public enum InfoType { Exp, Level, Kill, Time, Health }
+    public enum InfoType { Exp, Level, Kill, Time, Health, Gold }
     public InfoType type;
 
     Text myText;
@@ -42,6 +42,9 @@ public class HUD : MonoBehaviour
                 float curHealth = InGameManager.instance.player.health;
                 float maxHealth = InGameManager.instance.player.maxHealth;
                 mySlider.value = curHealth / maxHealth;
+                break;
+            case InfoType.Gold:
+                myText.text = string.Format("{0:F0}", GameManager.instance.gold);
                 break;
         }
     }

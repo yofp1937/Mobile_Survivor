@@ -35,9 +35,12 @@ public class Item : MonoBehaviour
 
     public void SetItemData(ItemData data)
     {
-        this.data = data;
-        BaseSetting();
-        ItemSetting();
+        if(gameObject.activeSelf == true)
+        {
+            this.data = data;
+            BaseSetting();
+            ItemSetting();
+        }
     }
 
     void ItemSetting()
@@ -47,6 +50,31 @@ public class Item : MonoBehaviour
         textLevel.text = "Lv. " + weapon.level + " / " + data.maxlevel;
         textName.text = data.itemName;
         textDesc.text = data.itemDesc;
+    }
+
+    public void MaxLevelSetting(int num)
+    {
+        switch(num)
+        {
+            case 0:
+                this.data = InGameManager.instance.WeaponManager.etcs[0];
+                image.sprite = data.itemIcon;
+                image.SetNativeSize();
+                textLevel.text = data.itemName;
+                textName.text = data.itemName;
+                textDesc.text = data.itemDesc;
+                break;
+            case 1:
+                this.data = InGameManager.instance.WeaponManager.etcs[1];
+                image.sprite = data.itemIcon;
+                image.SetNativeSize();
+                textLevel.text = data.itemName;
+                textName.text = data.itemName;
+                textDesc.text = data.itemDesc;
+                break;
+            default:
+                break;
+        }
     }
 
     // Panel의 온클릭 이벤트
@@ -69,17 +97,30 @@ public class Item : MonoBehaviour
             case ItemData.ItemType.Accessories:
                 if(weapon.level == 0)
                 {
-                    InGameManager.instance.player.stat.LevelUp(data.acceData);
-                    InGameManager.instance.player.accesorries.Add(data.itemId);
+                    weapon.gameObject.SetActive(true);
+                    weapon.InitAcce(data);
                 }
                 else if(weapon.level < 5)
                 {
+                    if(weapon.itemdata.itemType == ItemData.ItemType.Accessories && weapon.level == 4)
+                    {
+                        InGameManager.instance.player.maxlevelcount++;
+                    }
                     InGameManager.instance.player.stat.LevelUp(data.levelupdata_acce[weapon.level-1]);
                 }
                 weapon.level++;
                 break;
+            case ItemData.ItemType.ETC:
+                if(data.itemId == 0)
+                {
+                    InGameManager.instance.player.GetHeal(30);
+                }
+                else if(data.itemId == 1)
+                {
+                    GameManager.instance.gold += 10;
+                }
+                break;
             default:
-
                 break;
         }
     }

@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     public int exp;
     public List<int> weapon;
     public List<int> accesorries;
+    public int maxlevelcount;
     public List<int> nextExp = new List<int> { 3, };
 
     [Header("# Player Input")]
@@ -69,6 +70,18 @@ public class Player : MonoBehaviour
 
         if(exp == nextExp[level]){
             LevelUp();
+        }
+    }
+
+    public void GetHeal(int count)
+    {
+        if(health + count > maxHealth)
+        {
+            health = maxHealth;
+        }
+        else
+        {
+            health += count;
         }
     }
 

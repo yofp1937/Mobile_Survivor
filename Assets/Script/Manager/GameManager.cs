@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public float gameTime; // 현재 게임 시간
     public float maxGameTime = 30 * 60f; // 최대 게임 시간
     public int kill; // 잡은 몬스터 수
+    public int gold; // 획득한 골드량
 
     [Header("# Player Select")]
     public GameObject SelectCharacter;

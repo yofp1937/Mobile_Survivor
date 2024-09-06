@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 0
   itemId: 3
-  itemName: test2
-  itemDesc: test2
+  itemName: test3
+  itemDesc: test3
   maxlevel: 8
   itemIcon: {fileID: 2545729084865480563, guid: 222c67064971e9b48a5d8f1375a6dbd2, type: 3}
   weaponData:
