@@ -52,4 +52,10 @@ public class WeaponSetting : MonoBehaviour
         //TODO 점차 사리지게끔
         gameObject.SetActive(false); // 비활성화
     }
+
+    public IEnumerator ThrowWhileDuration(float cool)
+    {
+        yield return new WaitForSeconds(cool);
+        gameObject.SetActive(false);
+    }
 }

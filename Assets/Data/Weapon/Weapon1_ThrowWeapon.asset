@@ -21,11 +21,11 @@ MonoBehaviour:
   itemIcon: {fileID: 639922747271519384, guid: 0c8a2a7c17c325746bfbfb846fd72970, type: 3}
   weaponData:
     damage: 3
-    coolTime: 5
+    coolTime: 2
     area: 0
-    duration: 0
+    duration: 5
     count: 1
-    speed: 5
+    speed: 7.5
     knockback: 5
   acceData: 0
   levelupdata_weapon:

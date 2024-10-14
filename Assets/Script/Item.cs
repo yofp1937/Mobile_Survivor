@@ -47,9 +47,18 @@ public class Item : MonoBehaviour
     {
         image.sprite = data.itemIcon;
         image.SetNativeSize();
+
         textLevel.text = "Lv. " + weapon.level + " / " + data.maxlevel;
         textName.text = data.itemName;
-        textDesc.text = data.itemDesc;
+
+        if(weapon.level == 0)
+        {
+            textDesc.text = data.itemDesc;
+        }
+        else if(data.itemType == ItemData.ItemType.Weapon || data.itemType == ItemData.ItemType.Accessories)
+        {
+            textDesc.text = data.descriptions[weapon.level-1];
+        }
     }
 
     public void MaxLevelSetting(int num)

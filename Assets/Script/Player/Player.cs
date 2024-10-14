@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     public int health;
     public int maxHealth = 100;
     public float moveSpeed = 4f;
+    public float scanRange;
     public int level;
     public int exp;
     public List<int> weapon;

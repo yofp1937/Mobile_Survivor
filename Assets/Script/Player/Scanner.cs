@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 // 가장 가까운적을 찾아주는 스크립트 
 public class Scanner : MonoBehaviour
 {
-    public float scanRange;
+    float activescanRange;
     public LayerMask targetLayer;
     public RaycastHit2D[] targets;
     public Transform nearestTarget;
 
     void FixedUpdate()
     {
-        targets = Physics2D.CircleCastAll(transform.position, scanRange, Vector2.zero, 0, targetLayer);
+        activescanRange = InGameManager.instance.player.scanRange + InGameManager.instance.player.stat.Area;
+        targets = Physics2D.CircleCastAll(transform.position, activescanRange, Vector2.zero, 0, targetLayer);
         nearestTarget = GetNearest();
     }
 
@@ -33,5 +35,24 @@ public class Scanner : MonoBehaviour
         }
 
         return result;
+    }
+
+    public List<Transform> GetTargets(int count)
+    {
+        Vector3 myPos = transform.position;
+        // Targets에 myPos와 target.transform.position의 거리가 작은 순서대로 배열에 정렬시킴
+        // 이후 .ToList로 리스트 형식으로 변환
+        var Targets = targets.OrderBy(target => Vector3.Distance(myPos, target.transform.position)).ToList();
+
+        // Take 함수는 해당 리스트(Targets)의 앞에서부터 count만큼의 요소를 가져옴
+        // 이후 Select로 Take로 고른 요소들의 transform만 추출하고
+        // .ToList로 리스트화 시킴
+        return Targets.Take(count).Select(target => target.transform).ToList();
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white; // 흰색으로 설정
+        Gizmos.DrawWireSphere(transform.position, activescanRange); // 얇은 실선으로 원 그리기
     }
 }

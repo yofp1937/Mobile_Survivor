@@ -284,4 +284,3 @@ MonoBehaviour:
   moveSpeed: 3.8
   target: {fileID: 0}
   health: 0
-  maxHealth: 0
