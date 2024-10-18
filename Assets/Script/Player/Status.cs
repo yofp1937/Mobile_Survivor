@@ -78,6 +78,14 @@ public class Status : MonoBehaviour
         }
         UpdateStatus();
     }
+
+    // Scene에서 플레이어의 획득범위 표시
+    void OnDrawGizmos()
+    {
+        float _range = Magnet * transform.GetComponent<Player>().magnetRange;
+        Gizmos.color = Color.red; // 빨간색으로 설정
+        Gizmos.DrawWireSphere(transform.position, _range); // 얇은 실선으로 원 그리기
+    }
 }
 public enum ELevelUpStat
 {

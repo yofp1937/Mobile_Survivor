@@ -21,5 +21,10 @@ public class FollowPlayer : MonoBehaviour
         if(Input.GetButtonDown("Jump")){
             InGameManager.instance.player.LevelUp();
         }
+
+        // Test Code - 숫자패드 + 누르면 5초 증가
+        if(Input.GetKeyDown(KeyCode.KeypadPlus)){
+            GameManager.instance.gameTime += 5;
+        }
     }
 }

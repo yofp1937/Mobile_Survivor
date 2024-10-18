@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 
 public class InGameManager : MonoBehaviour
@@ -11,7 +12,10 @@ public class InGameManager : MonoBehaviour
     public EnemyPoolManager EnemyPoolManager;
     public WeaponManager WeaponManager;
     public GameObject LevelUpPanel;
-    public GameObject PoolParent;
+    public PoolManager PoolManager;
+
+    [Header("# Drop Item")]
+    public GameObject[] expjewel;
 
     void Awake()
     {

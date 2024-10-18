@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     public int maxHealth = 100;
     public float moveSpeed = 4f;
     public float scanRange;
+    public float magnetRange;
     public int level;
     public int exp;
     public List<int> weapon;
@@ -47,6 +48,11 @@ public class Player : MonoBehaviour
         inputVec = value.Get<Vector2>();
     }
 
+    void Update()
+    {
+        PullItems();
+    }
+
     void FixedUpdate()
     {
         Vector2 nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
@@ -65,11 +71,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void GetExp()
+    public void GetExp(int _exp)
     {
-        exp++;
+        exp += _exp;
 
-        if(exp == nextExp[level]){
+        if(exp >= nextExp[level]){
             LevelUp();
         }
     }
@@ -86,18 +92,56 @@ public class Player : MonoBehaviour
         }
     }
 
-    void NeedNextLevelExp(int exp)
+    void NeedNextLevelExp()
     {
-        int NeedNextLevelExp = exp * 2;
+        int NeedNextLevelExp;
+        if(GameManager.instance.gameTime > 1200)
+        {
+            NeedNextLevelExp = nextExp[level] + 150;
+        }
+        else if(GameManager.instance.gameTime > 600)
+        {
+            NeedNextLevelExp = nextExp[level] + 70;
+        }
+        else if(GameManager.instance.gameTime > 300)
+        {
+            NeedNextLevelExp = nextExp[level] + 30;
+        }
+        else if(GameManager.instance.gameTime > 150)
+        {
+            NeedNextLevelExp = nextExp[level] + 15;
+        }
+        else
+        {
+            NeedNextLevelExp = nextExp[level] + 5;
+        }
+
         nextExp.Add(NeedNextLevelExp);
     }
 
     public void LevelUp()
     {
-        NeedNextLevelExp(exp);
+        NeedNextLevelExp();
         level++;
         Time.timeScale = 0;
         InGameManager.instance.LevelUpPanel.SetActive(true);
         exp = 0;
+    }
+
+    void PullItems()
+    {
+        float _range = magnetRange * stat.Magnet;
+        // 스캔 범위 내 모든 2D 콜라이더 탐색
+        Collider2D[] itemsInRange = Physics2D.OverlapCircleAll(transform.position, _range);
+
+        foreach (Collider2D item in itemsInRange)
+        {
+            // 아이템 오브젝트인지 확인
+           if (item.CompareTag("Item"))
+            {
+                float _speed = 8f; // 이동 속도
+                item.transform.position = Vector2.MoveTowards(item.transform.position, transform.position, _speed * Time.deltaTime);
+            }
+        }
     }
 }

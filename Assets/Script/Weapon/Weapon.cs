@@ -79,6 +79,14 @@ public class Weapon : MonoBehaviour
                         lastATKtime = 0;
                     }
                     break;
+                case 5:
+                    lastATKtime += Time.deltaTime;
+                    if(lastATKtime >= weapondata.coolTime * playerstat.CoolTime)
+                    {
+                        AttackSpark();
+                        lastATKtime = 0;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -109,6 +117,10 @@ public class Weapon : MonoBehaviour
             case 4:
                 BaseSetting(data);
                 AttackThunder();
+                break;
+            case 5:
+                BaseSetting(data);
+                AttackSpark();
                 break;
             default:
                 BaseSetting(data);
@@ -162,6 +174,9 @@ public class Weapon : MonoBehaviour
                 break;
             case 4:
                 AttackThunder();
+                break;
+            case 5:
+                AttackSpark();
                 break;
         }
     }
@@ -242,7 +257,7 @@ public class Weapon : MonoBehaviour
 
             bool isNew;
             Transform weaponT = InGameManager.instance.WeaponManager.Get(itemdata.itemId, out isNew).transform;
-            Transform parent = InGameManager.instance.PoolParent.transform.Find("Weapon").Find("Weapon1");
+            Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon1");
             if(isNew)
             {
                 NewWeaponObjectCreate(weaponT, parent, weaponsetting);
@@ -273,7 +288,7 @@ public class Weapon : MonoBehaviour
     {
         int lasercount = weapondata.count + playerstat.Amount;
         List<Transform> targets = player.scanner.GetTargets(lasercount);
-        Transform parent = InGameManager.instance.PoolParent.transform.Find("Weapon").Find("Weapon2");
+        Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon2");
 
         for(int i = 0; i < lasercount; i++)
         {
@@ -322,7 +337,7 @@ public class Weapon : MonoBehaviour
     {
         int firballcount = weapondata.count + playerstat.Amount;
         List<Transform> targets = player.scanner.GetTargets(firballcount);
-        Transform parent = InGameManager.instance.PoolParent.transform.Find("Weapon").Find("Weapon3");
+        Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon3");
         float range = InGameManager.instance.player.scanRange * playerstat.Area;
 
         for(int i = 0; i < firballcount; i++)
@@ -399,10 +414,11 @@ public class Weapon : MonoBehaviour
         {
             bool isNew;
             Transform weaponT = InGameManager.instance.WeaponManager.Get(itemdata.itemId, out isNew).transform;
+            Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon4");
             if(isNew)
             {
                 originalScale = weaponT.localScale;
-                NewWeaponObjectCreate(weaponT, transform, weaponsetting);
+                NewWeaponObjectCreate(weaponT, parent, weaponsetting);
             }
             float newScale = weapondata.area * playerstat.Area;
             weaponT.localScale = originalScale * newScale;
@@ -441,15 +457,40 @@ public class Weapon : MonoBehaviour
 
             // 오프셋을 적용하여 weaponT 이동
             weaponT.position += offset;
-            StartCoroutine(SetActiveThunder(weaponT.gameObject, 0.45f));
+            StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.45f));
         }
     }
 
-    IEnumerator SetActiveThunder(GameObject obj, float delay)
+    IEnumerator SetActiveWeapon(GameObject obj, float delay)
     {
         // delay 만큼 대기
         yield return new WaitForSeconds(delay);
 
         obj.SetActive(false);
+    }
+
+    void AttackSpark()
+    {
+        float _range = weapondata.area * InGameManager.instance.player.stat.Area;
+        // 스캔 범위 내 모든 2D 콜라이더 탐색
+        Collider2D[] enemyInRange = Physics2D.OverlapCircleAll(transform.position, _range);
+
+        foreach (Collider2D enemy in enemyInRange)
+        {
+            // 적 오브젝트인지 확인
+           if (enemy.CompareTag("Enemy"))
+            {
+                Transform weaponT = InGameManager.instance.WeaponManager.Get(itemdata.itemId, out bool isNew).transform;
+                Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon5");
+                if(isNew)
+                {
+                    NewWeaponObjectCreate(weaponT, parent, weaponsetting);
+                }
+                enemy.GetComponent<Enemy>().TakeDamage(weapondata.damage * InGameManager.instance.player.stat.Damage, 0, transform.position);
+                weaponT.position = enemy.transform.position;
+                
+                StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.3f));
+            }
+        }
     }
 }

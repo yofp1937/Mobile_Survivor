@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - RotateSword
   - ThrowWeapon
+  - Item
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Enemy
   - Player
   - Skill
-  - 
+  - Item
   - 
   - 
   - 

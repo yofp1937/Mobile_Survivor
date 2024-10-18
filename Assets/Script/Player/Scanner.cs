@@ -50,6 +50,7 @@ public class Scanner : MonoBehaviour
         return Targets.Take(count).Select(target => target.transform).ToList();
     }
 
+    // Scene에서 플레이어의 공격범위 표시
     void OnDrawGizmos()
     {
         Gizmos.color = Color.white; // 흰색으로 설정

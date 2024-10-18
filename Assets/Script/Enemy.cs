@@ -85,7 +85,6 @@ public class Enemy : MonoBehaviour
             isLive = false;
             Dead();
             GameManager.instance.kill++;
-            InGameManager.instance.player.GetExp();
         }
     }
 
@@ -112,6 +111,31 @@ public class Enemy : MonoBehaviour
 
     void Dead()
     {
+        DropJewel();
         gameObject.SetActive(false);
     }
+
+    void DropJewel()
+    {
+        int index;
+
+        if(GameManager.instance.gameTime > 1200)
+        {
+            index = 2;
+        }
+        else if(GameManager.instance.gameTime > 600)
+        {
+            index = 1;
+        }
+        else
+        {
+            index = 0;
+        }
+
+        Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
+        itemT.position = gameObject.transform.position;
+        itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
+        itemT.GetComponent<ExpJewel>().Init(index);
+    }
+
 }
