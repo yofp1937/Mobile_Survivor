@@ -39,7 +39,7 @@ public class LevelUpPanel : MonoBehaviour
     public void HideLevelUpPanel()
     {
         InGameManager.instance.LevelUpPanel.SetActive(false);
-        Time.timeScale = 1;
+        GameManager.instance.TimerStart();
     }
 
     void GetSelectItemCount()

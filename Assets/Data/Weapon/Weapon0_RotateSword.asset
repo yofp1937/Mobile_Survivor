@@ -20,71 +20,73 @@ MonoBehaviour:
   maxlevel: 8
   itemIcon: {fileID: 3924691500919266753, guid: 68ab2b2e8715f9545a1e6818892fde77, type: 3}
   weaponData:
-    damage: 5
+    damage: 4
     coolTime: 8
     area: 2
-    duration: 5
+    duration: 3
     count: 3
     speed: 80
     knockback: 10
   acceData: 0
   levelupdata_weapon:
-  - damage: 1.5
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 1.5
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
     count: 1
     speed: 0
     knockback: 0
-  - damage: 1.5
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
     count: 0
-    speed: 0
+    speed: 20
     knockback: 0
-  - damage: 1.5
+  - damage: 3
     coolTime: 0
     area: 0
-    duration: 0
+    duration: 1
     count: 0
     speed: 0
     knockback: 0
-  - damage: 1.5
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
     count: 1
     speed: 0
     knockback: 0
-  - damage: 1.5
-    coolTime: 0
+  - damage: 3
+    coolTime: 1
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 2
+  - damage: 5
     coolTime: 0
     area: 0
     duration: 0
     count: 2
-    speed: 0
+    speed: 40
     knockback: 0
   levelupdata_acce: 
   descriptions:
-  - "\uACF5\uACA9\uB825 1.5 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1.5 \uC99D\uAC00, \uBB34\uAE30 \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1.5 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1.5 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1.5 \uC99D\uAC00, \uBB34\uAE30 \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1.5 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00, \uBB34\uAE30 \uAC1C\uC218 2\uAC1C \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uBB34\uAE30 \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uD68C\uC804\uC18D\uB3C4 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uC9C0\uC18D\uC2DC\uAC04 1\uCD08 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uBB34\uAE30 \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uCFE8\uD0C0\uC784 1\uCD08 \uAC10\uC18C"
+  - "\uACF5\uACA9\uB825 5 \uC99D\uAC00, \uBB34\uAE30 \uAC1C\uC218 2\uAC1C \uC99D\uAC00,
+    \uD68C\uC804\uC18D\uB3C4 \uC99D\uAC00"
   projectile: {fileID: 3711718689779004194, guid: 7184a0670ccaf07439eac8e6231f3568, type: 3}
+  projectile2: {fileID: 0}

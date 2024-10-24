@@ -8,6 +8,7 @@ public class WeaponSetting : MonoBehaviour
     public int per;
     public float knockbackForce;
     Rigidbody2D rigid;
+    private Coroutine weaponCoroutine;
 
     void Awake()
     {
@@ -26,6 +27,25 @@ public class WeaponSetting : MonoBehaviour
         }
     }
 
+    void Applyper()
+    {
+        per--;
+        if(per == 0) // 관통이 0이되면
+        {
+            if (rigid != null) // null 체크 추가
+            {
+                rigid.velocity = Vector2.zero;
+            }
+
+            if(weaponCoroutine != null)
+            {
+                StopCoroutine(weaponCoroutine);
+                weaponCoroutine = null;
+            }
+            gameObject.SetActive(false);
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Enemy")){
@@ -33,14 +53,7 @@ public class WeaponSetting : MonoBehaviour
             if(enemy != null)
             {
                 enemy.TakeDamage(damage, knockbackForce, transform.position);
-            }
-            
-            if(per > -1){ // 관통이 무한이 아니면 수치를 1 줄이고
-                per--;
-                if(per == -1){ // 관통 수치가 끝나면 무기 사라짐
-                    rigid.velocity = Vector2.zero;
-                    gameObject.SetActive(false);
-                }
+                Applyper();
             }
         }
     }
@@ -53,6 +66,17 @@ public class WeaponSetting : MonoBehaviour
         gameObject.SetActive(false); // 비활성화
     }
 
+    // 코루틴을 실행하고 저장
+    public void StartThrowWhileDuration(float cool)
+    {
+        if (weaponCoroutine != null)
+        {
+            StopCoroutine(weaponCoroutine); // 기존 코루틴이 있으면 중지
+        }
+        weaponCoroutine = StartCoroutine(ThrowWhileDuration(cool));
+    }
+
+    // 무기를 일정 시간 후 비활성화하는 코루틴
     public IEnumerator ThrowWhileDuration(float cool)
     {
         yield return new WaitForSeconds(cool);

@@ -20,8 +20,8 @@ MonoBehaviour:
   maxlevel: 8
   itemIcon: {fileID: 21300000, guid: 9687b8cba872c4f50aeb3b2b3ff1a0b7, type: 3}
   weaponData:
-    damage: 7
-    coolTime: 5
+    damage: 6
+    coolTime: 6
     area: 3
     duration: 3
     count: 1
@@ -29,63 +29,65 @@ MonoBehaviour:
     knockback: 0
   acceData: 0
   levelupdata_weapon:
-  - damage: 2
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 2
+  - damage: 4
     coolTime: 0
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 2
-    coolTime: 0
+  - damage: 3
+    coolTime: 1.25
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 2
+  - damage: 4
     coolTime: 0
     area: 0
     duration: 0
     count: 1
     speed: 0
     knockback: 0
-  - damage: 2
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 2
-    coolTime: 0
-    area: 0
-    duration: 0
-    count: 0
-    speed: 0
-    knockback: 0
-  - damage: 2
-    coolTime: 0
+  - damage: 4
+    coolTime: 1.25
     area: 0
     duration: 0
     count: 1
+    speed: 0
+    knockback: 0
+  - damage: 5
+    coolTime: 2
+    area: 0
+    duration: 0
+    count: 2
     speed: 0
     knockback: 0
   levelupdata_acce: 
   descriptions:
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00, \uD22C\uC0AC\uCCB4 1\uAC1C \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 4 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uCFE8\uD0C0\uC784 1.25\uCD08 \uAC10\uC18C"
   - "\uACF5\uACA9\uB825 4 \uC99D\uAC00, \uD22C\uC0AC\uCCB4 1\uAC1C \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 4 \uC99D\uAC00, \uD22C\uC0AC\uCCB4 1\uAC1C \uC99D\uAC00,
+    \uCFE8\uD0C0\uC784 1.25\uCD08 \uAC10\uC18C"
+  - "\uACF5\uACA9\uB825 5 \uC99D\uAC00, \uD22C\uC0AC\uCCB4 2\uAC1C \uC99D\uAC00,
+    \uCFE8\uD0C0\uC784 2\uCD08 \uAC10\uC18C"
   projectile: {fileID: 5281243581977313925, guid: b590f771ebd64a24891ec59e888838fe, type: 3}
   projectile2: {fileID: 0}

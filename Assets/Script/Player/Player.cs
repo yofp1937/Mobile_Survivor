@@ -90,6 +90,13 @@ public class Player : MonoBehaviour
         {
             health += count;
         }
+        InGameManager.instance.HealCount++;
+    }
+
+    public void GetGold(int count)
+    {
+        GameManager.instance.gold += count;
+        InGameManager.instance.GoldCount++;
     }
 
     void NeedNextLevelExp()
@@ -123,7 +130,7 @@ public class Player : MonoBehaviour
     {
         NeedNextLevelExp();
         level++;
-        Time.timeScale = 0;
+        GameManager.instance.TimerStop();
         InGameManager.instance.LevelUpPanel.SetActive(true);
         exp = 0;
     }
@@ -144,4 +151,19 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    public void ActiveMagnet()
+    {
+        InGameManager.instance.MagnetCount++;
+
+        // 모든 Item 태그 객체 탐색
+        GameObject[] allItems = GameObject.FindGameObjectsWithTag("Item");
+
+        // 모든 Item 태그 객체의 PullToPlayer 함수 실행
+        foreach (GameObject item in allItems)
+        {
+            item.GetComponent<DropItem>().PullToPlayer();
+        }
+    }
+
 }

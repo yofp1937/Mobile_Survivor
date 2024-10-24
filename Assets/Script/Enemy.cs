@@ -24,14 +24,10 @@ public class Enemy : MonoBehaviour
         coll = GetComponent<CapsuleCollider2D>();
     }
 
-    void Start()
-    {
-        target = InGameManager.instance.player.GetComponent<Rigidbody2D>();
-    }
-
     void OnEnable()
     {
         isLive = true;
+        isKnockback = false;
     }    
 
     void FixedUpdate()
@@ -53,13 +49,14 @@ public class Enemy : MonoBehaviour
         spriter.flipX = target.position.x < rigid.position.x; // 플레이어 위치에따라 좌우 모습 변경
     }
 
-    public void Init(SpawnData data)
+    public void Init(SpawnData data, int monstertype)
     {
+        target = InGameManager.instance.player.GetComponent<Rigidbody2D>();
         moveSpeed = data.speed;
         health = data.health;
         gameObject.name = "Enemy";
 
-        GameObject prefab = InGameManager.instance.EnemyPoolManager.prefabs[data.spriteType];
+        GameObject prefab = InGameManager.instance.EnemyPoolManager.prefabs[monstertype];
         Animator prefabanim = prefab.GetComponent<Animator>();
         CapsuleCollider2D prefabcoll = prefab.GetComponent<CapsuleCollider2D>();
         anim.runtimeAnimatorController = prefabanim.runtimeAnimatorController;
@@ -112,18 +109,20 @@ public class Enemy : MonoBehaviour
     void Dead()
     {
         DropJewel();
+        DropItem();
         gameObject.SetActive(false);
     }
 
     void DropJewel()
     {
+        int JewelCount = InGameManager.instance.JewelCount;
         int index;
 
-        if(GameManager.instance.gameTime > 1200)
+        if(GameManager.instance.gameTime >= 1680) // 28분부턴 경험치 5
         {
             index = 2;
         }
-        else if(GameManager.instance.gameTime > 600)
+        else if(GameManager.instance.gameTime >= 1200) // 20분부턴 경험치 3
         {
             index = 1;
         }
@@ -132,10 +131,75 @@ public class Enemy : MonoBehaviour
             index = 0;
         }
 
-        Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
-        itemT.position = gameObject.transform.position;
-        itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
-        itemT.GetComponent<ExpJewel>().Init(index);
+        if(JewelCount >= 200) // 보석의 갯수가 200개가 넘어가면 가장 가까운 보석의 경험치량을 증가시킴
+        {
+            DropItem nearjewel = null;
+            float finddistance = Mathf.Infinity;
+
+            foreach (Transform jewelT in InGameManager.instance.PoolManager.transform.Find("Item")) // 풀매니저 Item.Exp의 모든 자식객체들을 순회하면서 거리 측정
+            {
+                if(!jewelT.GetComponent<DropItem>().jewel) // jewelT가 경험치 보석이 아니면 아래 코드 실행 안함
+                {
+                    continue;
+                }
+
+                float distance = Vector3.Distance(gameObject.transform.position, jewelT.position); // 현재 객체에서 jewelT까지의 거리 계산
+                if (distance < finddistance) // dinstance가 finddistance보다 작으면 더 가까운거니깐 finddistance 갱신
+                {
+                    finddistance = distance;
+                    nearjewel = jewelT.GetComponent<DropItem>(); // 이번 jewelT가 제일 가까운 jewel이므로 nearjewel에 등록
+                }
+            }
+
+            // 가장 가까운 보석의 경험치 증가
+            if (nearjewel != null)
+            {
+                nearjewel.AddExp(index); // 경험치 증가 함수 호출
+            }
+        }
+        else
+        {
+            InGameManager.instance.JewelCount++;
+            InGameManager.instance.AccumJewelCount++;
+
+            Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
+            itemT.position = gameObject.transform.position;
+            itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
+            itemT.GetComponent<DropItem>().Init(index);
+        }
     }
 
+    void DropItem()
+    {
+        float randomValue = Random.Range(0f,100f);
+        int index;
+
+        if (randomValue < 0.1f)  // 0.1% 확률로 자석 드랍
+        {
+            index = 5;
+        }
+        else if (randomValue < 3.1f)  // 3% 확률로 골드 드랍 (0.1f 이상 3.1f 미만)
+        {
+            index = 3;
+        }
+        else if (randomValue < 8.1f)  // 5% 확률로 포션 드랍 (3.1f 이상 8.1f 미만)
+        {
+            index = 4;
+        }
+        else // 아이템이 안뜨면 index = 0
+        {
+            index = 0;
+        }
+
+        if(index > 0 && InGameManager.instance.DropItemCount <= 49) // index가 0보다 크고, 필드에 존재하는 아이템 개수가 50개 미만이면 아이템 소환
+        {
+            InGameManager.instance.DropItemCount++;
+
+            Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
+            itemT.position = gameObject.transform.position;
+            itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
+
+            itemT.GetComponent<DropItem>().Init(index);
+        }
+    }
 }

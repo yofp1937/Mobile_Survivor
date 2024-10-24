@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     [Header("# Game Control")]
+    public float gameSpeed = 1f; // 게임 속도
     public float gameTime; // 현재 게임 시간
     public float maxGameTime = 30 * 60f; // 최대 게임 시간
     public int kill; // 잡은 몬스터 수
@@ -45,10 +46,12 @@ public class GameManager : MonoBehaviour
     public void TimerStart() // InGame Scene에 입장하면 실행됨
     {
         timerrunning = true;
+        Time.timeScale = gameSpeed;
     }
 
     public void TimerStop() // InGame Scene에서 Player의 hp가 0이되면 실행됨
     {
         timerrunning = false;
+        Time.timeScale = 0;
     }
 }

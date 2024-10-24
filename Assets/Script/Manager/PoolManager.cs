@@ -7,15 +7,11 @@ public class PoolManager : MonoBehaviour
     [Header(" # All Item Data")]
     // Item을 보관할 변수
     public GameObject[] items;
-    List<GameObject>[] pools;
+    List<GameObject> pool;
 
     void Awake()
     {
-        pools = new List<GameObject>[items.Length];
-
-        for(int index = 0; index < pools.Length; index++){
-            pools[index] = new List<GameObject>();
-        }
+        pool = new List<GameObject>();
     }
 
     public GameObject Get(int index)
@@ -23,7 +19,7 @@ public class PoolManager : MonoBehaviour
         GameObject select = null;
 
         // 선택한 pool의 비활성화된 게임오브젝트에 접근
-        foreach(GameObject item in pools[index]){
+        foreach(GameObject item in pool){
             if(!item.activeSelf){// 비활성화된걸 발견하면 select 변수에 할당
                 select = item;
                 select.SetActive(true);
@@ -35,7 +31,7 @@ public class PoolManager : MonoBehaviour
         if(!select){
             // 새롭게 생성하고 select 변수에 할당
             select = Instantiate(items[index], transform);
-            pools[index].Add(select);
+            pool.Add(select);
         }
 
         return select;

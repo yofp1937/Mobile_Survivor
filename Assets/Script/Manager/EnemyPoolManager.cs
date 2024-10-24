@@ -15,7 +15,6 @@ public class EnemyPoolManager : MonoBehaviour
         pool = new List<GameObject>();
     }
 
-    // 
     public GameObject Get(int index)
     {
         GameObject select = null;

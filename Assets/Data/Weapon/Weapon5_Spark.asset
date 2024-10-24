@@ -29,14 +29,14 @@ MonoBehaviour:
     knockback: 0
   acceData: 0
   levelupdata_weapon:
-  - damage: 1
+  - damage: 2
     coolTime: 0
     area: 0
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 1
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
@@ -45,19 +45,12 @@ MonoBehaviour:
     knockback: 0
   - damage: 2
     coolTime: 0
-    area: 0
+    area: 0.25
     duration: 0
     count: 0
     speed: 0
     knockback: 0
-  - damage: 1
-    coolTime: 0
-    area: 0
-    duration: 0
-    count: 0
-    speed: 0
-    knockback: 0
-  - damage: 1
+  - damage: 3
     coolTime: 0
     area: 0
     duration: 0
@@ -73,6 +66,13 @@ MonoBehaviour:
     knockback: 0
   - damage: 3
     coolTime: 0
+    area: 0.25
+    duration: 0
+    count: 0
+    speed: 0
+    knockback: 0
+  - damage: 5
+    coolTime: 0.5
     area: 0
     duration: 0
     count: 0
@@ -80,12 +80,12 @@ MonoBehaviour:
     knockback: 0
   levelupdata_acce: 
   descriptions:
-  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
-  - "\uACF5\uACA9\uB825 1 \uC99D\uAC00"
   - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
   - "\uACF5\uACA9\uB825 3 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 2 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
+  - "\uACF5\uACA9\uB825 5 \uC99D\uAC00. \uCFE8\uD0C0\uC784 0.5\uCD08 \uAC10\uC18C"
   projectile: {fileID: 6735299443119077560, guid: 166ca6c893cb8064ba3ea0aecb10046d, type: 3}
   projectile2: {fileID: 0}

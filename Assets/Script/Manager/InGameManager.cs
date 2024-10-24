@@ -15,7 +15,17 @@ public class InGameManager : MonoBehaviour
     public PoolManager PoolManager;
 
     [Header("# Drop Item")]
-    public GameObject[] expjewel;
+    public GameObject[] ExpJewel;
+
+    [Header("# ItemCount")]
+    public int JewelCount;
+    public int DropItemCount;
+
+    [Header("# Score")]
+    public int AccumJewelCount;
+    public int HealCount;
+    public int GoldCount;
+    public int MagnetCount;
 
     void Awake()
     {

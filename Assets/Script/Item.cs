@@ -126,7 +126,7 @@ public class Item : MonoBehaviour
                 }
                 else if(data.itemId == 1)
                 {
-                    GameManager.instance.gold += 10;
+                    InGameManager.instance.player.GetGold(10);
                 }
                 break;
             default:

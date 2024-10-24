@@ -51,7 +51,8 @@ public class PopupPoolManager : MonoBehaviour
     GameObject ActivePopup(GameObject obj, float damage) // Popup의 표시 Damage 수정, 객체 활성화까지 시켜주는 함수
     {
         DamagePopup DPcomponent = obj.GetComponent<DamagePopup>();
-        DPcomponent.Setup(damage);
+        int _damage = Mathf.RoundToInt(damage);
+        DPcomponent.Setup(_damage);
         obj.SetActive(true);
         return obj;
     }
