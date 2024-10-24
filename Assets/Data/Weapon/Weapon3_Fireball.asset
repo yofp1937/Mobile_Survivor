@@ -17,7 +17,7 @@ MonoBehaviour:
   itemName: Fireball
   itemDesc: "\uD654\uC5FC\uAD6C\uB97C \uB0A0\uB824 \uD3ED\uBC1C\uC744 \uC77C\uC73C\uD0B5\uB2C8\uB2E4."
   maxlevel: 8
-  itemIcon: {fileID: 21300000, guid: a74da400f08b35d489c837658f327fe1, type: 3}
+  itemIcon: {fileID: 21300000, guid: c2fb5de0681e8b24db0af503cb7a2980, type: 3}
   weaponData:
     damage: 10
     coolTime: 6

@@ -18,7 +18,7 @@ MonoBehaviour:
   itemDesc: "\uD50C\uB808\uC774\uC5B4 \uC8FC\uBCC0\uC758 \uBAA8\uB4E0 \uC801\uC5D0\uAC8C
     \uB370\uBBF8\uC9C0\uB97C \uC785\uD788\uACE0 \uBC00\uC5B4\uB0C5\uB2C8\uB2E4."
   maxlevel: 8
-  itemIcon: {fileID: 21300000, guid: 56f88ff2e60f4314a87fad896024e3a3, type: 3}
+  itemIcon: {fileID: 21300000, guid: 8f39d095f87033f46b22a25c9538447e, type: 3}
   weaponData:
     damage: 5
     coolTime: 3
