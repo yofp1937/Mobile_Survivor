@@ -13,6 +13,31 @@ public class DamagePopup : MonoBehaviour
     public void Setup(float damage) // 표시 데미지 설정, 사라지는 시간 설정
     {
         damageText.text = damage.ToString();
+        if(damage > 90) // 데미지 90 이상이면 검정색
+        {
+            damageText.color = new Color(0f, 0f, 0f);
+            damageText.fontSize = 0.8f;
+        }
+        else if(damage > 70) // 데미지 70 이상이면 빨간색
+        {
+            damageText.color = new Color(1f, 0f, 41f / 255f);
+            damageText.fontSize = 0.7f;
+        }
+        else if(damage > 50) // 데미지 50 이상이면 금색
+        {
+            damageText.color = new Color(240f / 255f, 177f / 255f, 0f);
+            damageText.fontSize = 0.6f;
+        }
+        else if(damage > 20) // 데미지 20 이상이면 초록색
+        {
+            damageText.color = new Color(0f, 177f / 255f, 230f / 255f);
+            damageText.fontSize = 0.55f;
+        }
+        else // 데미지 20 미만이면 하얀색
+        {
+            damageText.color = Color.white;
+            damageText.fontSize = 0.5f;
+        }
         disappearTimer = 1f; // 시간 설정
     }
 

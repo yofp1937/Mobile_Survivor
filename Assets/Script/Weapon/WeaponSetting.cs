@@ -62,7 +62,7 @@ public class WeaponSetting : MonoBehaviour
     {
         gameObject.SetActive(true); // 활성화
         yield return new WaitForSeconds(duration); // duration 값만큼 기다렸다가
-        //TODO 점차 사리지게끔
+
         gameObject.SetActive(false); // 비활성화
     }
 

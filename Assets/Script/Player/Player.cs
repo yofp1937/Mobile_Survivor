@@ -91,6 +91,16 @@ public class Player : MonoBehaviour
             health += count;
         }
         InGameManager.instance.HealCount++;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Heal);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            InGameManager.instance.GameOver();
+        }
     }
 
     public void GetGold(int count)
@@ -102,19 +112,21 @@ public class Player : MonoBehaviour
     void NeedNextLevelExp()
     {
         int NeedNextLevelExp;
-        if(GameManager.instance.gameTime > 1200)
+        // 게임 시간별로 다음레벨까지 필요한 경험치량 조절
+        // 기본적으로 다음 레벨까지 필요한 경험치는 - 현재 레벨까지 필요했던 경험치 + 추가로 필요한 경험치
+        if(GameManager.instance.gameTime > 1200) // 25분 이후부턴 경험치+180 필요
         {
-            NeedNextLevelExp = nextExp[level] + 150;
+            NeedNextLevelExp = nextExp[level] + 180;
         }
-        else if(GameManager.instance.gameTime > 600)
+        else if(GameManager.instance.gameTime > 1200) // 20분 이후부턴 경험치+80 필요
         {
-            NeedNextLevelExp = nextExp[level] + 70;
+            NeedNextLevelExp = nextExp[level] + 80;
         }
-        else if(GameManager.instance.gameTime > 300)
+        else if(GameManager.instance.gameTime > 900) // 15분 이후부턴 경험치+35 필요
         {
-            NeedNextLevelExp = nextExp[level] + 30;
+            NeedNextLevelExp = nextExp[level] + 35;
         }
-        else if(GameManager.instance.gameTime > 150)
+        else if(GameManager.instance.gameTime > 600) // 10분 이후부턴 경험치+15 필요
         {
             NeedNextLevelExp = nextExp[level] + 15;
         }
@@ -131,6 +143,7 @@ public class Player : MonoBehaviour
         NeedNextLevelExp();
         level++;
         GameManager.instance.TimerStop();
+        AudioManager.instance.EffectBgm(true);
         InGameManager.instance.LevelUpPanel.SetActive(true);
         exp = 0;
     }

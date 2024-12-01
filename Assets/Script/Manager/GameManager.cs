@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("# Player Select")]
     public GameObject SelectCharacter;
-    public int SelectWeaponId;
+    public ItemData SelectWeapon;
     public int SelectArtifactId;
 
     private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
@@ -35,6 +35,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        LoadLobbyScene();
+    }
+
     void Update()
     {
         if(timerrunning)
@@ -53,5 +58,10 @@ public class GameManager : MonoBehaviour
     {
         timerrunning = false;
         Time.timeScale = 0;
+    }
+
+    public void LoadLobbyScene()
+    {
+        AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
     }
 }

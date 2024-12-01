@@ -232,7 +232,7 @@ public class Weapon : MonoBehaviour
 
     void BatchRotateSword() // RotateSword 레벨업할때 실행하는 함수(RotateSword 1 사이클 실행)
     {
-        DeactiveWeaponSetting();
+        DeactiveWeaponSetting(); // 실행되고있는 RotateSword 전부 비활성화
         int totalweapons = weapondata.count + playerstat.Amount;
         float anglestep = 360f / totalweapons;
 
@@ -285,13 +285,27 @@ public class Weapon : MonoBehaviour
 
     IEnumerator AttackThrowWeaponCoroutine() // ThrowWeapon 1회 작동
     {
+        int _per = 1;
+        bool _levelcheck = false;
+        if(level >= 8)
+        {
+            _levelcheck = true;
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
+        }
+
         int weaponcount = weapondata.count + playerstat.Amount;
+        float _cool = weapondata.coolTime * playerstat.CoolTime;
+        float _speed = weapondata.speed * playerstat.AttackSpeed;
+        float interval = _cool / weaponcount;
+
         for(int i = 0; i < weaponcount; i++)
         {
             float angle;
             Vector3 dir;
-            if(level >= 8)
+            if(_levelcheck)
             {
+                _per = 2;
+                interval = 0;
                 float anglestep = 360 / weaponcount;
                 float currentAngle = anglestep * i; // 각 무기의 각도
                 float radian = currentAngle * Mathf.Deg2Rad; // 각도를 라디안으로 변환
@@ -300,6 +314,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
                 Vector3 targetPos = player.scanner.nearestTarget.position;
                 dir = new Vector3(targetPos.x - transform.position.x, targetPos.y - transform.position.y, 0).normalized;
             }
@@ -316,15 +331,13 @@ public class Weapon : MonoBehaviour
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // dir 벡터의 각도 계산
             weaponT.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, 1, weapondata.knockback, dir);
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, _per, weapondata.knockback, dir);
             weaponT.GetComponent<WeaponSetting>().StartThrowWhileDuration(5f);
 
             Rigidbody2D rigid = weaponT.GetComponent<Rigidbody2D>();
-            float _speed = weapondata.speed * playerstat.AttackSpeed;
-
             rigid.velocity = dir * _speed;
 
-            yield return new WaitForSeconds(0.15f * _speed);
+            yield return new WaitForSeconds(interval);
         }
     }
 
@@ -475,6 +488,8 @@ public class Weapon : MonoBehaviour
 
     void AttackThunder()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Thunder);
+
         int thundercount = weapondata.count + playerstat.Amount;
         List<Transform> targets = player.scanner.GetTargets(thundercount);
 
@@ -530,15 +545,19 @@ public class Weapon : MonoBehaviour
 
     void AttackSpark()
     {
+
         float _range = weapondata.area * playerstat.Area;
         // 스캔 범위 내 모든 2D 콜라이더 탐색
         Collider2D[] enemyInRange = Physics2D.OverlapCircleAll(transform.position, _range);
+
+        bool hasEnemy = false;
 
         foreach (Collider2D enemy in enemyInRange)
         {
             // 적 오브젝트인지 확인
            if (enemy.CompareTag("Enemy"))
             {
+                hasEnemy = true;
                 Transform weaponT = InGameManager.instance.WeaponManager.Get(itemdata.itemId, out bool isNew).transform;
                 Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon5");
                 if(isNew)
@@ -551,10 +570,17 @@ public class Weapon : MonoBehaviour
                 StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.3f));
             }
         }
+        
+        if(hasEnemy)
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Saprk);
+        }
     }
 
     void AttackWave()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Wave);
+
         bool isNew;
         Transform weaponT = InGameManager.instance.WeaponManager.Get(itemdata.itemId, out isNew).transform;
         if(isNew)
@@ -566,7 +592,7 @@ public class Weapon : MonoBehaviour
         weaponT.localScale = originalScale * newScale;
         weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero);
 
-        StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.3f));
+        StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.45f));
     }
 
     void OnDrawGizmos()

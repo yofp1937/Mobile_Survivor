@@ -132,5 +132,7 @@ public class Item : MonoBehaviour
             default:
                 break;
         }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        AudioManager.instance.EffectBgm(false);
     }
 }

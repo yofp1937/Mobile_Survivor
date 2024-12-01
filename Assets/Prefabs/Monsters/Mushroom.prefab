@@ -200,6 +200,7 @@ MonoBehaviour:
   moveSpeed: 3.8
   target: {fileID: 0}
   health: 0
+  damage: 0
 --- !u!1 &8865202675559022845
 GameObject:
   m_ObjectHideFlags: 0

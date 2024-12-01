@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     public float moveSpeed = 3.8f; // 이동속도
     public Rigidbody2D target; // 목표
     public float health;
+    public int damage;
 
     bool isLive; // 죽었는지 살았는지 체크용
     bool isKnockback; // 넉백 상태 체크용
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
     {
         isLive = true;
         isKnockback = false;
+        SetDamage();
     }    
 
     void FixedUpdate()
@@ -65,6 +67,17 @@ public class Enemy : MonoBehaviour
         coll.direction = prefabcoll.direction;
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.collider.CompareTag("Player")){
+            Player player = collision.collider.GetComponent<Player>();
+            if(player != null)
+            {
+                player.TakeDamage(damage);
+            }
+        }
+    }
+
     public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition)
     {
         if(!isLive)
@@ -82,6 +95,41 @@ public class Enemy : MonoBehaviour
             isLive = false;
             Dead();
             GameManager.instance.kill++;
+        }
+    }
+
+    void SetDamage()
+    {
+        // 데미지 설정
+        // 28분 이후 데미지 - 30
+        // 24분 이후 데미지 - 25
+        // 20분 이후 데미지 - 20
+        // 15분 이후 데미지 - 15
+        // 10분 이후 데미지 - 10
+        // 초반 5
+        if(GameManager.instance.gameTime >= 1680) // 28분 이후
+        {
+            damage = 30;
+        }
+        else if(GameManager.instance.gameTime >= 1440) // 24분 이후
+        {
+            damage = 25;
+        }
+        else if(GameManager.instance.gameTime >= 1200) // 20분 이후
+        {
+            damage = 20;
+        }
+        else if(GameManager.instance.gameTime >= 900) // 15분 이후
+        {
+            damage = 15;
+        }
+        else if(GameManager.instance.gameTime >= 600) // 10분 이후
+        {
+            damage = 10;
+        }
+        else
+        {
+            damage = 5;
         }
     }
 
@@ -178,11 +226,11 @@ public class Enemy : MonoBehaviour
         {
             index = 5;
         }
-        else if (randomValue < 3.1f)  // 3% 확률로 골드 드랍 (0.1f 이상 3.1f 미만)
+        else if (randomValue < 1.6f)  // 1.5% 확률로 골드 드랍 (0.1f 이상 1.6f 미만)
         {
             index = 3;
         }
-        else if (randomValue < 8.1f)  // 5% 확률로 포션 드랍 (3.1f 이상 8.1f 미만)
+        else if (randomValue < 4.6f)  // 3% 확률로 포션 드랍 (1.6f 이상 4.6f 미만)
         {
             index = 4;
         }

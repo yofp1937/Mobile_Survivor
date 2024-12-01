@@ -21,7 +21,7 @@ MonoBehaviour:
   itemIcon: {fileID: 21300000, guid: d244786d8530fc342b13f11244584c20, type: 3}
   weaponData:
     damage: 5
-    coolTime: 1
+    coolTime: 1.25
     area: 3
     duration: 0
     count: 0

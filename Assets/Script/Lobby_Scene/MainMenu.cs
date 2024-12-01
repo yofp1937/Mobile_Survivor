@@ -17,16 +17,19 @@ public class MainMenu : MonoBehaviour
 
     public void OnClickStartGame()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         StartGame.SetActive(true);
     }
 
     public void OnClickUpgrades()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Debug.Log("강화");
     }
 
     public void OnClickSettings()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Debug.Log("설정");
     }
     public void OnClickExit()
@@ -47,12 +50,14 @@ public class MainMenu : MonoBehaviour
         {
             return;
         } else {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
             SceneManager.LoadScene("InGame");
         }
     }
 
     public void OnClickStartGame_Exit()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         StartGame.SetActive(false);
     }
 }
