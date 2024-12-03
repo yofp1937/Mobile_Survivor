@@ -44,7 +44,7 @@ public class HUD : MonoBehaviour
                 mySlider.value = curHealth / maxHealth;
                 break;
             case InfoType.Gold:
-                myText.text = string.Format("{0:F0}", GameManager.instance.gold);
+                myText.text = string.Format("{0:F0}", GameManager.instance.getGold);
                 break;
         }
     }

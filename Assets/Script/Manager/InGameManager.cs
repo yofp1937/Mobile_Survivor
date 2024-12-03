@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameManager : MonoBehaviour
 {
@@ -13,6 +14,12 @@ public class InGameManager : MonoBehaviour
     public WeaponManager WeaponManager;
     public GameObject LevelUpPanel;
     public PoolManager PoolManager;
+    public GameObject Settings;
+    public GameObject VolumeSettings;
+    public GameObject ExitPanel;
+    GameObject SettingsBtn;
+    GameObject VolumeSettingsBtn;
+    GameObject ExitBtn;
 
     [Header("# Drop Item")]
     public GameObject[] ExpJewel;
@@ -20,6 +27,10 @@ public class InGameManager : MonoBehaviour
     [Header("# ItemCount")]
     public int JewelCount;
     public int DropItemCount;
+
+    [Header("# Player Situation")]
+    public bool OnSettings = false;
+    public bool OnLevelUp = false;
 
     [Header("# Score")]
     public int AccumJewelCount;
@@ -37,6 +48,12 @@ public class InGameManager : MonoBehaviour
         GameManager.instance.TimerStart();
         AudioManager.instance.PlayBgm(AudioManager.Bgm.InGame);
         LevelUpPanel.SetActive(false);
+        Settings.SetActive(false);
+        VolumeSettings.SetActive(false);
+        ExitPanel.SetActive(false);
+        SettingsBtn = Settings.transform.Find("SettingExitBtn").gameObject;
+        VolumeSettingsBtn = Settings.transform.Find("VolumeBtn").gameObject;
+        ExitBtn = Settings.transform.Find("InGameExitBtn").gameObject;
         CreatePlayerCharacter();
         AudioManager.instance.InGameInit();
     }
@@ -80,5 +97,56 @@ public class InGameManager : MonoBehaviour
 
         Debug.Log("게임 승리");
         GameManager.instance.TimerStop();
+    }
+
+    public void ActiveSettings()
+    {
+        Settings.GetComponent<Settings>().SettingSlot();
+        Settings.SetActive(true);
+        SettingsBtn.SetActive(true);
+        VolumeSettingsBtn.SetActive(true);
+        ExitBtn.SetActive(true);
+        GameManager.instance.TimerStop();
+    }
+
+    public void HideSettings()
+    {
+        Settings.SetActive(false);
+        VolumeSettings.SetActive(false);
+        ExitPanel.SetActive(false);
+        GameManager.instance.TimerStart();
+    }
+
+    public void ActiveVolumeSettings()
+    {
+        VolumeSettings.SetActive(true);
+        SettingsBtn.SetActive(false);
+        VolumeSettingsBtn.SetActive(false);
+        ExitBtn.SetActive(false);
+    }
+
+    public void HideVolumeSettings()
+    {
+        VolumeSettings.SetActive(false);
+        SettingsBtn.SetActive(true);
+        VolumeSettingsBtn.SetActive(true);
+        ExitBtn.SetActive(true);
+    }
+
+    public void ActiveExitPanel()
+    {
+        ExitPanel.SetActive(true);
+        SettingsBtn.SetActive(false);
+    }
+    
+    public void HideExitPanel()
+    {
+        ExitPanel.SetActive(false);
+        SettingsBtn.SetActive(true);
+    }
+
+    public void LoadStatsPanel()
+    {
+        Debug.Log("통계창 소환");
     }
 }

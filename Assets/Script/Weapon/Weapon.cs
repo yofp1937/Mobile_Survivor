@@ -4,11 +4,16 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+public enum WeaponName { RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave }
+
+// 무기와 악세사리는 각 6개씩만 획득가능
 public class Weapon : MonoBehaviour
 {
+
     [Header(" # BaseData")]
     public int level;
     public ItemData itemdata;
+    public WeaponName weaponname;
 
     [Header(" # DamageData")]
     public WeaponData weapondata;
@@ -156,6 +161,7 @@ public class Weapon : MonoBehaviour
         weapondata = data.weaponData.Clone();
         player.weapon.Add(data.itemId);
         boolAttack = false;
+        weaponname = (WeaponName)data.itemId;
     }
 
     // 무기 레벨업시 실행하는 함수
@@ -258,7 +264,7 @@ public class Weapon : MonoBehaviour
             weaponT.up = positionOffset.normalized;
 
             // 무기 설정 초기화
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero); // 무한 관통이라 per는 -1로 설정
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
         }
         AttackRotateSword();
     }
@@ -331,7 +337,7 @@ public class Weapon : MonoBehaviour
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // dir 벡터의 각도 계산
             weaponT.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, _per, weapondata.knockback, dir);
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, _per, weapondata.knockback, dir, weaponname);
             weaponT.GetComponent<WeaponSetting>().StartThrowWhileDuration(5f);
 
             Rigidbody2D rigid = weaponT.GetComponent<Rigidbody2D>();
@@ -365,7 +371,7 @@ public class Weapon : MonoBehaviour
             weaponT.position = player.transform.position;
             float newScale = weapondata.area * playerstat.Area;
             weaponT.localScale = new Vector3(newScale, newScale, newScale);
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero); // 무한 관통이라 per는 -1로 설정
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
 
             Vector3 dir;
             if (i < targets.Count) // 범위내에 적이 존재하면
@@ -430,7 +436,7 @@ public class Weapon : MonoBehaviour
             float newScale = weapondata.area * playerstat.Area;
             weaponT.localScale = new Vector3(newScale, newScale, newScale);
             weaponC.localScale = new Vector3(newScale, newScale, newScale);
-            weaponC.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero);
+            weaponC.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero, weaponname);
 
             Vector3 targetPos;
             if (i < targets.Count) // 범위내에 적이 존재하면
@@ -505,7 +511,7 @@ public class Weapon : MonoBehaviour
             }
             float newScale = weapondata.area * playerstat.Area;
             weaponT.localScale = originalScale * newScale;
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero);
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero, weaponname);
 
             // 플레이어 화면 내 랜덤한 방향으로 조준
             Vector2 screenPos = new Vector2(
@@ -565,7 +571,7 @@ public class Weapon : MonoBehaviour
                     NewWeaponObjectCreate(weaponT, parent, weaponsetting);
                 }
                 weaponT.position = enemy.transform.position;
-                enemy.GetComponent<Enemy>().TakeDamage(weapondata.damage * playerstat.Damage, -1, transform.position);
+                enemy.GetComponent<Enemy>().TakeDamage(weapondata.damage * playerstat.Damage, -1, transform.position, WeaponName.Spark);
                 
                 StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.3f));
             }
@@ -590,7 +596,7 @@ public class Weapon : MonoBehaviour
         }
         float newScale = weapondata.area * playerstat.Area;
         weaponT.localScale = originalScale * newScale;
-        weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero);
+        weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero, weaponname);
 
         StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.45f));
     }

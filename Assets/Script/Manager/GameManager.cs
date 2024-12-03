@@ -7,10 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [Header("# Game Control")]
     public float gameSpeed = 1f; // 게임 속도
-    public float gameTime; // 현재 게임 시간
     public float maxGameTime = 30 * 60f; // 최대 게임 시간
-    public int kill; // 잡은 몬스터 수
-    public int gold; // 획득한 골드량
 
     [Header("# Player Select")]
     public GameObject SelectCharacter;
@@ -19,6 +16,17 @@ public class GameManager : MonoBehaviour
 
     private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
 
+    [Header("# Accum Data")]
+    public float gameTime; // 현재 게임 시간
+    public int kill; // 잡은 몬스터 수
+    public int getGold; // 획득한 골드량
+    public int getPotion;
+    public int getMagnet;
+    public int accumDamage;
+
+    [Header("# Accum Weapon Damage Data")]
+    public float accumWeaponDamage;
+    public Dictionary<WeaponName, float> accumWeaponDamageDict = new Dictionary<WeaponName, float>();
 
     void Awake()
     {
@@ -37,6 +45,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Reset();
         LoadLobbyScene();
     }
 
@@ -48,13 +57,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Reset()
+    {
+        gameTime = 0;
+        kill = 0;
+        getGold = 0;
+        getPotion = 0;
+        getMagnet = 0;
+        accumDamage = 0;
+        accumWeaponDamage = 0f;
+        foreach(WeaponName weapon in System.Enum.GetValues(typeof(WeaponName)))
+        {
+            accumWeaponDamageDict[weapon] = 0f;
+        }
+    }
+
     public void TimerStart() // InGame Scene에 입장하면 실행됨
     {
         timerrunning = true;
         Time.timeScale = gameSpeed;
     }
 
-    public void TimerStop() // InGame Scene에서 Player의 hp가 0이되면 실행됨
+    public void TimerStop() // InGame Scene에서 게임 일시정지할때 실행됨
     {
         timerrunning = false;
         Time.timeScale = 0;

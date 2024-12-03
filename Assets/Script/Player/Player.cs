@@ -97,6 +97,7 @@ public class Player : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        GameManager.instance.accumDamage += damage;
         if(health <= 0)
         {
             InGameManager.instance.GameOver();
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour
 
     public void GetGold(int count)
     {
-        GameManager.instance.gold += count;
+        GameManager.instance.getGold += count;
         InGameManager.instance.GoldCount++;
     }
 

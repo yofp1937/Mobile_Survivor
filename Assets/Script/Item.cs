@@ -132,6 +132,7 @@ public class Item : MonoBehaviour
             default:
                 break;
         }
+        InGameManager.instance.OnLevelUp = false;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         AudioManager.instance.EffectBgm(false);
     }

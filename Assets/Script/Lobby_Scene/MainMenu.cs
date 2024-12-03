@@ -8,11 +8,15 @@ using Unity.VisualScripting;
 public class MainMenu : MonoBehaviour
 {
     GameObject StartGame;
+    GameObject Settings;
 
     void Awake()
     {
         StartGame = transform.Find("StartGame_Panel").gameObject; // MainMenu의 자식 객체중 StartGame이라는 이름의 객체를 가져옴
         StartGame.SetActive(false);
+
+        Settings = transform.Find("Settings_Panel").gameObject;
+        Settings.SetActive(false);
     }
 
     public void OnClickStartGame()
@@ -30,7 +34,7 @@ public class MainMenu : MonoBehaviour
     public void OnClickSettings()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        Debug.Log("설정");
+        Settings.SetActive(true);
     }
     public void OnClickExit()
     {
@@ -59,5 +63,11 @@ public class MainMenu : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         StartGame.SetActive(false);
+    }
+
+    public void OnClickSettings_Exit()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        Settings.SetActive(false);
     }
 }

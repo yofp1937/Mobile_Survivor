@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -76,9 +77,35 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void SetBgmVolume(float volume)
+    {
+        bgmVolume = volume;
+        bgmPlayer.volume = volume;
+    }
+
+    public void SetSfxVolume(float volume)
+    {
+        sfxVolume = volume;
+        for(int i = 0; i < sfxPlayers.Length; i++)
+        {
+            sfxPlayers[i].volume = volume;
+        }
+    }
+
     public void InGameInit()
     {
         bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
+
+        // AudioManager와 설정창 Slider, Btn 연결
+        GameObject volset = InGameManager.instance.VolumeSettings;
+        Slider bgm = volset.transform.Find("Bgm_Group").Find("Bgm_Slider").GetComponent<Slider>();
+        bgm.value = bgmVolume;
+        Slider sfx = volset.transform.Find("Sfx_Group").Find("Sfx_Slider").GetComponent<Slider>();
+        sfx.value = sfxVolume;
+        
+        bgm.onValueChanged.AddListener(AudioManager.instance.SetBgmVolume);
+        sfx.onValueChanged.AddListener(AudioManager.instance.SetSfxVolume);
+        volset.transform.Find("Sfx_Group").Find("Sfx_TestBtn").GetComponent<Button>().onClick.AddListener(AudioManager.instance.TestSfx);
     }
 
     public void PlayBgm(Bgm bgm)
@@ -108,6 +135,21 @@ public class AudioManager : MonoBehaviour
                 continue;
 
             sfxPlayers[loopIndex].clip = sfxClips[(int)sfx];
+            sfxPlayers[loopIndex].Play();
+            break;
+        }
+    }
+
+    public void TestSfx()
+    {
+        for(int i=0; i < sfxPlayers.Length; i++)
+        {
+            int loopIndex = (i + channelIndex) % sfxPlayers.Length;
+
+            if(sfxPlayers[loopIndex].isPlaying)
+                continue;
+
+            sfxPlayers[loopIndex].clip = sfxClips[0];
             sfxPlayers[loopIndex].Play();
             break;
         }

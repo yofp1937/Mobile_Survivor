@@ -7,6 +7,7 @@ public class WeaponSetting : MonoBehaviour
     public float damage;
     public int per;
     public float knockbackForce;
+    public WeaponName weaponname;
     Rigidbody2D rigid;
     private Coroutine weaponCoroutine;
 
@@ -15,11 +16,12 @@ public class WeaponSetting : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(float damage, int per, float knockbackForce, Vector3 dir)
+    public void Init(float damage, int per, float knockbackForce, Vector3 dir, WeaponName weaponname)
     {
         this.damage = damage;
         this.per = per;
         this.knockbackForce = knockbackForce;
+        this.weaponname = weaponname;
 
         if(per > -1)
         {
@@ -52,7 +54,7 @@ public class WeaponSetting : MonoBehaviour
             Enemy enemy = collision.GetComponent<Enemy>();
             if(enemy != null)
             {
-                enemy.TakeDamage(damage, knockbackForce, transform.position);
+                enemy.TakeDamage(damage, knockbackForce, transform.position, weaponname);
                 Applyper();
             }
         }
