@@ -90,7 +90,7 @@ public class Player : MonoBehaviour
         {
             health += count;
         }
-        InGameManager.instance.HealCount++;
+        GameManager.instance.getPotion++;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Heal);
     }
 
@@ -107,7 +107,7 @@ public class Player : MonoBehaviour
     public void GetGold(int count)
     {
         GameManager.instance.getGold += count;
-        InGameManager.instance.GoldCount++;
+        GameManager.instance.getGold++;
     }
 
     void NeedNextLevelExp()
@@ -168,7 +168,7 @@ public class Player : MonoBehaviour
 
     public void ActiveMagnet()
     {
-        InGameManager.instance.MagnetCount++;
+        GameManager.instance.getMagnet++;
 
         // 모든 Item 태그 객체 탐색
         GameObject[] allItems = GameObject.FindGameObjectsWithTag("Item");

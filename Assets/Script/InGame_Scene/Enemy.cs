@@ -85,7 +85,7 @@ public class Enemy : MonoBehaviour
 
         health -= damage;
         GameManager.instance.accumWeaponDamage += damage; // 총 누적 데미지 증가
-        GameManager.instance.accumWeaponDamageDict[weaponname] += damage; // 무기별 누적 데미지 증가
+        GameManager.instance.accumWeaponDamageDict[weaponname].AddDamage(damage); // 무기별 누적 데미지 증가
         ShowDamagePopup(damage); // 데미지 팝업 생성
 
         if (health > 0)
@@ -209,9 +209,6 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            InGameManager.instance.JewelCount++;
-            InGameManager.instance.AccumJewelCount++;
-
             Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
             itemT.position = gameObject.transform.position;
             itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");

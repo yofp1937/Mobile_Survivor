@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,36 +18,36 @@ public class GameManager : MonoBehaviour
     private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
 
     [Header("# Accum Data")]
+    public bool boolScore = false;
     public float gameTime; // 현재 게임 시간
     public int kill; // 잡은 몬스터 수
     public int getGold; // 획득한 골드량
-    public int getPotion;
-    public int getMagnet;
-    public int accumDamage;
+    public int getPotion; // 획득한 포션량
+    public int getMagnet; // 획득한 자석량
+    public int accumDamage; // 입은 데미지
 
     [Header("# Accum Weapon Damage Data")]
     public float accumWeaponDamage;
-    public Dictionary<WeaponName, float> accumWeaponDamageDict = new Dictionary<WeaponName, float>();
+    public Dictionary<WeaponName, AccumWeaponData> accumWeaponDamageDict = new Dictionary<WeaponName, AccumWeaponData>();
 
     void Awake()
     {
-        instance = this; // 싱글톤 패턴 구현
-
-        var obj = FindObjectsOfType<GameManager>(); // obj로 GameManager를 전부 찾아와 배열로 변환
-        if(obj.Length == 1) // obj가 1개면 씬 전환에도 값이 유지되게 설정
+        // 싱글톤 패턴 구현
+        if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
+            instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시에도 값이 유지되도록 설정
         }
-        else // obj가 1개보다 많으면 현재 obj 파괴
+        else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체는 파괴
         }
     }
 
     void Start()
     {
-        Reset();
-        LoadLobbyScene();
+        GameDataReset();
+        AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
     }
 
     void Update()
@@ -54,11 +55,18 @@ public class GameManager : MonoBehaviour
         if(timerrunning)
         {
             gameTime += Time.deltaTime;
+
+            if(gameTime >= maxGameTime)
+            {
+                InGameManager.instance.GameVictory();
+            }
         }
     }
 
-    void Reset()
+    public void GameDataReset()
     {
+        SelectCharacter = null;
+        SelectWeapon = null;
         gameTime = 0;
         kill = 0;
         getGold = 0;
@@ -66,10 +74,7 @@ public class GameManager : MonoBehaviour
         getMagnet = 0;
         accumDamage = 0;
         accumWeaponDamage = 0f;
-        foreach(WeaponName weapon in System.Enum.GetValues(typeof(WeaponName)))
-        {
-            accumWeaponDamageDict[weapon] = 0f;
-        }
+        accumWeaponDamageDict = new Dictionary<WeaponName, AccumWeaponData>();
     }
 
     public void TimerStart() // InGame Scene에 입장하면 실행됨
@@ -87,5 +92,6 @@ public class GameManager : MonoBehaviour
     public void LoadLobbyScene()
     {
         AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
+        SceneManager.LoadScene("Lobby");
     }
 }

@@ -6,6 +6,29 @@ using UnityEngine;
 
 public enum WeaponName { RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave }
 
+// 통계창에서 띄울 무기별 데미지 데이터 저장 클래스
+public class AccumWeaponData
+{
+    public ItemData Weapon { get; set; }
+    public int Level { get; set; }
+    public float TotalDamage { get; set; }
+
+    public void SetData(ItemData weapon)
+    {
+        Weapon = weapon;
+    }
+
+    public void SetLevel(int level)
+    {
+        Level = level;
+    }
+
+    public void AddDamage(float damage)
+    {
+        TotalDamage += damage;
+    }
+}
+
 // 무기와 악세사리는 각 6개씩만 획득가능
 public class Weapon : MonoBehaviour
 {
@@ -162,6 +185,9 @@ public class Weapon : MonoBehaviour
         player.weapon.Add(data.itemId);
         boolAttack = false;
         weaponname = (WeaponName)data.itemId;
+
+        GameManager.instance.accumWeaponDamageDict[weaponname] = new AccumWeaponData();
+        GameManager.instance.accumWeaponDamageDict[weaponname].SetData(data);
     }
 
     // 무기 레벨업시 실행하는 함수

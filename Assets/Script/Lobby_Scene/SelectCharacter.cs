@@ -16,11 +16,6 @@ public class SelectCharacter : MonoBehaviour
     public Button startbtn;
     public Image weaponImage;
 
-    void Awake()
-    {
-        
-    }
-
     void Select(int index)
     {
         foreach(GameObject character in characters)

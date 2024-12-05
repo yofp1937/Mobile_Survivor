@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class InGameManager : MonoBehaviour
@@ -15,11 +16,13 @@ public class InGameManager : MonoBehaviour
     public GameObject LevelUpPanel;
     public PoolManager PoolManager;
     public GameObject Settings;
-    public GameObject VolumeSettings;
-    public GameObject ExitPanel;
     GameObject SettingsBtn;
+    public GameObject VolumeSettings;
     GameObject VolumeSettingsBtn;
+    public GameObject ExitPanel;
     GameObject ExitBtn;
+    public GameObject GameResultPanel;
+    GameObject GameExitBtn;
 
     [Header("# Drop Item")]
     public GameObject[] ExpJewel;
@@ -31,13 +34,7 @@ public class InGameManager : MonoBehaviour
     [Header("# Player Situation")]
     public bool OnSettings = false;
     public bool OnLevelUp = false;
-
-    [Header("# Score")]
-    public int AccumJewelCount;
-    public int HealCount;
-    public int GoldCount;
-    public int MagnetCount;
-
+    
     void Awake()
     {
         instance = this;
@@ -51,9 +48,13 @@ public class InGameManager : MonoBehaviour
         Settings.SetActive(false);
         VolumeSettings.SetActive(false);
         ExitPanel.SetActive(false);
+        GameResultPanel.SetActive(false);
+
         SettingsBtn = Settings.transform.Find("SettingExitBtn").gameObject;
         VolumeSettingsBtn = Settings.transform.Find("VolumeBtn").gameObject;
         ExitBtn = Settings.transform.Find("InGameExitBtn").gameObject;
+        GameExitBtn = GameResultPanel.transform.Find("ExitBtn").gameObject;
+
         CreatePlayerCharacter();
         AudioManager.instance.InGameInit();
     }
@@ -76,27 +77,18 @@ public class InGameManager : MonoBehaviour
 
     public void GameOver() // 게임 패배시 사용
     {
-        StartCoroutine(GameOverCoroutine());
-    }
-
-    IEnumerator GameOverCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        Debug.Log("게임 패배");
         GameManager.instance.TimerStop();
+        GameResultPanel.SetActive(true);
+        GameResultPanel.transform.Find("GameOver").gameObject.SetActive(true);
+        GameExitBtn.SetActive(true);
     }
 
     public void GameVictory() // 게임 승리시 사용
     {
-        StartCoroutine(GameVictoryCoroutine());
-    }
-    IEnumerator GameVictoryCoroutine()
-    {
-        yield return new WaitForSeconds(0.5f);
-
-        Debug.Log("게임 승리");
         GameManager.instance.TimerStop();
+        GameResultPanel.SetActive(true);
+        GameResultPanel.transform.Find("GameVictory").gameObject.SetActive(true);
+        GameExitBtn.SetActive(true);
     }
 
     public void ActiveSettings()
@@ -144,9 +136,23 @@ public class InGameManager : MonoBehaviour
         ExitPanel.SetActive(false);
         SettingsBtn.SetActive(true);
     }
-
-    public void LoadStatsPanel()
+    
+    public void GameResultPanelBtn()
     {
-        Debug.Log("통계창 소환");
+        SetAccumWeaponData();
+        GameManager.instance.boolScore = true;
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        GameManager.instance.LoadLobbyScene();
+    }
+
+    // GameOver에서 통계창에서 보여줄 무기의 레벨을 적용하기위해 실행
+    public void SetAccumWeaponData()
+    {
+        for(int i = 0; i < player.weapon.Count ; i++)
+        {
+            Weapon weapon = player.transform.Find("Weapon").Find("Weapon" + player.weapon[i]).GetComponent<Weapon>();
+
+            GameManager.instance.accumWeaponDamageDict[weapon.weaponname].SetLevel(weapon.level);
+        }
     }
 }

@@ -38,16 +38,15 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        instance = this;
-
-        var obj = FindObjectsOfType<AudioManager>(); // obj로 GameManager를 전부 찾아와 배열로 변환
-        if(obj.Length == 1) // obj가 1개면 씬 전환에도 값이 유지되게 설정
+        // 싱글톤 패턴 구현
+        if (instance == null)
         {
-            DontDestroyOnLoad(gameObject);
+            instance = this;
+            DontDestroyOnLoad(gameObject); // 씬 전환 시에도 값이 유지되도록 설정
         }
-        else // obj가 1개보다 많으면 현재 obj 파괴
+        else
         {
-            Destroy(gameObject);
+            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체는 파괴
         }
 
         Init();
