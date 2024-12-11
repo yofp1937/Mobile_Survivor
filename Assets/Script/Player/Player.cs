@@ -51,19 +51,25 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
-        transform.Translate(nextVec); // Player 객체를 이동
-        rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
+        if(InGameManager.instance.living)
+        {
+            Vector2 nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+            transform.Translate(nextVec); // Player 객체를 이동
+            rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
+        }
     }
 
     void LateUpdate()
     {
-        anim.SetFloat("Speed", inputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
-        if(inputVec.x > 0)
+        if(InGameManager.instance.living)
         {
-            Character.transform.rotation = Quaternion.Euler(0, 180, 0);
-        } else {
-            Character.transform.rotation = Quaternion.Euler(0, 0, 0);
+            anim.SetFloat("Speed", inputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
+            if(inputVec.x > 0)
+            {
+                Character.transform.rotation = Quaternion.Euler(0, 180, 0);
+            } else {
+                Character.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
         }
     }
 
@@ -97,6 +103,8 @@ public class Player : MonoBehaviour
         if(health <= 0)
         {
             InGameManager.instance.GameOver();
+            anim.SetTrigger("die");
+            anim.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
     }
 
