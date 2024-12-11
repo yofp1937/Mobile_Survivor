@@ -235,10 +235,10 @@ public class Weapon : MonoBehaviour
     {
         boolAttack = false;
         // 무한 루프를 돌며 적을 찾을 때까지 대기
-        while (!player.scanner.nearestTarget)
+        while (player.scanner == null || player.scanner.nearestTarget == null)
         {
             // 대기 후 다시 확인 (0.1초 주기로 대기)
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
         }
 
         // 적을 찾으면 공격을 시작
@@ -436,7 +436,7 @@ public class Weapon : MonoBehaviour
         if(!boolAttack)
         {
             boolAttack = true;
-            StartCoroutine(AttackFireBallCoroutine());
+            StartCoroutine(WaitCoroutine(AttackFireBallCoroutine));
         }
     }
 

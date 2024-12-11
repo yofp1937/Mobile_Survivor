@@ -17,13 +17,22 @@ public class Status : MonoBehaviour
     public int AreaLev; // 레벨당 무기 범위 7% 증가
 
     public float Duration;
-    public int DurationLev; // 레벨당 무기 지속시간 15% 증가
+    public int DurationLev; // 레벨당 무기 지속시간 10% 증가
     
     public int Amount;
     public int AmountLev; // 레벨당 투사체 개수 +1
 
     public float Magnet;
     public int MagnetLev; // 레벨당 아이템 획득 범위 25% 증가
+
+    public List<int> PD_list;
+    public float upgradeDamage = 1f;
+    public float upgradeAttackSpeed = 1f;
+    public float upgradeCoolTime = 1f;
+    public float upgradeArea = 1f;
+    public float upgradeDuration = 1f;
+    public int upgradeAmount = 0;
+    public float upgradeMagnet = 1f;
 
     void Awake()
     {
@@ -36,17 +45,43 @@ public class Status : MonoBehaviour
         MagnetLev = 1;
 
         UpdateStatus();
+        UpdateUpgrade();
     }
 
     void UpdateStatus()
     {
-        Damage = Mathf.Pow(1.05f, DamageLev - 1);
-        AttackSpeed = Mathf.Pow(1.05f, AttackSpeedLev - 1);
-        CoolTime = Mathf.Pow(0.95f, CoolTimeLev - 1);
-        Area = Mathf.Pow(1.07f, AreaLev - 1);
-        Duration = Mathf.Pow(1.15f, DurationLev - 1);
-        Amount = AmountLev - 1;
-        Magnet = Mathf.Pow(1.25f, MagnetLev - 1);
+        Damage = Mathf.Pow(1.07f, DamageLev - 1) * upgradeDamage;
+        AttackSpeed = Mathf.Pow(1.06f, AttackSpeedLev - 1) * upgradeAttackSpeed;
+        CoolTime = Mathf.Pow(0.94f, CoolTimeLev - 1) * upgradeCoolTime;
+        Area = Mathf.Pow(1.06f, AreaLev - 1) * upgradeArea;
+        Duration = Mathf.Pow(1.06f, DurationLev - 1) * upgradeDuration;
+        Amount = AmountLev - 1 + upgradeAmount;
+        Magnet = Mathf.Pow(1.20f, MagnetLev - 1) * upgradeMagnet;
+    }
+
+    void UpdateUpgrade()
+    {
+        PD_list = GameManager.instance.PD_List;
+
+        // 0.HP - 레벨당 10퍼
+        float maxhealth = InGameManager.instance.player.maxHealth;
+        InGameManager.instance.player.maxHealth = maxhealth * Mathf.Pow(1.1f, PD_list[0]);
+        // 1.AttackDamage - 레벨당 7퍼
+        upgradeDamage = Mathf.Pow(1.07f, PD_list[1]);
+        // 2.AttackSpeed - 레벨당 4퍼
+        upgradeAttackSpeed = Mathf.Pow(1.04f, PD_list[2]);
+        // 3.Colldown - 레벨당 2퍼
+        upgradeCoolTime = Mathf.Pow(0.98f, PD_list[3]);
+        // 4.AttackRange - 레벨당 4퍼
+        upgradeArea = Mathf.Pow(1.04f, PD_list[4]);
+        // 5.Duration - 레벨당 2퍼
+        upgradeDuration = Mathf.Pow(1.02f, PD_list[5]);
+        // 6.Amount - 레벨당 1개
+        upgradeAmount = PD_list[6];
+        // 7.Magnet - 레벨당 10퍼
+        upgradeMagnet = Mathf.Pow(1.1f, PD_list[7]);
+
+        UpdateStatus();
     }
 
     public void LevelUp(ELevelUpStat stat)

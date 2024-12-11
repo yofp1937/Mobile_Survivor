@@ -6,16 +6,37 @@ using UnityEditor.SearchService;
 using Unity.VisualScripting;
 using System;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 
 public class MainMenu : MonoBehaviour
 {
     [Header("# Panel")]
     public GameObject StartGame;
+    public GameObject Upgrade;
     public GameObject Settings;
     public GameObject Score;
+    public GameObject PanelParent;
+    public Text HaveGold;
 
     [Header("# StartGame Panel")]
     public List<GameObject> SG_character_Slots;
+    public Button GameSpeedBtn;
+    public GameObject GameSpeedImage;
+
+    [Header("# Upgrade Panel")]
+    public List<GameObject> Ug_Slots;
+    public Text Ug_Desc;
+    int Ug_cost;
+    public Text Ug_CostText;
+    public GameObject Ug_BuyBtn;
+    public GameObject Ug_ResetBtn;
+    public Sprite level_image;
+    public Sprite empty_image;
+    public PlayerData Ug_target;
+
+    [Header("# Settings Panel")]
+    public Slider bgm_Slider;
+    public Slider sfx_Slider;
 
     [Header("# Score Panel")]
     public GameObject Sc_character_Image;
@@ -32,8 +53,9 @@ public class MainMenu : MonoBehaviour
     void Awake()
     {
         StartGame.SetActive(false);
-        Settings.SetActive(false);
+        Upgrade.SetActive(false);
         Score.SetActive(false);
+        Ug_BuyBtn.GetComponent<Button>().interactable = false;
 
         killtext = Sc_kill.GetComponent<Text>();
         goldtext = Sc_gold.GetComponent<Text>();
@@ -43,6 +65,21 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        VolumeSetting();
+        Settings.SetActive(false);
+        HaveGold.text = string.Format("{0:F0}", GameManager.instance.GetGold());
+        SetUpgradeSlots();
+
+        // 전판 1.5배속이였으면 체크 이미지 활성화 아니면 비활성화
+        if(GameManager.instance.gameSpeed > 1f)
+        {
+            GameSpeedImage.SetActive(true);
+        }
+        else
+        {
+            GameSpeedImage.SetActive(false);
+        }
+
         if(GameManager.instance.boolScore)
         {
             ActiveScore();
@@ -58,7 +95,7 @@ public class MainMenu : MonoBehaviour
     public void OnClickUpgrades()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        Debug.Log("강화");
+        Upgrade.SetActive(true);
     }
 
     public void OnClickSettings()
@@ -95,10 +132,169 @@ public class MainMenu : MonoBehaviour
         StartGame.SetActive(false);
     }
 
+    public void OnClickUpgrade_Exit()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        Upgrade.SetActive(false);
+        Ug_BuyBtn.GetComponent<Button>().interactable = false;
+        Ug_cost = 0;
+        Ug_Desc.text = "";
+        Ug_CostText.text = "";
+    }
+
     public void OnClickSettings_Exit()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Settings.SetActive(false);
+    }
+
+    public void OnClickGameSpeed()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        if(GameSpeedImage.activeSelf)
+        {
+            GameSpeedImage.SetActive(false);
+            GameManager.instance.gameSpeed = 1f;
+        }
+        else
+        {
+            GameSpeedImage.SetActive(true);
+            GameManager.instance.gameSpeed = 1.5f;
+        }
+    }
+
+    public void OnClickUpgradeSlots(int num)
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        switch(num)
+        {
+            case 0: // HP
+                Ug_target = PlayerData.Hp;
+                Ug_Desc.text = "체력 + 10%";
+                break;
+            case 1: // AttackPower
+                Ug_target = PlayerData.AttackPower;
+                Ug_Desc.text = "공격력 + 7%";
+                break;
+            case 2: // AttackSpeed
+                Ug_target = PlayerData.AttackSpeed;
+                Ug_Desc.text = "공격속도 + 4%";
+                break;
+            case 3: // Cooldown
+                Ug_target = PlayerData.Cooldown;
+                Ug_Desc.text = "쿨타임 + 2%";
+                break;
+            case 4: // AttackRange
+                Ug_target = PlayerData.AttackRange;
+                Ug_Desc.text = "공격범위 + 4%";
+                break;
+            case 5: // Duration
+                Ug_target = PlayerData.Duration;
+                Ug_Desc.text = "지속시간 + 2%";
+                break;
+            case 6: // Amount
+                Ug_target = PlayerData.Amount;
+                Ug_Desc.text = "투사체 개수 + 1";
+                break;
+            case 7: // Magnet
+                Ug_target = PlayerData.Magnet;
+                Ug_Desc.text = "아이템 획득범위 + 10%";
+                break;
+        }
+        Ug_BuyBtn.GetComponent<Button>().interactable = true;
+        SetCost();
+    }
+
+    // 필요한 골드 표시
+    public void SetCost()
+    {
+        int _level = GameManager.instance.GetPlayerData(Ug_target);
+
+        if(_level == 0)
+        {
+            Ug_cost = 10;
+            Ug_CostText.text = Ug_cost.ToString();
+        }
+        else if(_level == 1)
+        {
+            Ug_cost = 50;
+            Ug_CostText.text = Ug_cost.ToString();
+        }
+        else if(_level == 2)
+        {
+            Ug_cost = 100;
+            Ug_CostText.text = Ug_cost.ToString();
+        }
+        else if(_level == 3)
+        {
+            Ug_cost = 200;
+            Ug_CostText.text = Ug_cost.ToString();
+        }
+        else if(_level == 4)
+        {
+            Ug_cost = 500;
+            Ug_CostText.text = Ug_cost.ToString();
+        }
+        else if(_level == 5)
+        {
+            Ug_CostText.text = "";
+        }
+    }
+
+    public void OnClickResetBtn()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        // 강화에 사용된 골드 반환
+        int _ = PlayerPrefs.GetInt("UseUpgradeGold", 0);
+        GameManager.instance.SetHaveGold(_);
+
+        // 보유 골드 텍스트 갱신
+        HaveGold.text = string.Format("{0:F0}", GameManager.instance.GetGold());
+        
+        // UseUpgradeGold 초기화
+        PlayerPrefs.SetInt("UseUpgradeGold", 0);
+        PlayerPrefs.Save();
+
+        // 레벨에따라 슬롯별 체크되는거 전부 체크 해제
+        ResetUpgradeSlots();
+
+        // 데이터 리셋
+        GameManager.instance.ResetPD();
+
+        // 설명, 필요 골드 텍스트 갱신
+        Ug_Desc.text = "";
+        Ug_CostText.text = "";
+    }
+
+    public void OnClickBuyBtn()
+    {
+        List<int> _list = GameManager.instance.PD_List;
+        if(_list[(int)Ug_target] == 5) // 레벨이 5면 버튼 안눌림
+        {
+            return;
+        }
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+
+        // 강화에 사용된 골드 누적
+        int _ = PlayerPrefs.GetInt("UseUpgradeGold", 0);
+        _ += Ug_cost;
+        PlayerPrefs.SetInt("UseUpgradeGold", _);
+        PlayerPrefs.Save();
+
+        // 골드 사용
+        GameManager.instance.UseHaveGold(Ug_cost);
+
+        // 보유 골드 텍스트 갱신
+        HaveGold.text = string.Format("{0:F0}", GameManager.instance.GetGold());
+
+        // 레벨업
+        GameManager.instance.LevelUpPlayerData(Ug_target);
+
+        // 필요 골드 텍스트 갱신
+        SetCost();
+
+        // 레벨에따라 슬롯별 체크되는거 다음레벨 체크
+        LevelUpgradeSlots(Ug_target);
     }
 
     void ActiveScore()
@@ -131,6 +327,7 @@ public class MainMenu : MonoBehaviour
             // 이미지 설정
             Image wimage = Sc_Weapons[index].transform.Find("Image").GetComponent<Image>();
             wimage.sprite = data.Weapon.itemIcon;
+            wimage.SetNativeSize();
             wimage.gameObject.SetActive(true);
 
             // 레벨 텍스트 설정
@@ -169,5 +366,57 @@ public class MainMenu : MonoBehaviour
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Score.SetActive(false);
         GameManager.instance.GameDataReset();
+    }
+
+    void VolumeSetting()
+    {
+        // Btn 설정
+        Settings.transform.Find("Settings_Exit").GetComponent<Button>().onClick.AddListener(OnClickSettings_Exit);
+        Settings.transform.Find("Sfx_Group").Find("Sfx_TestBtn").GetComponent<Button>().onClick.AddListener(AudioManager.instance.TestSfx);
+
+        // Slider 설정
+        bgm_Slider = Settings.transform.Find("Bgm_Group").Find("Bgm_Slider").GetComponent<Slider>();
+        bgm_Slider.value = AudioManager.instance.bgmVolume;
+        bgm_Slider.onValueChanged.AddListener(AudioManager.instance.SetBgmVolume);
+
+        sfx_Slider = Settings.transform.Find("Sfx_Group").Find("Sfx_Slider").GetComponent<Slider>();
+        sfx_Slider.value = AudioManager.instance.sfxVolume;
+        sfx_Slider.onValueChanged.AddListener(AudioManager.instance.SetSfxVolume);
+    }
+
+    void SetUpgradeSlots()
+    {
+        List<int> _list = GameManager.instance.PD_List;
+
+        for(int i = 0; i < _list.Count; i++)
+        {
+            for(int j = 1; j <= _list[i]; j++)
+            {
+                Ug_Slots[i].transform.Find("Level_Panel").Find(j.ToString()).GetComponent<Image>().sprite = level_image;
+            }
+        }
+    }
+
+    void ResetUpgradeSlots()
+    {
+        List<int> _list = GameManager.instance.PD_List;
+
+        for(int i = 0; i < _list.Count; i++)
+        {
+            if(_list[i] > 0)
+            {
+                for(int j = 1; j <= _list[i]; j++)
+                {
+                    Ug_Slots[i].transform.Find("Level_Panel").Find(j.ToString()).GetComponent<Image>().sprite = empty_image;
+                }
+            }
+        }
+    }
+
+    void LevelUpgradeSlots(PlayerData data)
+    {
+        int index = GameManager.instance.PD_List[(int)data];
+
+        Ug_Slots[(int)data].transform.Find("Level_Panel").Find(index.ToString()).GetComponent<Image>().sprite = level_image;
     }
 }

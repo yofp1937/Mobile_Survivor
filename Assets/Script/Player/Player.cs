@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [Header("# Player Info")]
-    public int health;
-    public int maxHealth = 100;
+    public float health;
+    public float maxHealth = 100;
     public float moveSpeed = 4f;
     public float scanRange;
     public float magnetRange;
@@ -28,11 +28,6 @@ public class Player : MonoBehaviour
     GameObject Character;
     Rigidbody2D rigid;
     Animator anim;
-
-    void Awake()
-    {
-        health = maxHealth;
-    }
     
     void Start()
     {
@@ -41,6 +36,7 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         anim = Character.GetComponent<Animator>();
         stat = GetComponent<Status>();
+        health = maxHealth;
     }
 
     void OnMove(InputValue value)

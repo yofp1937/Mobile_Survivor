@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 1
   itemId: 1
   itemName: Feather
-  itemDesc: "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 10% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  itemDesc: "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
   maxlevel: 5
   itemIcon: {fileID: 21300000, guid: 5319e90cdef08eb4a90ed29d73271916, type: 3}
   weaponData:
@@ -24,15 +24,15 @@ MonoBehaviour:
     area: 0
     duration: 0
     count: 0
-    speed: 10
+    speed: 6
     knockback: 0
   acceData: 1
   levelupdata_weapon: []
   levelupdata_acce: 01000000010000000100000001000000
   descriptions:
-  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD569\uB2C8\uB2E4"
-  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD569\uB2C8\uB2E4"
-  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD569\uB2C8\uB2E4"
-  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 5% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4\uAC00 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
   projectile: {fileID: 0}
   projectile2: {fileID: 0}

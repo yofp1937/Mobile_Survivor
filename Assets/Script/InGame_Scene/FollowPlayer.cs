@@ -18,19 +18,19 @@ public class FollowPlayer : MonoBehaviour
         }
 
         // Test Code
-        if(Input.GetButtonDown("Jump"))
+        if(Input.GetButtonDown("Jump") && GameManager.instance.IsDevelopMode())
         {
             InGameManager.instance.player.LevelUp();
         }
 
         // Test Code - 숫자패드 + 누르면 5초 증가
-        if(Input.GetKeyDown(KeyCode.KeypadPlus))
+        if(Input.GetKeyDown(KeyCode.KeypadPlus) && GameManager.instance.IsDevelopMode())
         {
             GameManager.instance.gameTime += 5;
         }
 
         // Esc 누르면 일시정지하고 설정창 띄움
-        if(Input.GetKeyDown(KeyCode.Escape) && InGameManager.instance.OnLevelUp == false)
+        if(Input.GetKeyDown(KeyCode.Escape) && InGameManager.instance.OnLevelUp == false && InGameManager.instance.living)
         {
             if(InGameManager.instance.OnSettings) // 설정창이 열려있으면
             {

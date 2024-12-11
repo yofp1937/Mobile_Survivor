@@ -32,6 +32,7 @@ public class InGameManager : MonoBehaviour
     public int DropItemCount;
 
     [Header("# Player Situation")]
+    public bool living = true;
     public bool OnSettings = false;
     public bool OnLevelUp = false;
     
@@ -77,6 +78,7 @@ public class InGameManager : MonoBehaviour
 
     public void GameOver() // 게임 패배시 사용
     {
+        living = false;
         GameManager.instance.TimerStop();
         GameResultPanel.SetActive(true);
         GameResultPanel.transform.Find("GameOver").gameObject.SetActive(true);
@@ -137,12 +139,12 @@ public class InGameManager : MonoBehaviour
         SettingsBtn.SetActive(true);
     }
     
-    public void GameResultPanelBtn()
+    public void GameResultPanelBtn(bool check)
     {
         SetAccumWeaponData();
         GameManager.instance.boolScore = true;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        GameManager.instance.LoadLobbyScene();
+        GameManager.instance.LoadLobbyScene(check);
     }
 
     // GameOver에서 통계창에서 보여줄 무기의 레벨을 적용하기위해 실행

@@ -15,14 +15,14 @@ MonoBehaviour:
   itemType: 1
   itemId: 4
   itemName: Gear
-  itemDesc: "\uC9C0\uC18D\uC2DC\uAC04\uC774 10% \uC99D\uAC00\uD569\uB2C8\uB2E4."
+  itemDesc: "\uC9C0\uC18D\uC2DC\uAC04\uC774 6% \uC99D\uAC00\uD569\uB2C8\uB2E4."
   maxlevel: 5
   itemIcon: {fileID: 21300000, guid: 042fae2dd68bce044b8fbd1f26724a2d, type: 3}
   weaponData:
     damage: 0
     coolTime: 0
     area: 0
-    duration: 10
+    duration: 6
     count: 0
     speed: 0
     knockback: 0
@@ -30,9 +30,9 @@ MonoBehaviour:
   levelupdata_weapon: []
   levelupdata_acce: 04000000040000000400000004000000
   descriptions:
-  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 15% \uC99D\uAC00\uD569\uB2C8\uB2E4"
-  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 15% \uC99D\uAC00\uD569\uB2C8\uB2E4"
-  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 15% \uC99D\uAC00\uD569\uB2C8\uB2E4"
-  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 15% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  - "\uC9C0\uC18D\uC2DC\uAC04\uC774 6% \uC99D\uAC00\uD569\uB2C8\uB2E4"
   projectile: {fileID: 0}
   projectile2: {fileID: 0}

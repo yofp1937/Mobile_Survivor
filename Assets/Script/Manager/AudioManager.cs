@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
 
     [Header(" # BGM")]
     public AudioClip[] bgmClip;
+    
     public float bgmVolume;
     AudioSource bgmPlayer;
     AudioHighPassFilter bgmEffect;
@@ -42,18 +43,20 @@ public class AudioManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            Init();
             DontDestroyOnLoad(gameObject); // 씬 전환 시에도 값이 유지되도록 설정
         }
         else
         {
             Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체는 파괴
         }
-
-        Init();
     }
 
     void Init()
     {
+        bgmVolume = PlayerPrefs.GetFloat("Bgm");
+        sfxVolume = PlayerPrefs.GetFloat("Sfx");
+
         // 배경음 플레이어 초기화
         GameObject bgmObject = new GameObject("BgmPlayer");
         bgmObject.transform.parent = transform;
@@ -78,12 +81,16 @@ public class AudioManager : MonoBehaviour
 
     public void SetBgmVolume(float volume)
     {
+        PlayerPrefs.SetFloat("Bgm", volume);
+        PlayerPrefs.Save();
         bgmVolume = volume;
         bgmPlayer.volume = volume;
     }
 
     public void SetSfxVolume(float volume)
     {
+        PlayerPrefs.SetFloat("Sfx", volume);
+        PlayerPrefs.Save();
         sfxVolume = volume;
         for(int i = 0; i < sfxPlayers.Length; i++)
         {
