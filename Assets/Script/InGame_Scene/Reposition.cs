@@ -17,20 +17,20 @@ public class Reposition : MonoBehaviour
             return;
 
         GameObject playerObj = InGameManager.instance.player.gameObject;
-        Player playerMove = playerObj.GetComponent<Player>();
-
         Vector3 playerPos = playerObj.transform.position;
         Vector3 myPos = transform.position;
 
-        float diffX = Mathf.Abs(playerPos.x - myPos.x);
-        float diffY = Mathf.Abs(playerPos.y - myPos.y);
-        Vector3 playerDir = playerMove.inputVec;
-        float dirX = playerDir.x < 0 ? -1 : 1;
-        float dirY = playerDir.y < 0 ? -1 : 1;
-
         switch(transform.tag){
             case "Ground":
-                if(diffX > diffY){
+                float diffX = playerPos.x - myPos.x;
+                float diffY = playerPos.y - myPos.y;
+                float dirX = diffX < 0 ? -1 : 1;
+                float dirY = diffY < 0 ? -1 : 1;
+                diffX = Mathf.Abs(diffX);
+                diffY = Mathf.Abs(diffY);
+
+                if(diffX > diffY)
+                {
                     transform.Translate(Vector3.right * dirX * 136);
                 } else {
                     transform.Translate(Vector3.up * dirY * 136);
@@ -38,8 +38,11 @@ public class Reposition : MonoBehaviour
                 break;
 
             case "Enemy":
-                if(coll.enabled){ // Enemy의 isLive가 true면
-                    transform.Translate(playerDir * 64 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f)); // 플레이어의 카메라 밖 랜덤위치에 재생성
+                if(coll.enabled) // Enemy가 활성화상태면
+                {
+                    Vector3 dist = playerPos - myPos;
+                    Vector3 ran = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 0);
+                    transform.Translate(ran + dist * 2); // 플레이어의 카메라 밖 랜덤위치에 재생성
                 }
                 break;
         }

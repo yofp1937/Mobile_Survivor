@@ -12,5 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/InGame.unity
     guid: 3fc8acdd13e6c734bafef6554d6fdbcd
   m_configObjects:
-    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: dec7188ac3e1f234d8cf24ade9e631d7, type: 2}
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: e93459274712e46449c623f2f3099148, type: 2}
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000, guid: 07b385e794470104f9070809af12defd, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: 3e17255abfe671f40b213d21b638d906, type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000, guid: 513f16a414b41b84b9d379b846e287f7, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000, guid: e3673adc770f64c49a2826704877dd4e, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: b9f52da22f3421e438fae7cb1a6c4dd1, type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: c5cad73d1b92a354397d41a0bf091dca, type: 2}

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -23,6 +22,7 @@ public class InGameManager : MonoBehaviour
     GameObject ExitBtn;
     public GameObject GameResultPanel;
     GameObject GameExitBtn;
+    public Transform UIJoy;
 
     [Header("# Drop Item")]
     public GameObject[] ExpJewel;
@@ -95,6 +95,8 @@ public class InGameManager : MonoBehaviour
 
     public void ActiveSettings()
     {
+        OnSettings = true;
+        UIJoy.localScale = Vector3.zero;
         Settings.GetComponent<Settings>().SettingSlot();
         Settings.SetActive(true);
         SettingsBtn.SetActive(true);
@@ -105,6 +107,8 @@ public class InGameManager : MonoBehaviour
 
     public void HideSettings()
     {
+        OnSettings = false;
+        UIJoy.localScale = Vector3.one;
         Settings.SetActive(false);
         VolumeSettings.SetActive(false);
         ExitPanel.SetActive(false);

@@ -35,12 +35,10 @@ public class FollowPlayer : MonoBehaviour
             if(InGameManager.instance.OnSettings) // 설정창이 열려있으면
             {
                 InGameManager.instance.HideSettings();
-                InGameManager.instance.OnSettings = false;
             }
             else
             {
                 InGameManager.instance.ActiveSettings();
-                InGameManager.instance.OnSettings = true;
             }
         }
     }

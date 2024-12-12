@@ -2,11 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEditor.SearchService;
-using Unity.VisualScripting;
 using System;
 using UnityEngine.UI;
-using UnityEngine.Analytics;
 
 public class MainMenu : MonoBehaviour
 {
