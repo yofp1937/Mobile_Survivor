@@ -1,5 +1,3 @@
-
-https://github.com/user-attachments/assets/f37efa98-f707-46e3-a662-bcf86b682c83
 다운로드 링크: <http://naver.me/xjgAJbhb> <br>
 조작키: WASD, 방향키, ESC <br>
 아직 컴퓨터로만 가능합니다. <br><br>
@@ -71,7 +69,6 @@ https://youtu.be/NvTBS_JlCl8
  - 적을 죽이면 경험치 보석이 떨어지고 캐릭터와 경험치보석이 가까워지면 자동으로 캐릭터에게 흡수됨
  - 빨간포션 획득시 체력 회복, 파란포션 획득시 자석 기능 발동
  - 파란포션 획득시 FindGameObjectsWithTag 함수 활용하여 Item 태그의 모든 객체를 플레이어에게 끌어당김
-
 
 <br>
 
