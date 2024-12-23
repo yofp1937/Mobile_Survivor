@@ -65,7 +65,7 @@ https://github.com/user-attachments/assets/6a0b57b8-1269-48d5-955d-a0ee348ccee1
  - 게임 중도 포기(중도 포기시 골드 획득 불가능)
 
 #### ⓒ 플레이
-https://youtu.be/NvTBS_JlCl8
+https://youtu.be/ID2S7tLrfuc
  - 적을 죽이면 경험치 보석이 떨어지고 캐릭터와 경험치보석이 가까워지면 자동으로 캐릭터에게 흡수됨
  - 빨간포션 획득시 체력 회복, 파란포션 획득시 자석 기능 발동
  - 파란포션 획득시 FindGameObjectsWithTag 함수 활용하여 Item 태그의 모든 객체를 플레이어에게 끌어당김
@@ -73,6 +73,8 @@ https://youtu.be/NvTBS_JlCl8
 <br>
 
 ### ③ 통계 창
+![image](https://github.com/user-attachments/assets/9d4d9f69-984b-4ce6-9d8a-3cc871c59da7)
+ - 게임이 끝나면 획득한 무기의 레벨, 입힌 데미지 표시
 <br>
 
 ### 추후 업데이트 예정
