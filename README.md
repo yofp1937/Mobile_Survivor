@@ -1,6 +1,10 @@
 다운로드 링크: <http://naver.me/xjgAJbhb> <br>
 조작키: WASD, 방향키, ESC <br>
-아직 컴퓨터로만 가능합니다. <br>
+아직 컴퓨터로만 가능합니다. <br><br>
+게임방법
+ - 30분을 버티면 게임 승리, HP가 0이되면 게임 패배
+ - 적을 죽여서 레벨업하여 무기 획득 가능
+ - 게임중 골드를 획득하여 캐릭터 강화 가능
 
 # Mobile Survivor
 Unity 개인 프로젝트
@@ -22,24 +26,51 @@ Unity 개인 프로젝트
 ### ① 로비 씬
 ![image](https://github.com/user-attachments/assets/eea3431e-edb3-4c0f-b39c-580432304624)
 
+ - 로비 화면에서 게임 시작과 강화, 볼륨 설정 가능
+
 #### ⓐ 게임 시작
 
-https://github.com/user-attachments/assets/8bd20cd7-9b86-4621-9ade-2fb383bc96a5
+https://github.com/user-attachments/assets/998a89b1-4c9a-4dea-9b8d-cb9c0cffdcc4
 
  - 캐릭터 선택 기능(캐릭터의 모습은 Render Camera 이용)
  - 게임 속도 1.5배 기능
 
 #### ⓑ 강화
 
+https://github.com/user-attachments/assets/04e420c3-e626-490c-95b6-8b52f3bc0a25
+
+ - 골드를 사용해 능력치 강화
+ - 초기화 버튼으로 재분배 가능
+
 #### ⓒ 설정
+
+https://github.com/user-attachments/assets/55e12fff-748b-478e-bb1c-0707e00ca9ca
+
+ - 배경음과 효과음 설정(UserPrefs 이용하여 설정값 저장)
 
 <br>
 
 ### ② 인게임 씬
 
 #### ⓐ 게임 화면
+![인게임](https://github.com/user-attachments/assets/d63d889f-b8f2-4227-977d-e6f488184509)
+
+ - 적, 드랍아이템, 데미지팝업은 전부 오브젝트풀링으로 관리
 
 #### ⓑ 설정
+
+https://github.com/user-attachments/assets/d35383a6-e038-4de6-acf1-3b9cfab1833f
+
+ - 배경음과 효과음 설정(UserPrefs 이용하여 설정값 저장)
+ - 게임 중도 포기(중도 포기시 골드 획득 불가능)
+
+#### ⓒ 플레이
+
+ - 적을 죽이면 경험치 보석이 떨어지고 캐릭터와 경험치보석이 가까워지면 자동으로 캐릭터에게 흡수됨
+ - 빨간포션 획득시 체력 회복, 파란포션 획득시 자석 기능 발동
+ - 파란포션 획득시 FindGameObjectsWithTag 함수 활용하여 Item 태그의 모든 객체를 플레이어에게 끌어당김
+
+
 <br>
 
 ### ③ 통계 창
