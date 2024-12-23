@@ -1,3 +1,5 @@
+
+https://github.com/user-attachments/assets/f37efa98-f707-46e3-a662-bcf86b682c83
 다운로드 링크: <http://naver.me/xjgAJbhb> <br>
 조작키: WASD, 방향키, ESC <br>
 아직 컴퓨터로만 가능합니다. <br><br>
@@ -30,21 +32,21 @@ Unity 개인 프로젝트
 
 #### ⓐ 게임 시작
 
-https://github.com/user-attachments/assets/998a89b1-4c9a-4dea-9b8d-cb9c0cffdcc4
+https://github.com/user-attachments/assets/08b05561-585f-4adc-ab7f-e48fd9c1f32e
 
  - 캐릭터 선택 기능(캐릭터의 모습은 Render Camera 이용)
  - 게임 속도 1.5배 기능
 
 #### ⓑ 강화
 
-https://github.com/user-attachments/assets/04e420c3-e626-490c-95b6-8b52f3bc0a25
+https://github.com/user-attachments/assets/a8c31721-1493-46f6-95f2-c8190cdbe9c0
 
  - 골드를 사용해 능력치 강화
  - 초기화 버튼으로 재분배 가능
 
 #### ⓒ 설정
 
-https://github.com/user-attachments/assets/55e12fff-748b-478e-bb1c-0707e00ca9ca
+https://github.com/user-attachments/assets/fce29d74-e6ce-4a45-a39a-b273b31816ea
 
  - 배경음과 효과음 설정(UserPrefs 이용하여 설정값 저장)
 
@@ -59,13 +61,13 @@ https://github.com/user-attachments/assets/55e12fff-748b-478e-bb1c-0707e00ca9ca
 
 #### ⓑ 설정
 
-https://github.com/user-attachments/assets/d35383a6-e038-4de6-acf1-3b9cfab1833f
+https://github.com/user-attachments/assets/6a0b57b8-1269-48d5-955d-a0ee348ccee1
 
  - 배경음과 효과음 설정(UserPrefs 이용하여 설정값 저장)
  - 게임 중도 포기(중도 포기시 골드 획득 불가능)
 
 #### ⓒ 플레이
-
+https://youtu.be/NvTBS_JlCl8
  - 적을 죽이면 경험치 보석이 떨어지고 캐릭터와 경험치보석이 가까워지면 자동으로 캐릭터에게 흡수됨
  - 빨간포션 획득시 체력 회복, 파란포션 획득시 자석 기능 발동
  - 파란포션 획득시 FindGameObjectsWithTag 함수 활용하여 Item 태그의 모든 객체를 플레이어에게 끌어당김
