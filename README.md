@@ -74,7 +74,9 @@ https://youtu.be/ID2S7tLrfuc
 
 ### ③ 통계 창
 ![image](https://github.com/user-attachments/assets/9d4d9f69-984b-4ce6-9d8a-3cc871c59da7)
- - 게임이 끝나면 획득한 무기의 레벨, 입힌 데미지 표시
+ - 게임이 끝나면 플레이한 게임의 통계가 표시됨
+ - 킬수와 포션, 골드, 자석 획득량 표시
+ - 획득한 무기의 레벨과 가한 데미지 표시
 <br>
 
 ### 추후 업데이트 예정
