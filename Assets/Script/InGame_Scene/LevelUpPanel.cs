@@ -38,7 +38,6 @@ public class LevelUpPanel : MonoBehaviour
 
     public void HideLevelUpPanel()
     {
-        InGameManager.instance.UIJoy.localScale = Vector3.one;
         InGameManager.instance.LevelUpPanel.SetActive(false);
         GameManager.instance.TimerStart();
     }
@@ -69,7 +68,6 @@ public class LevelUpPanel : MonoBehaviour
 
     void LoadLevelUpPanel()
     {
-        InGameManager.instance.UIJoy.localScale = Vector3.zero;
         InGameManager.instance.OnLevelUp = true;
         
         if(selectcount == 0)

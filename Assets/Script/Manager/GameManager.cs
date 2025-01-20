@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
     {
         Gold = PlayerPrefs.GetInt("Gold");
         PD_List = new List<int>(new int[System.Enum.GetValues(typeof(PlayerData)).Length]);
-        LoadPD();
+        LoadPlayerData();
     }
 
     void Start()
@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
         PD_List[(int)type] = value;
     }
 
-    void LoadPD()
+    void LoadPlayerData()
     {
         foreach (PlayerData type in System.Enum.GetValues(typeof(PlayerData))) // PlayerData의 데이터를 전부 가져와 배열로 변환해서 모든 값을 순회
         {

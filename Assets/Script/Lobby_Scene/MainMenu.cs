@@ -12,6 +12,7 @@ public class MainMenu : MonoBehaviour
     public GameObject Upgrade;
     public GameObject Settings;
     public GameObject Score;
+    public GameObject Inventory;
     public GameObject PanelParent;
     public Text HaveGold;
 
@@ -30,6 +31,9 @@ public class MainMenu : MonoBehaviour
     public Sprite level_image;
     public Sprite empty_image;
     public PlayerData Ug_target;
+
+    [Header("# Inventory Panel")]
+    public GameObject inven;
 
     [Header("# Settings Panel")]
     public Slider bgm_Slider;
@@ -52,6 +56,7 @@ public class MainMenu : MonoBehaviour
         StartGame.SetActive(false);
         Upgrade.SetActive(false);
         Score.SetActive(false);
+        Inventory.SetActive(false);
         Ug_BuyBtn.GetComponent<Button>().interactable = false;
 
         killtext = Sc_kill.GetComponent<Text>();
@@ -415,5 +420,15 @@ public class MainMenu : MonoBehaviour
         int index = GameManager.instance.PD_List[(int)data];
 
         Ug_Slots[(int)data].transform.Find("Level_Panel").Find(index.ToString()).GetComponent<Image>().sprite = level_image;
+    }
+
+    void OnClickInventory()
+    {
+        Inventory.SetActive(true);
+    }
+
+    void OnClickInventory_Exit()
+    {
+        Inventory.SetActive(false);
     }
 }

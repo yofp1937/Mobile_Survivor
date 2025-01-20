@@ -465,11 +465,12 @@ public class Weapon : MonoBehaviour
             weaponC.GetComponent<WeaponSetting>().Init(weapondata.damage * playerstat.Damage, -1, weapondata.knockback, Vector3.zero, weaponname);
 
             Vector3 targetPos;
-            if (i < targets.Count) // 범위내에 적이 존재하면
+            if (targets.Count > 0) // 범위내에 적이 존재하면
             {
                 // i번 무기를 랜덤 적에게 조준
                 int randomenemy = UnityEngine.Random.Range(0, targets.Count);
                 targetPos = targets[randomenemy].position;
+                targets.RemoveAt(randomenemy);
             }
             else
             {
