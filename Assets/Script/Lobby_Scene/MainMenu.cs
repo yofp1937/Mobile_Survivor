@@ -422,13 +422,15 @@ public class MainMenu : MonoBehaviour
         Ug_Slots[(int)data].transform.Find("Level_Panel").Find(index.ToString()).GetComponent<Image>().sprite = level_image;
     }
 
-    void OnClickInventory()
+    public void OnClickInventory()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Inventory.SetActive(true);
     }
 
-    void OnClickInventory_Exit()
+    public void OnClickInventory_Exit()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Inventory.SetActive(false);
     }
 }
