@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            Application.targetFrameRate = 60;
             Init();
             DontDestroyOnLoad(gameObject); // 씬 전환 시에도 값이 유지되도록 설정
         }
