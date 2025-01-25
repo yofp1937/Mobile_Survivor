@@ -5,7 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public static Inventory instance;
-    public GameObject SlotUI;
+    public GameObject SlotUI; // 인벤토리 Slot 프리팹
 
     // 대리자를 사용하여 인벤토리 슬롯 변경 구현
     public delegate void OnSlotCountChange(int val);
@@ -22,6 +22,8 @@ public class Inventory : MonoBehaviour
             onSlotCountChange?.Invoke(slotCnt);
         }
     }
+
+    public GameObject[] Equips; // 장비 프리팹
 
     void Awake()
     {
