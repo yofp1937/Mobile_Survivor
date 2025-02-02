@@ -2,13 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EquipmentData : MonoBehaviour
+public class EquipmentData : ScriptableObject
 {
-    public enum EquipGrade { Common, UnCommon, Rare, Unique, Legendary } // 흔함, 평범, 희귀, 특별, 전설
-    public enum EquipOption
-    {
-        Hp, HpRegen, Damage, AttackSpeed, Depense, MoveSpeed, AttackCount, CoolTime, Duration, AttackArea, GetArea, CriticalChance, CriticalDamage, Luck, Curse
-    }
     public EquipGrade Grade;
     public EquipOption MainOption;
     public EquipOption[] SubOption;

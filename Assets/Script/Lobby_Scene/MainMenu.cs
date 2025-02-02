@@ -82,7 +82,7 @@ public class MainMenu : MonoBehaviour
             GameSpeedImage.SetActive(false);
         }
 
-        if(GameManager.instance.boolScore)
+        if(GameManager.instance.InGameData.boolScore)
         {
             ActiveScore();
         }
@@ -301,6 +301,8 @@ public class MainMenu : MonoBehaviour
 
     void ActiveScore()
     {
+        var InGameData = GameManager.instance.InGameData;
+
         // 플레이한 캐릭터 표시
         String charcname = GameManager.instance.SelectCharacter.name;
         GameObject charc = null;
@@ -316,14 +318,14 @@ public class MainMenu : MonoBehaviour
         Sc_character_Image.GetComponent<Image>().sprite = charc.GetComponent<Image>().sprite;
 
         // 킬수, 획득 골드 표시
-        killtext.text = string.Format("{0:F0}", GameManager.instance.kill);
-        goldtext.text = string.Format("{0:F0}", GameManager.instance.getGold);
-        potiontext.text = string.Format("{0:F0}", GameManager.instance.getPotion);
-        magnettext.text = string.Format("{0:F0}", GameManager.instance.getMagnet);
+        killtext.text = string.Format("{0:F0}", InGameData.kill);
+        goldtext.text = string.Format("{0:F0}", InGameData.getGold);
+        potiontext.text = string.Format("{0:F0}", InGameData.getPotion);
+        magnettext.text = string.Format("{0:F0}", InGameData.getMagnet);
 
         // 무기 이미지, 무기별 데미지 표시
         int index = 0;
-        foreach(var dict in GameManager.instance.accumWeaponDamageDict)
+        foreach(var dict in InGameData.accumWeaponDamageDict)
         {
             AccumWeaponData data = dict.Value;
             // 이미지 설정
@@ -345,7 +347,7 @@ public class MainMenu : MonoBehaviour
             index++;
         }
 
-        GameManager.instance.boolScore = false;
+        InGameData.boolScore = false;
         Score.SetActive(true);
     }
 
@@ -367,7 +369,7 @@ public class MainMenu : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         Score.SetActive(false);
-        GameManager.instance.GameDataReset();
+        GameManager.instance.DataReset();
     }
 
     void VolumeSetting()

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5729350882988263938}
   - component: {fileID: 137870662044600246}
+  - component: {fileID: -3507488221175912300}
   m_Layer: 0
   m_Name: Soldier
   m_TagString: Untagged
@@ -56,6 +57,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-3507488221175912300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606010202868463271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d879c1d4ab351bf4683ca7a45573cab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hp: 100
+  HpRegen: 1
+  AttackPower: 30
+  Defense: 0
+  MoveSpeed: 3.5
+  ProjectileCount: 0
+  ProjectileSpeed: 0
+  CoolDown: 0
+  Duration: 0
+  AttackRange: 7
+  ObtainRange: 3.5
+  CriticalChance: 5
+  CriticalDamage: 50
+  Luck: 0
+  Curse: 0
 --- !u!1 &1891892500966953458
 GameObject:
   m_ObjectHideFlags: 0

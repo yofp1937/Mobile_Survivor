@@ -113,9 +113,9 @@ public class Item : MonoBehaviour
                 {
                     if(weapon.itemdata.itemType == ItemData.ItemType.Accessories && weapon.level == 4)
                     {
-                        InGameManager.instance.player.maxlevelcount++;
+                        InGameManager.instance.player.MaxLevelCount++;
                     }
-                    InGameManager.instance.player.stat.LevelUp(data.levelupdata_acce[weapon.level-1]);
+                    InGameManager.instance.player.Status.AddStatus(data.levelupdata_acce[weapon.level-1]);
                 }
                 weapon.level++;
                 break;

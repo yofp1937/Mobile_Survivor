@@ -80,12 +80,14 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition, WeaponName weaponname)
     {
+        var InGameData = GameManager.instance.InGameData;
+
         if(!isLive)
             return;
 
         health -= damage;
-        GameManager.instance.accumWeaponDamage += damage; // 총 누적 데미지 증가
-        GameManager.instance.accumWeaponDamageDict[weaponname].AddDamage(damage); // 무기별 누적 데미지 증가
+        InGameData.accumWeaponDamage += damage; // 총 누적 데미지 증가
+        InGameData.accumWeaponDamageDict[weaponname].AddDamage(damage); // 무기별 누적 데미지 증가
         ShowDamagePopup(damage); // 데미지 팝업 생성
 
         if (health > 0)
@@ -96,7 +98,7 @@ public class Enemy : MonoBehaviour
         {
             isLive = false;
             Dead();
-            GameManager.instance.kill++;
+            InGameData.kill++;
         }
     }
 

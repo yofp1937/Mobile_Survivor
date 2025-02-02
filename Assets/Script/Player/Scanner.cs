@@ -13,7 +13,7 @@ public class Scanner : MonoBehaviour
 
     void FixedUpdate()
     {
-        activescanRange = InGameManager.instance.player.scanRange + InGameManager.instance.player.stat.Area;
+        activescanRange = InGameManager.instance.player.Status.AttackRange + InGameManager.instance.player.Status.AttackRange;
         targets = Physics2D.CircleCastAll(transform.position, activescanRange, Vector2.zero, 0, targetLayer);
         nearestTarget = GetNearest();
     }

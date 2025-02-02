@@ -6,13 +6,13 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField]
-    Inventory inven;
+    GM_Inventory inven;
     public InventorySlot[] slots;
     public Transform slotHolder;
 
     void Start()
     {
-        inven = Inventory.instance;
+        inven = GM_Inventory.instance;
         slots = slotHolder.GetComponentsInChildren<InventorySlot>();
         Init();
     }

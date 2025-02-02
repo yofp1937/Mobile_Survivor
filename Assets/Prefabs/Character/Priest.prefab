@@ -267,6 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 328743114870821709}
   - component: {fileID: 4274970427610161973}
+  - component: {fileID: -2108028677412994554}
   m_Layer: 0
   m_Name: Priest
   m_TagString: Player
@@ -313,6 +314,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-2108028677412994554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883982155758022986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d879c1d4ab351bf4683ca7a45573cab9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Hp: 100
+  HpRegen: 1
+  AttackPower: 30
+  Defense: 0
+  MoveSpeed: 3.5
+  ProjectileCount: 0
+  ProjectileSpeed: 0
+  CoolDown: 0
+  Duration: 0
+  AttackRange: 7
+  ObtainRange: 3.5
+  CriticalChance: 5
+  CriticalDamage: 50
+  Luck: 0
+  Curse: 0
 --- !u!1 &3724790058171386583
 GameObject:
   m_ObjectHideFlags: 0

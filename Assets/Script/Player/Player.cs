@@ -6,42 +6,53 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [Header("# Player Info")]
-    public float health;
-    public float maxHealth = 100;
-    public float moveSpeed = 4f;
-    public float scanRange;
-    public float magnetRange;
-    public int level;
-    public int exp;
-    public List<int> weapon;
-    public List<int> accesorries;
-    public int maxlevelcount;
-    public List<int> nextExp = new List<int> { 3, };
+    public float Health;
+    public int Level;
+    public int Exp;
+    public List<int> Weapon;
+    public List<int> Accesorries;
+    public int MaxLevelCount;
+    public List<int> NextExp = new List<int> { 3, };
 
     [Header("# Player Input")]
-    public Vector2 inputVec;
+    public Vector2 InputVec;
 
     [Header("# Reference Object")]
-    public Scanner scanner;
-    public Status stat;
+    public Scanner Scanner;
+    public Status Status;
 
-    GameObject Character;
+    GameObject character;
     Rigidbody2D rigid;
     Animator anim;
     
-    void Start()
+    void Start() // 객체 연결
     {
-        Character = transform.Find("character").gameObject;
-        scanner = GetComponent<Scanner>();
+        character = transform.Find("character").gameObject;
+        Scanner = GetComponent<Scanner>();
         rigid = GetComponent<Rigidbody2D>();
-        anim = Character.GetComponent<Animator>();
-        stat = GetComponent<Status>();
-        health = maxHealth;
+        anim = character.GetComponent<Animator>();
+        Status = GetComponent<Status>();
+        Init();
+    }
+
+    void Init() // 변수 초기화
+    {
+        Status.AddStatus(character.GetComponent<Status>());
+        // 체력 초기화
+        Health = Status.Hp;
+    }
+    
+    void SynchronizeStatus() // 스테이터스 동기화(캐릭터 기본 스테이터스 + 강화 스테이터스 + 장비 스테이터스)
+    {
+        Status characstat = character.GetComponent<Status>();
+
+        Status.AddStatus(characstat);
+        // 강화와 장비 스텟도 추가해야함
     }
 
     void OnMove(InputValue value)
     {
-        inputVec = value.Get<Vector2>();
+        InputVec = value.Get<Vector2>();
     }
 
     void Update()
@@ -53,7 +64,7 @@ public class Player : MonoBehaviour
     {
         if(InGameManager.instance.living)
         {
-            Vector2 nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+            Vector2 nextVec = InputVec * Status.MoveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
             transform.Translate(nextVec); // Player 객체를 이동
             rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
         }
@@ -63,44 +74,44 @@ public class Player : MonoBehaviour
     {
         if(InGameManager.instance.living)
         {
-            anim.SetFloat("Speed", inputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
-            if(inputVec.x > 0)
+            anim.SetFloat("Speed", InputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
+            if(InputVec.x > 0)
             {
-                Character.transform.rotation = Quaternion.Euler(0, 180, 0);
+                character.transform.rotation = Quaternion.Euler(0, 180, 0);
             } else {
-                Character.transform.rotation = Quaternion.Euler(0, 0, 0);
+                character.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }
 
     public void GetExp(int _exp)
     {
-        exp += _exp;
+        Exp += _exp;
 
-        if(exp >= nextExp[level]){
+        if(Exp >= NextExp[Level]){
             LevelUp();
         }
     }
 
     public void GetHeal(int count)
     {
-        if(health + count > maxHealth)
+        if(Health + count > Status.Hp)
         {
-            health = maxHealth;
+            Health = Status.Hp;
         }
         else
         {
-            health += count;
+            Health += count;
         }
-        GameManager.instance.getPotion++;
+        GameManager.instance.InGameData.getPotion++;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Heal);
     }
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
-        GameManager.instance.accumDamage += damage;
-        if(health <= 0)
+        Health -= damage;
+        GameManager.instance.InGameData.accumDamage += damage;
+        if(Health <= 0)
         {
             InGameManager.instance.GameOver();
             anim.SetTrigger("die");
@@ -110,8 +121,8 @@ public class Player : MonoBehaviour
 
     public void GetGold(int count)
     {
-        GameManager.instance.getGold += count;
-        GameManager.instance.getGold++;
+        GameManager.instance.InGameData.getGold += count;
+        GameManager.instance.InGameData.getGold++;
     }
 
     void NeedNextLevelExp()
@@ -121,41 +132,41 @@ public class Player : MonoBehaviour
         // 기본적으로 다음 레벨까지 필요한 경험치는 - 현재 레벨까지 필요했던 경험치 + 추가로 필요한 경험치
         if(GameManager.instance.gameTime > 1200) // 25분 이후부턴 경험치+180 필요
         {
-            NeedNextLevelExp = nextExp[level] + 180;
+            NeedNextLevelExp = NextExp[Level] + 180;
         }
         else if(GameManager.instance.gameTime > 1200) // 20분 이후부턴 경험치+80 필요
         {
-            NeedNextLevelExp = nextExp[level] + 80;
+            NeedNextLevelExp = NextExp[Level] + 80;
         }
         else if(GameManager.instance.gameTime > 900) // 15분 이후부턴 경험치+35 필요
         {
-            NeedNextLevelExp = nextExp[level] + 35;
+            NeedNextLevelExp = NextExp[Level] + 35;
         }
         else if(GameManager.instance.gameTime > 600) // 10분 이후부턴 경험치+15 필요
         {
-            NeedNextLevelExp = nextExp[level] + 15;
+            NeedNextLevelExp = NextExp[Level] + 15;
         }
         else
         {
-            NeedNextLevelExp = nextExp[level] + 5;
+            NeedNextLevelExp = NextExp[Level] + 5;
         }
 
-        nextExp.Add(NeedNextLevelExp);
+        NextExp.Add(NeedNextLevelExp);
     }
 
     public void LevelUp()
     {
         NeedNextLevelExp();
-        level++;
+        Level++;
         GameManager.instance.TimerStop();
         AudioManager.instance.EffectBgm(true);
         InGameManager.instance.LevelUpPanel.SetActive(true);
-        exp = 0;
+        Exp = 0;
     }
 
     void PullItems()
     {
-        float _range = magnetRange * stat.Magnet;
+        float _range = Status.ObtainRange * Status.ObtainRange;
         // 스캔 범위 내 모든 2D 콜라이더 탐색
         Collider2D[] itemsInRange = Physics2D.OverlapCircleAll(transform.position, _range);
 
@@ -172,7 +183,7 @@ public class Player : MonoBehaviour
 
     public void ActiveMagnet()
     {
-        GameManager.instance.getMagnet++;
+        GameManager.instance.InGameData.getMagnet++;
 
         // 모든 Item 태그 객체 탐색
         GameObject[] allItems = GameObject.FindGameObjectsWithTag("Item");

@@ -34,12 +34,12 @@ public class ItemData : ScriptableObject
     public int maxlevel;
     public Sprite itemIcon;
     public WeaponData weaponData;
-    public ELevelUpStat acceData;
+    public Status acceData;
 
     [Header("# Level Data")]
     // 최대레벨만큼 배열 늘리기
     public WeaponData[] levelupdata_weapon;
-    public ELevelUpStat[] levelupdata_acce;
+    public Status[] levelupdata_acce;
     public string[] descriptions;
 
     [Header("# Weapon")]
