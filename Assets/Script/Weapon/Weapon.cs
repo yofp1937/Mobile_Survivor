@@ -443,7 +443,7 @@ public class Weapon : MonoBehaviour
     IEnumerator AttackFireBallCoroutine()
     {
         int firballcount = weapondata.count + playerstat.Amount;
-        List<Transform> targets = player.scanner.GetTargets(firballcount);
+        List<Transform> targets = player.scanner.GetAllTargets();
         Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon3");
         float range = player.scanRange * playerstat.Area;
 

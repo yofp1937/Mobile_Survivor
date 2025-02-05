@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
 
     [Header("# Player Input")]
     public Vector2 inputVec;
+    public VariableJoystick joy;
 
     [Header("# Reference Object")]
     public Scanner scanner;
@@ -53,7 +54,19 @@ public class Player : MonoBehaviour
     {
         if(InGameManager.instance.living)
         {
-            Vector2 nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+            Vector2 nextVec;
+            if(GameManager.instance.IsMobile)
+            {
+                float x = joy.Horizontal;
+                float y = joy.Vertical;
+
+                inputVec = new Vector2(x, y);
+                nextVec = inputVec * moveSpeed * Time.fixedDeltaTime;
+            }
+            else
+            {
+                nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+            }
             transform.Translate(nextVec); // Player 객체를 이동
             rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
         }
@@ -150,6 +163,10 @@ public class Player : MonoBehaviour
         GameManager.instance.TimerStop();
         AudioManager.instance.EffectBgm(true);
         InGameManager.instance.LevelUpPanel.SetActive(true);
+        if(GameManager.instance.IsMobile)
+        {
+            joy.gameObject.SetActive(false);
+        }
         exp = 0;
     }
 

@@ -50,6 +50,14 @@ public class Scanner : MonoBehaviour
         return Targets.Take(count).Select(target => target.transform).ToList();
     }
 
+    public List<Transform> GetAllTargets()
+    {
+        Vector3 myPos = transform.position;
+        return targets.OrderBy(target => Vector3.Distance(myPos, target.transform.position)) // 거리순으로 정렬
+            .Select(target => target.transform) // Transform만 추출
+            .ToList(); // 리스트로 변환하여 반환
+    }
+
     // Scene에서 플레이어의 공격범위 표시
     void OnDrawGizmos()
     {

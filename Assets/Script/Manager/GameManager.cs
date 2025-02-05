@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public float maxGameTime = 30 * 60f; // 최대 게임 시간
     [SerializeField]
     private bool DEVELOPE_MODE = false;
+    public bool IsMobile;
     
     [Header("# Player Data")]
     // 소지골드와 강화 8개 - 1.체력, 2.공격력, 3.공격속도, 4.쿨타임, 5.공격범위, 6.지속시간, 7.투사체 개수, 8.아이템 획득범위
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
         Gold = PlayerPrefs.GetInt("Gold");
         PD_List = new List<int>(new int[System.Enum.GetValues(typeof(PlayerData)).Length]);
         LoadPlayerData();
+        CheckPlatform();
     }
 
     void Start()
@@ -81,6 +83,18 @@ public class GameManager : MonoBehaviour
             {
                 InGameManager.instance.GameVictory();
             }
+        }
+    }
+
+    void CheckPlatform()
+    {
+        if(Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            IsMobile = true;
+        }
+        else
+        {
+            IsMobile = false;
         }
     }
 

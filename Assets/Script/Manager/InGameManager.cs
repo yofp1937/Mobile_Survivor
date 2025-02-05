@@ -22,6 +22,7 @@ public class InGameManager : MonoBehaviour
     GameObject ExitBtn;
     public GameObject GameResultPanel;
     GameObject GameExitBtn;
+    public GameObject OptionBtn;
 
     [Header("# Drop Item")]
     public GameObject[] ExpJewel;
@@ -49,6 +50,13 @@ public class InGameManager : MonoBehaviour
         VolumeSettings.SetActive(false);
         ExitPanel.SetActive(false);
         GameResultPanel.SetActive(false);
+        player.joy.gameObject.SetActive(false);
+        OptionBtn.SetActive(false);
+        if(GameManager.instance.IsMobile)
+        {
+            player.joy.gameObject.SetActive(true);
+            OptionBtn.SetActive(true);
+        }
 
         SettingsBtn = Settings.transform.Find("SettingExitBtn").gameObject;
         VolumeSettingsBtn = Settings.transform.Find("VolumeBtn").gameObject;
@@ -82,6 +90,10 @@ public class InGameManager : MonoBehaviour
         GameResultPanel.SetActive(true);
         GameResultPanel.transform.Find("GameOver").gameObject.SetActive(true);
         GameExitBtn.SetActive(true);
+        if(GameManager.instance.IsMobile)
+        {
+            player.joy.gameObject.SetActive(false);
+        }
     }
 
     public void GameVictory() // 게임 승리시 사용
@@ -90,6 +102,10 @@ public class InGameManager : MonoBehaviour
         GameResultPanel.SetActive(true);
         GameResultPanel.transform.Find("GameVictory").gameObject.SetActive(true);
         GameExitBtn.SetActive(true);
+        if(GameManager.instance.IsMobile)
+        {
+            player.joy.gameObject.SetActive(false);
+        }
     }
 
     public void ActiveSettings()
@@ -100,6 +116,10 @@ public class InGameManager : MonoBehaviour
         SettingsBtn.SetActive(true);
         VolumeSettingsBtn.SetActive(true);
         ExitBtn.SetActive(true);
+        if(GameManager.instance.IsMobile)
+        {
+            player.joy.gameObject.SetActive(false);
+        }
         GameManager.instance.TimerStop();
     }
 
@@ -109,6 +129,10 @@ public class InGameManager : MonoBehaviour
         Settings.SetActive(false);
         VolumeSettings.SetActive(false);
         ExitPanel.SetActive(false);
+        if(GameManager.instance.IsMobile)
+        {
+            player.joy.gameObject.SetActive(true);
+        }
         GameManager.instance.TimerStart();
     }
 
@@ -156,6 +180,15 @@ public class InGameManager : MonoBehaviour
             Weapon weapon = player.transform.Find("Weapon").Find("Weapon" + player.weapon[i]).GetComponent<Weapon>();
 
             GameManager.instance.accumWeaponDamageDict[weapon.weaponname].SetLevel(weapon.level);
+        }
+    }
+
+    // 모바일에서 톱니바퀴모양 버튼 누르면 작동
+    public void PressOptionBtn()
+    {
+        if(living && !OnLevelUp)
+        {
+            ActiveSettings();
         }
     }
 }

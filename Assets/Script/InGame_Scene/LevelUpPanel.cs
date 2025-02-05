@@ -39,6 +39,10 @@ public class LevelUpPanel : MonoBehaviour
     public void HideLevelUpPanel()
     {
         InGameManager.instance.LevelUpPanel.SetActive(false);
+        if(GameManager.instance.IsMobile)
+        {
+            InGameManager.instance.player.joy.gameObject.SetActive(true);
+        }
         GameManager.instance.TimerStart();
     }
 
