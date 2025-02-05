@@ -1,6 +1,7 @@
-다운로드 링크: <http://naver.me/xjgAJbhb> <br>
+PC버전 다운로드 링크: <http://naver.me/xjgAJbhb> <br>
+Mobile버전 다운로드 링크 : <https://drive.google.com/file/d/1W6pEgg7PA-AaJAN0onk_lofh-f4TKWJc/view?usp=sharing> <br>
 조작키: WASD, 방향키, ESC <br>
-아직 컴퓨터로만 가능합니다. <br>
+모바일 버전은 UI가 불안정합니다.(수정예정) <br>
 
 # Mobile Survivor
 Unity 개인 프로젝트
