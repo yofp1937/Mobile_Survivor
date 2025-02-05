@@ -61,12 +61,13 @@ public class Player : MonoBehaviour
                 float y = joy.Vertical;
 
                 inputVec = new Vector2(x, y);
-                nextVec = inputVec * moveSpeed * Time.fixedDeltaTime;
+
+                if(inputVec.sqrMagnitude > 0.01f) // 조이스틱이 조금만 움직여도 moveSpeed값만큼 이동할수 있게끔 정규화
+                {
+                    inputVec = inputVec.normalized;
+                }
             }
-            else
-            {
-                nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
-            }
+            nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
             transform.Translate(nextVec); // Player 객체를 이동
             rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
         }

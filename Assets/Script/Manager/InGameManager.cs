@@ -118,6 +118,7 @@ public class InGameManager : MonoBehaviour
         ExitBtn.SetActive(true);
         if(GameManager.instance.IsMobile)
         {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
             player.joy.gameObject.SetActive(false);
         }
         GameManager.instance.TimerStop();
@@ -131,6 +132,7 @@ public class InGameManager : MonoBehaviour
         ExitPanel.SetActive(false);
         if(GameManager.instance.IsMobile)
         {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
             player.joy.gameObject.SetActive(true);
         }
         GameManager.instance.TimerStart();
@@ -138,6 +140,7 @@ public class InGameManager : MonoBehaviour
 
     public void ActiveVolumeSettings()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         VolumeSettings.SetActive(true);
         SettingsBtn.SetActive(false);
         VolumeSettingsBtn.SetActive(false);
@@ -146,6 +149,7 @@ public class InGameManager : MonoBehaviour
 
     public void HideVolumeSettings()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         VolumeSettings.SetActive(false);
         SettingsBtn.SetActive(true);
         VolumeSettingsBtn.SetActive(true);
@@ -154,12 +158,14 @@ public class InGameManager : MonoBehaviour
 
     public void ActiveExitPanel()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         ExitPanel.SetActive(true);
         SettingsBtn.SetActive(false);
     }
     
     public void HideExitPanel()
     {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
         ExitPanel.SetActive(false);
         SettingsBtn.SetActive(true);
     }
