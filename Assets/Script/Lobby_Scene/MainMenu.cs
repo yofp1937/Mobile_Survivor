@@ -69,21 +69,26 @@ public class MainMenu : MonoBehaviour
         Settings.SetActive(false);
         HaveGold.text = string.Format("{0:F0}", GameManager.instance.GetGold());
         SetUpgradeSlots();
-
-        // 전판 1.5배속이였으면 체크 이미지 활성화 아니면 비활성화
-        if(GameManager.instance.gameSpeed > 1f)
-        {
-            GameSpeedImage.SetActive(true);
-        }
-        else
-        {
-            GameSpeedImage.SetActive(false);
-        }
+        GameSpeedReset();
 
         if(GameManager.instance.boolScore)
         {
             ActiveScore();
         }
+    }
+
+    public void GameSpeedReset()
+    {
+        GameManager.instance.gameSpeed = 1f;
+        GameSpeedBtn.interactable = true;
+        GameSpeedImage.SetActive(false);
+    }
+
+    public void GameSpeedUp()
+    {
+        GameManager.instance.gameSpeed = 1.5f;
+        GameSpeedBtn.interactable = false;
+        GameSpeedImage.SetActive(true);
     }
 
     public void OnClickStartGame()
@@ -151,16 +156,7 @@ public class MainMenu : MonoBehaviour
     public void OnClickGameSpeed()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        if(GameSpeedImage.activeSelf)
-        {
-            GameSpeedImage.SetActive(false);
-            GameManager.instance.gameSpeed = 1f;
-        }
-        else
-        {
-            GameSpeedImage.SetActive(true);
-            GameManager.instance.gameSpeed = 1.5f;
-        }
+        LobbyManager.instance.admobManager.ShowRewardedAd();
     }
 
     public void OnClickUpgradeSlots(int num)
