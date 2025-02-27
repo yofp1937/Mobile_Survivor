@@ -153,16 +153,21 @@ public class MainMenu : MonoBehaviour
     public void OnClickGameSpeed()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        if(GameSpeedImage.activeSelf)
-        {
-            GameSpeedImage.SetActive(false);
-            GameManager.instance.gameSpeed = 1f;
-        }
-        else
-        {
-            GameSpeedImage.SetActive(true);
-            GameManager.instance.gameSpeed = 1.5f;
-        }
+        LobbyManager.instance.admobManager.ShowRewardedAd();
+    }
+
+    public void GameSpeedUp()
+    {
+        GameManager.instance.gameSpeed = 1.5f;
+        GameSpeedBtn.interactable = false;
+        GameSpeedImage.SetActive(true);
+    }
+
+    public void GameSpeedReset()
+    {
+        GameManager.instance.gameSpeed = 1f;
+        GameSpeedBtn.interactable = true;
+        GameSpeedImage.SetActive(false);
     }
 
     public void OnClickUpgradeSlots(int num)

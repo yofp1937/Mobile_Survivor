@@ -106,14 +106,14 @@ public class Player : MonoBehaviour
         {
             health += count;
         }
-        GameManager.instance.getPotion++;
+        GameManager.instance.InGameData.getPotion++;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Heal);
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
-        GameManager.instance.accumDamage += damage;
+        GameManager.instance.InGameData.accumDamage += damage;
         if(health <= 0)
         {
             InGameManager.instance.GameOver();
@@ -124,8 +124,8 @@ public class Player : MonoBehaviour
 
     public void GetGold(int count)
     {
-        GameManager.instance.getGold += count;
-        GameManager.instance.getGold++;
+        GameManager.instance.InGameData.getGold += count;
+        GameManager.instance.InGameData.getGold++;
     }
 
     void NeedNextLevelExp()
@@ -173,7 +173,7 @@ public class Player : MonoBehaviour
 
     void PullItems()
     {
-        float _range = magnetRange * stat.Magnet;
+        float _range = magnetRange * stat.ObtainRange;
         // 스캔 범위 내 모든 2D 콜라이더 탐색
         Collider2D[] itemsInRange = Physics2D.OverlapCircleAll(transform.position, _range);
 
@@ -190,7 +190,7 @@ public class Player : MonoBehaviour
 
     public void ActiveMagnet()
     {
-        GameManager.instance.getMagnet++;
+        GameManager.instance.InGameData.getMagnet++;
 
         // 모든 Item 태그 객체 탐색
         GameObject[] allItems = GameObject.FindGameObjectsWithTag("Item");

@@ -63,9 +63,9 @@ public class Weapon : MonoBehaviour
         {
             switch(itemdata.itemId){
                 case 0:
-                    transform.Rotate(Vector3.back * weapondata.speed * player.Status.ProjectileSpeed * Time.deltaTime);
+                    transform.Rotate(Vector3.back * weapondata.speed * player.stat.ProjectileSpeed * Time.deltaTime);
                     lastATKtime += Time.deltaTime;
-                    if (lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                    if (lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                     {
                         BatchRotateSword();
                         lastATKtime = 0;
@@ -75,7 +75,7 @@ public class Weapon : MonoBehaviour
                     if(boolAttack)
                     {
                         lastATKtime += Time.deltaTime;
-                        if(lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                        if(lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                         {
                             AttackThrowWeapon();
                             lastATKtime = 0;
@@ -84,7 +84,7 @@ public class Weapon : MonoBehaviour
                     break;
                 case 2:
                     lastATKtime += Time.deltaTime;
-                    if(lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                    if(lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                     {
                         AttackLaser();
                         lastATKtime = 0;
@@ -92,7 +92,7 @@ public class Weapon : MonoBehaviour
                     break;
                 case 3:
                     lastATKtime += Time.deltaTime;
-                    if(lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                    if(lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                     {
                         AttackFireBall();
                         lastATKtime = 0;
@@ -100,7 +100,7 @@ public class Weapon : MonoBehaviour
                     break;
                 case 4:
                     lastATKtime += Time.deltaTime;
-                    if(lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                    if(lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                     {
                         AttackThunder();
                         lastATKtime = 0;
@@ -108,7 +108,7 @@ public class Weapon : MonoBehaviour
                     break;
                 case 5:
                     lastATKtime += Time.deltaTime;
-                    if(lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                    if(lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                     {
                         AttackSpark();
                         lastATKtime = 0;
@@ -116,7 +116,7 @@ public class Weapon : MonoBehaviour
                     break;
                 case 6:
                     lastATKtime += Time.deltaTime;
-                    if(lastATKtime >= weapondata.coolTime * player.Status.CoolDown)
+                    if(lastATKtime >= weapondata.coolTime * player.stat.CoolDown)
                     {
                         AttackWave();
                         lastATKtime = 0;
@@ -171,8 +171,8 @@ public class Weapon : MonoBehaviour
     public void InitAcce(ItemData data)
     {
         itemdata = data;
-        player.Accesorries.Add(data.itemId);
-        player.Status.AddStatus(data.acceData);
+        player.accesorries.Add(data.itemId);
+        player.stat.AddStatus(data.acceData);
     }
 
 
@@ -180,7 +180,7 @@ public class Weapon : MonoBehaviour
     {
         itemdata = data;
         weapondata = data.weaponData.Clone();
-        player.Weapon.Add(data.itemId);
+        player.weapon.Add(data.itemId);
         boolAttack = false;
         weaponname = (WeaponName)data.itemId;
 
@@ -200,7 +200,7 @@ public class Weapon : MonoBehaviour
 
         if(itemdata.itemType == ItemData.ItemType.Weapon && level == 7)
         {
-            player.MaxLevelCount++;
+            player.maxlevelcount++;
         }
 
         switch(itemdata.itemId)
@@ -233,7 +233,7 @@ public class Weapon : MonoBehaviour
     {
         boolAttack = false;
         // 무한 루프를 돌며 적을 찾을 때까지 대기
-        while (player.Scanner == null || player.Scanner.nearestTarget == null)
+        while (player.scanner == null || player.scanner.nearestTarget == null)
         {
             // 대기 후 다시 확인 (0.1초 주기로 대기)
             yield return new WaitForSeconds(0.1f);
@@ -263,7 +263,7 @@ public class Weapon : MonoBehaviour
     void BatchRotateSword() // RotateSword 레벨업할때 실행하는 함수(RotateSword 1 사이클 실행)
     {
         DeactiveWeaponSetting(); // 실행되고있는 RotateSword 전부 비활성화
-        int totalweapons = weapondata.count + player.Status.ProjectileCount;
+        int totalweapons = weapondata.count + player.stat.ProjectileCount;
         float anglestep = 360f / totalweapons;
 
         for(int index = 0; index < totalweapons; index++)
@@ -284,11 +284,11 @@ public class Weapon : MonoBehaviour
             float radian = currentAngle * Mathf.Deg2Rad;
             Vector3 positionOffset = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0); // 원 주변에 위치시키기 위한 벡터
             // 무기를 해당 위치로 이동시키고 회전 적용
-            weaponT.Translate(positionOffset * weapondata.area * player.Status.AttackRange, Space.World); // 무기의 위치
+            weaponT.Translate(positionOffset * weapondata.area * player.stat.AttackRange, Space.World); // 무기의 위치
             weaponT.up = positionOffset.normalized;
 
             // 무기 설정 초기화
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.Status.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
         }
         AttackRotateSword();
     }
@@ -302,7 +302,7 @@ public class Weapon : MonoBehaviour
         coroutines.Clear();
         foreach(var rotatesword in weaponsetting) // laser의 각 객체마다 지속시간, 쿨타임 부여하고 동작시킴
         {
-            coroutines.Add(StartCoroutine(rotatesword.AttackWhileDuration(weapondata.duration * player.Status.Duration)));  // duration 값만큼 무기 지속시킴
+            coroutines.Add(StartCoroutine(rotatesword.AttackWhileDuration(weapondata.duration * player.stat.Duration)));  // duration 값만큼 무기 지속시킴
         }
     }
 
@@ -323,9 +323,9 @@ public class Weapon : MonoBehaviour
             AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
         }
 
-        int weaponcount = weapondata.count + player.Status.ProjectileCount;
-        float _cool = weapondata.coolTime * player.Status.CoolDown;
-        float _speed = weapondata.speed * player.Status.ProjectileSpeed;
+        int weaponcount = weapondata.count + player.stat.ProjectileCount;
+        float _cool = weapondata.coolTime * player.stat.CoolDown;
+        float _speed = weapondata.speed * player.stat.ProjectileSpeed;
         float interval = _cool / weaponcount;
 
         for(int i = 0; i < weaponcount; i++)
@@ -345,7 +345,7 @@ public class Weapon : MonoBehaviour
             else
             {
                 AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
-                Vector3 targetPos = player.Scanner.nearestTarget.position;
+                Vector3 targetPos = player.scanner.nearestTarget.position;
                 dir = new Vector3(targetPos.x - transform.position.x, targetPos.y - transform.position.y, 0).normalized;
             }
 
@@ -361,7 +361,7 @@ public class Weapon : MonoBehaviour
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // dir 벡터의 각도 계산
             weaponT.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
 
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.Status.AttackPower, _per, weapondata.knockback, dir, weaponname);
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, _per, weapondata.knockback, dir, weaponname);
             weaponT.GetComponent<WeaponSetting>().StartThrowWhileDuration(5f);
 
             Rigidbody2D rigid = weaponT.GetComponent<Rigidbody2D>();
@@ -378,8 +378,8 @@ public class Weapon : MonoBehaviour
 
     IEnumerator AttackLaserCoroutine()
     {
-        int lasercount = weapondata.count + player.Status.ProjectileCount;
-        List<Transform> targets = player.Scanner.GetTargets(lasercount);
+        int lasercount = weapondata.count + player.stat.ProjectileCount;
+        List<Transform> targets = player.scanner.GetTargets(lasercount);
         Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon2");
 
         for(int i = 0; i < lasercount; i++)
@@ -393,9 +393,9 @@ public class Weapon : MonoBehaviour
 
             // 찾아낸 weaponT의 위치를 플레이어 위치로 조정후 크기, 데미지 세팅
             weaponT.position = player.transform.position;
-            float newScale = weapondata.area * player.Status.AttackRange;
+            float newScale = weapondata.area * player.stat.AttackRange;
             weaponT.localScale = new Vector3(newScale, newScale, newScale);
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.Status.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
 
             Vector3 dir;
             if (i < targets.Count) // 범위내에 적이 존재하면
@@ -420,7 +420,7 @@ public class Weapon : MonoBehaviour
             
             // 조준한곳으로 발사
             Rigidbody2D rb = weaponT.GetComponent<Rigidbody2D>();
-            float _speed = weapondata.speed * player.Status.ProjectileSpeed;
+            float _speed = weapondata.speed * player.stat.ProjectileSpeed;
             if (rb != null)
             {
                 rb.velocity = dir * _speed;
@@ -440,10 +440,10 @@ public class Weapon : MonoBehaviour
 
     IEnumerator AttackFireBallCoroutine()
     {
-        int firballcount = weapondata.count + player.Status.ProjectileCount;
-        List<Transform> targets = player.Scanner.GetTargets(firballcount);
+        int firballcount = weapondata.count + player.stat.ProjectileCount;
+        List<Transform> targets = player.scanner.GetTargets(firballcount);
         Transform parent = InGameManager.instance.PoolManager.transform.Find("Weapon").Find("Weapon3");
-        float range = player.Status.AttackRange * player.Status.AttackRange;
+        float range = player.stat.AttackRange * player.stat.AttackRange;
 
         for(int i = 0; i < firballcount; i++)
         {
@@ -457,10 +457,10 @@ public class Weapon : MonoBehaviour
             
             // 찾아낸 weaponT의 위치를 플레이어 위치로 조정후 크기, 데미지 세팅
             weaponT.position = player.transform.position;
-            float newScale = weapondata.area * player.Status.AttackRange;
+            float newScale = weapondata.area * player.stat.AttackRange;
             weaponT.localScale = new Vector3(newScale, newScale, newScale);
             weaponC.localScale = new Vector3(newScale, newScale, newScale);
-            weaponC.GetComponent<WeaponSetting>().Init(weapondata.damage * player.Status.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname);
+            weaponC.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname);
 
             Vector3 targetPos;
             if (targets.Count > 0) // 범위내에 적이 존재하면
@@ -488,7 +488,7 @@ public class Weapon : MonoBehaviour
     {
         float time = 0;
         float baseDuration = 5f; // 기본 지속시간
-        float speedFactor = weapondata.speed * player.Status.ProjectileSpeed; // 속도 비율
+        float speedFactor = weapondata.speed * player.stat.ProjectileSpeed; // 속도 비율
         float duration = baseDuration / speedFactor; // 속도가 높을수록 지속시간이 짧아짐
 
         while (time < duration)
@@ -521,8 +521,8 @@ public class Weapon : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Thunder);
 
-        int thundercount = weapondata.count + player.Status.ProjectileCount;
-        List<Transform> targets = player.Scanner.GetTargets(thundercount);
+        int thundercount = weapondata.count + player.stat.ProjectileCount;
+        List<Transform> targets = player.scanner.GetTargets(thundercount);
 
         for(int i = 0; i < thundercount; i++)
         {
@@ -534,9 +534,9 @@ public class Weapon : MonoBehaviour
                 originalScale = weaponT.localScale;
                 NewWeaponObjectCreate(weaponT, parent, weaponsetting);
             }
-            float newScale = weapondata.area * player.Status.AttackRange;
+            float newScale = weapondata.area * player.stat.AttackRange;
             weaponT.localScale = originalScale * newScale;
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.Status.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname);
+            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname);
 
             // 플레이어 화면 내 랜덤한 방향으로 조준
             Vector2 screenPos = new Vector2(
@@ -577,7 +577,7 @@ public class Weapon : MonoBehaviour
     void AttackSpark()
     {
 
-        float _range = weapondata.area * player.Status.AttackRange;
+        float _range = weapondata.area * player.stat.AttackRange;
         // 스캔 범위 내 모든 2D 콜라이더 탐색
         Collider2D[] enemyInRange = Physics2D.OverlapCircleAll(transform.position, _range);
 
@@ -596,7 +596,7 @@ public class Weapon : MonoBehaviour
                     NewWeaponObjectCreate(weaponT, parent, weaponsetting);
                 }
                 weaponT.position = enemy.transform.position;
-                enemy.GetComponent<Enemy>().TakeDamage(weapondata.damage * player.Status.AttackPower, -1, transform.position, WeaponName.Spark);
+                enemy.GetComponent<Enemy>().TakeDamage(weapondata.damage * player.stat.AttackPower, -1, transform.position, WeaponName.Spark);
                 
                 StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.3f));
             }
@@ -619,16 +619,16 @@ public class Weapon : MonoBehaviour
             originalScale = weaponT.localScale;
             NewWeaponObjectCreate(weaponT, transform, weaponsetting);
         }
-        float newScale = weapondata.area * player.Status.AttackRange;
+        float newScale = weapondata.area * player.stat.AttackRange;
         weaponT.localScale = originalScale * newScale;
-        weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.Status.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname);
+        weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname);
 
         StartCoroutine(SetActiveWeapon(weaponT.gameObject, 0.45f));
     }
 
     void OnDrawGizmos()
     {
-        float _range = weapondata.area * player.Status.AttackRange;
+        float _range = weapondata.area * player.stat.AttackRange;
         
         // Spark 범위를 파란색으로 표시
         if (showSparkRange)

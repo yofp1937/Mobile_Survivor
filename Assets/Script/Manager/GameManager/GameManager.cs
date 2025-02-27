@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum PlayerData {Hp, AttackPower, AttackSpeed, Cooldown, AttackRange, Duration, Amount, Magnet}
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
@@ -29,13 +27,8 @@ public class GameManager : MonoBehaviour
     public int SelectArtifactId;
 
     [Header("# Accum Data")]
-    public bool boolScore = false;
+    public GameManager_InGameData InGameData;
     public float gameTime; // 현재 게임 시간
-    public int kill; // 잡은 몬스터 수
-    public int getGold; // 획득한 골드량
-    public int getPotion; // 획득한 포션량
-    public int getMagnet; // 획득한 자석량
-    public int accumDamage; // 입은 데미지
 
     [Header("# Accum Weapon Damage Data")]
     public float accumWeaponDamage;
@@ -69,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        GameDataReset();
+        DataReset();
         AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
     }
 
@@ -98,18 +91,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GameDataReset()
+    public void DataReset()
     {
         SelectCharacter = null;
         SelectWeapon = null;
         gameTime = 0;
-        kill = 0;
-        getGold = 0;
-        getPotion = 0;
-        getMagnet = 0;
-        accumDamage = 0;
-        accumWeaponDamage = 0f;
-        accumWeaponDamageDict = new Dictionary<WeaponName, AccumWeaponData>();
+        InGameData.DataReset();
     }
 
     public void TimerStart() // InGame Scene에 입장하면 실행됨
@@ -130,7 +117,7 @@ public class GameManager : MonoBehaviour
         AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
         if(clear)
         {
-            SetHaveGold(getGold);
+            SetHaveGold(InGameData.getGold);
         }
         SceneManager.LoadScene("Lobby");
     }

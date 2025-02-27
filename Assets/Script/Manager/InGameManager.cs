@@ -181,9 +181,9 @@ public class InGameManager : MonoBehaviour
     // GameOver에서 통계창에서 보여줄 무기의 레벨을 적용하기위해 실행
     public void SetAccumWeaponData()
     {
-        for(int i = 0; i < player.Weapon.Count ; i++)
+        for(int i = 0; i < player.weapon.Count ; i++)
         {
-            Weapon weapon = player.transform.Find("Weapon").Find("Weapon" + player.Weapon[i]).GetComponent<Weapon>();
+            Weapon weapon = player.transform.Find("Weapon").Find("Weapon" + player.weapon[i]).GetComponent<Weapon>();
 
             GameManager.instance.InGameData.accumWeaponDamageDict[weapon.weaponname].SetLevel(weapon.level);
         }

@@ -49,17 +49,17 @@ public class LevelUpPanel : MonoBehaviour
     void GetSelectItemCount()
     {
         // 아이템을 가져올 개수를 구해주는 함수
-        if(mysitu == ItemSituation.Full && InGameManager.instance.player.MaxLevelCount > weaponcount - 1)
+        if(mysitu == ItemSituation.Full && InGameManager.instance.player.maxlevelcount > weaponcount - 1)
         {
             selectcount = 0;
             ItemLists[0].gameObject.SetActive(false);
         }
-        else if(mysitu == ItemSituation.Full && InGameManager.instance.player.MaxLevelCount > weaponcount - 2)
+        else if(mysitu == ItemSituation.Full && InGameManager.instance.player.maxlevelcount > weaponcount - 2)
         {
             selectcount = 1;
             ItemLists[1].gameObject.SetActive(false);
         }
-        else if(mysitu == ItemSituation.Full && InGameManager.instance.player.MaxLevelCount > weaponcount - 3)
+        else if(mysitu == ItemSituation.Full && InGameManager.instance.player.maxlevelcount > weaponcount - 3)
         {
             selectcount = 2;
             ItemLists[2].gameObject.SetActive(false);
@@ -98,7 +98,7 @@ public class LevelUpPanel : MonoBehaviour
         if(myweapon && myacce)
         {
             mysitu = ItemSituation.Full;
-            weaponcount = InGameManager.instance.player.Weapon.Count + InGameManager.instance.player.Accesorries.Count;
+            weaponcount = InGameManager.instance.player.weapon.Count + InGameManager.instance.player.accesorries.Count;
         }
         else if(myweapon)
         {
@@ -116,12 +116,12 @@ public class LevelUpPanel : MonoBehaviour
 
     bool CheckWeapon()
     {
-        return InGameManager.instance.player.Weapon.Count > 5;
+        return InGameManager.instance.player.weapon.Count > 5;
     }
 
     bool CheckAcce()
     {
-        return InGameManager.instance.player.Accesorries.Count > 5;
+        return InGameManager.instance.player.accesorries.Count > 5;
     }
 
     bool CheckMaxLevel(ItemData data)
@@ -147,18 +147,18 @@ public class LevelUpPanel : MonoBehaviour
         switch (mysitu)
         {
             case ItemSituation.Full:
-                availableItems.AddRange(InGameManager.instance.player.Weapon.Select(id => InGameManager.instance.WeaponManager.weapons[id]));
-                availableItems.AddRange(InGameManager.instance.player.Accesorries.Select(id => InGameManager.instance.WeaponManager.accessories[id]));
+                availableItems.AddRange(InGameManager.instance.player.weapon.Select(id => InGameManager.instance.WeaponManager.weapons[id]));
+                availableItems.AddRange(InGameManager.instance.player.accesorries.Select(id => InGameManager.instance.WeaponManager.accessories[id]));
                 break;
 
             case ItemSituation.OnlyWeapon:
-                availableItems.AddRange(InGameManager.instance.player.Weapon.Select(id => InGameManager.instance.WeaponManager.weapons[id]));
+                availableItems.AddRange(InGameManager.instance.player.weapon.Select(id => InGameManager.instance.WeaponManager.weapons[id]));
                 availableItems.AddRange(InGameManager.instance.WeaponManager.accessories);
                 break;
 
             case ItemSituation.OnlyAcce:
                 availableItems.AddRange(InGameManager.instance.WeaponManager.weapons);
-                availableItems.AddRange(InGameManager.instance.player.Accesorries.Select(id => InGameManager.instance.WeaponManager.accessories[id]));
+                availableItems.AddRange(InGameManager.instance.player.accesorries.Select(id => InGameManager.instance.WeaponManager.accessories[id]));
                 break;
 
             case ItemSituation.Available:
