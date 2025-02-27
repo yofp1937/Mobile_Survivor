@@ -54,8 +54,8 @@ public class AudioManager : MonoBehaviour
 
     void Init()
     {
-        bgmVolume = PlayerPrefs.GetFloat("Bgm", 1f);
-        sfxVolume = PlayerPrefs.GetFloat("Sfx", 1f);
+        bgmVolume = PlayerPrefs.GetFloat("Bgm", 1);
+        sfxVolume = PlayerPrefs.GetFloat("Sfx", 1);
 
         // 배경음 플레이어 초기화
         GameObject bgmObject = new GameObject("BgmPlayer");

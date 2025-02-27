@@ -30,7 +30,7 @@ public class FollowPlayer : MonoBehaviour
         }
 
         // Esc 누르면 일시정지하고 설정창 띄움
-        if(Input.GetKeyDown(KeyCode.Escape) && InGameManager.instance.OnLevelUp == false && InGameManager.instance.living)
+        if(Input.GetKeyDown(KeyCode.Escape) && !InGameManager.instance.OnLevelUp && InGameManager.instance.living)
         {
             if(InGameManager.instance.OnSettings) // 설정창이 열려있으면
             {
