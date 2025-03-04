@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     [Header("# Player Input")]
     public Vector2 inputVec;
     public VariableJoystick joy;
+    public Vector2 moveDirection;
 
     [Header("# Reference Object")]
     public Scanner scanner;
@@ -29,14 +30,20 @@ public class Player : MonoBehaviour
     GameObject Character;
     Rigidbody2D rigid;
     Animator anim;
-    
-    void Start()
+
+    void Awake()
+    {
+        weapon = new List<int>();
+        accesorries = new List<int>();
+        rigid = GetComponent<Rigidbody2D>();
+        moveDirection = transform.right;
+    }
+
+    public void Init()
     {
         Character = transform.Find("character").gameObject;
-        scanner = GetComponent<Scanner>();
-        rigid = GetComponent<Rigidbody2D>();
+        stat = Character.GetComponent<Status>();
         anim = Character.GetComponent<Animator>();
-        stat = GetComponent<Status>();
         health = maxHealth;
     }
 
@@ -70,6 +77,11 @@ public class Player : MonoBehaviour
             nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
             transform.Translate(nextVec); // Player 객체를 이동
             rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
+
+            if(inputVec.sqrMagnitude > 0.01f) // 움직이는 방향 저장
+            {
+                moveDirection = inputVec;
+            }
         }
     }
 

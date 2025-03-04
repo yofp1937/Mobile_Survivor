@@ -8,7 +8,6 @@ public class AdMobManager : MonoBehaviour
 {
     private string rewardAdId;
     private string testAdId = "ca-app-pub-3940256099942544/5224354917";
-    public bool isTest;
     RewardedAd rewardedAd;
 
     void Start()
@@ -49,7 +48,7 @@ public class AdMobManager : MonoBehaviour
         
         var adRequest = new AdRequest.Builder().Build(); // 광고 데이터 생성
 
-        RewardedAd.Load(isTest ? testAdId : rewardAdId , adRequest, (RewardedAd ad, LoadAdError error) =>
+        RewardedAd.Load(GameManager.instance.IsDevelopMode() ? testAdId : rewardAdId , adRequest, (RewardedAd ad, LoadAdError error) =>
         {
             if (error != null || ad == null)
             {

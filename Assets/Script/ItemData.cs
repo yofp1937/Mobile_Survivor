@@ -4,23 +4,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[Serializable]
-public class WeaponData
-{
-    public float damage = 0;
-    public float coolTime = 0;
-    public float area = 0;
-    public float duration = 0;
-    public int count = 0;
-    public float speed = 0;
-    public float knockback = 0;
-
-    public WeaponData Clone()
-    {
-        return MemberwiseClone() as WeaponData;
-    }
-}
-
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData", order = 1)]
 public class ItemData : ScriptableObject
 {

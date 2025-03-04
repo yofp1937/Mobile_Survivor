@@ -327,10 +327,10 @@ MonoBehaviour:
   Defense: 0
   MoveSpeed: 3.5
   ProjectileCount: 0
-  ProjectileSpeed: 0
-  CoolDown: 0
-  Duration: 0
-  AttackRange: 7
+  ProjectileSpeed: 1
+  CoolTime: 1
+  Duration: 1
+  AttackRange: 1
   ObtainRange: 3.5
   CriticalChance: 5
   CriticalDamage: 50

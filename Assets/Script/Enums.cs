@@ -8,6 +8,9 @@ using UnityEngine;
 
 public enum PlayerData {Hp, AttackPower, AttackSpeed, Cooldown, AttackRange, Duration, Amount, Magnet} // 로비 강화 탭에서 강화하는 능력치들
 
+// 무기 종류
+public enum WeaponName { RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave }
+
 
 // 아이템 등급
 public enum EquipGrade

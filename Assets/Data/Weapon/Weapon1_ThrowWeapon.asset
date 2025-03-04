@@ -15,8 +15,8 @@ MonoBehaviour:
   itemType: 0
   itemId: 1
   itemName: ThrowWeapon
-  itemDesc: "\uAC00\uC7A5 \uAC00\uAE4C\uC6B4 \uC801\uC5D0\uAC8C \uBB34\uAE30\uB97C
-    \uB358\uC9D1\uB2C8\uB2E4."
+  itemDesc: "\uD50C\uB808\uC774\uC5B4\uAC00 \uBC14\uB77C\uBCF4\uB294 \uBC29\uD5A5\uC73C\uB85C
+    \uBB34\uAE30\uB97C \uB358\uC9D1\uB2C8\uB2E4."
   maxlevel: 8
   itemIcon: {fileID: 639922747271519384, guid: 0c8a2a7c17c325746bfbfb846fd72970, type: 3}
   weaponData:
@@ -25,9 +25,9 @@ MonoBehaviour:
     area: 0
     duration: 0
     count: 1
-    speed: 5
+    speed: 12
     knockback: 5
-  acceData: 0
+  acceData: {fileID: 0}
   levelupdata_weapon:
   - damage: 3
     coolTime: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
     count: 3
     speed: 0
     knockback: 0
-  levelupdata_acce: 
+  levelupdata_acce: []
   descriptions:
   - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
   - "\uACF5\uACA9\uB825 3 \uC99D\uAC00, \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
@@ -86,7 +86,8 @@ MonoBehaviour:
   - "\uACF5\uACA9\uB825 4 \uC99D\uAC00, \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
   - "\uACF5\uACA9\uB825 4 \uC99D\uAC00, \uAC1C\uC218 1\uAC1C \uC99D\uAC00"
   - "\uACF5\uACA9\uB825 4 \uC99D\uAC00, \uAC1C\uC218 2\uAC1C \uC99D\uAC00"
-  - "\uC774\uC81C\uBD80\uD130 \uB2E8\uAC80\uC744 \uC0AC\uBC29\uC73C\uB85C \uB358\uC9D1\uB2C8\uB2E4.
+  - "\uC774\uC81C\uBD80\uD130 \uD50C\uB808\uC774\uC5B4\uAC00 \uBC14\uB77C\uBCF4\uB294
+    \uBC29\uD5A5\uC5D0 \uBB34\uAE30\uB97C \uBD80\uCC44\uAF34\uB85C \uB358\uC9D1\uB2C8\uB2E4.
     \uACF5\uACA9\uB825 5 \uC99D\uAC00, \uAC1C\uC218 3\uAC1C \uC99D\uAC00, \uAD00\uD1B5
     1 \uC99D\uAC00"
   projectile: {fileID: 3935420936971645591, guid: 84588ec76e5a12a4c9b1c46a930bf908, type: 3}

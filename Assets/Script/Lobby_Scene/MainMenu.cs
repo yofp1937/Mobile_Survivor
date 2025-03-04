@@ -276,6 +276,10 @@ public class MainMenu : MonoBehaviour
     public void OnClickBuyBtn()
     {
         List<int> _list = GameManager.instance.PD_List;
+        if(GameManager.instance.GetGold() < Ug_cost) // 골드 부족하면 안눌림
+        {
+            return;
+        }
         if(_list[(int)Ug_target] == 5) // 레벨이 5면 버튼 안눌림
         {
             return;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -72,13 +73,15 @@ public class InGameManager : MonoBehaviour
         // 1번 인자(오브젝트)를 2번 인자 위치에, 3번 인자로 설정한 회전값으로 생성한다 부모 객체는 4번 인자
         GameObject character = Instantiate(GameManager.instance.SelectCharacter, player.gameObject.transform.position, Quaternion.identity, player.gameObject.transform);
         character.name = "character"; // 객체의 hierarchy상 이름을 character로 설정
+        player.Init();
         SetWeapon(GameManager.instance.SelectWeapon);
     }
 
     void SetWeapon(ItemData data)
     {
-        Weapon weapon = InGameManager.instance.WeaponManager.transform.Find("Weapon"+data.itemId).GetComponent<Weapon>();
-        weapon.gameObject.SetActive(true);
+        Transform weaponT = WeaponManager.transform.Find("Weapon"+data.itemId);
+        weaponT.gameObject.SetActive(true);
+        WeaponBase weapon = weaponT.GetComponent<WeaponBase>();
         weapon.Init(data);
         weapon.level++;
     }
