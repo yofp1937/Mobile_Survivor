@@ -5,22 +5,20 @@ using UnityEngine;
 public class ThrowWeapon : WeaponBase
 {
     [Header("# Weapon Data")]
-    private int weaponcount; // 한사이클에서 사용할 무기의 총 갯수
     private int per; // 무기의 관통력
     private float interval; // 한사이클에서 무기들의 투척 간격
     Vector3 playerforward;
 
     [Header("# Tools")]
     private bool levelcheck;
-    private List<WeaponSetting> weaponlist;
 
     void Awake()
     {
-        weaponlist = new List<WeaponSetting>();
     }
 
     protected override void Attack()
     {
+        MergeWeaponAndPlayerStats(); // 스탯 동기화
         WeaponLevelCheck(); // 이번 사이클에서 사용할 Weapon Data 리셋
         StartCoroutine(AttackCoroutine());
     }
@@ -28,7 +26,7 @@ public class ThrowWeapon : WeaponBase
     IEnumerator AttackCoroutine()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
-        for(int i = 0; i < weaponcount; i++)
+        for(int i = 0; i < combineProjectileCount; i++)
         {
             // ThrowWeapon 객체 재사용 or 생성
             bool isNew;
@@ -37,7 +35,6 @@ public class ThrowWeapon : WeaponBase
             if(isNew)
             {
                 weaponT.parent = parent;
-                weaponlist.Add(weaponT.GetComponent<WeaponSetting>());
             }
             weaponT.position = transform.position; // 위치 설정
 
@@ -48,15 +45,17 @@ public class ThrowWeapon : WeaponBase
             angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg; // dir 벡터의 각도 계산
             weaponT.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // 적을 바라보게 설정
 
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, per, weapondata.knockback, dir, weaponname); // 객체 기본 정보 설정
+            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, per, weapondata.Knockback, dir, weaponname); // 객체 기본 정보 설정
             weaponT.GetComponent<WeaponSetting>().StartThrowWhileDuration(5f); // 객체 지속시간 설정(5초 후 비활성화)
 
             Rigidbody2D rigid = weaponT.GetComponent<Rigidbody2D>();
             
-            float _speed = weapondata.speed * player.stat.ProjectileSpeed; // 투사체 속도
-            rigid.velocity = dir * _speed; // 날아가는 속도 부여
+            rigid.velocity = dir * combineProjectileSpeed; // 날아가는 속도 부여
             
-            if(!levelcheck && i > 0) AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon); // 최대레벨 아니면 무기 던질때마다 사운드 출력
+            if(!levelcheck && i > 0) 
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon); // 최대레벨 아니면 무기 던질때마다 사운드 출력
+            }
 
             yield return new WaitForSeconds(interval);
         }
@@ -64,7 +63,6 @@ public class ThrowWeapon : WeaponBase
 
     void WeaponLevelCheck()
     {
-        weaponcount = weapondata.count + player.stat.ProjectileCount; // 던질 무기의 총 갯수
         if(level >= 8) // 8이 최고 레벨
         {
             levelcheck = true;
@@ -85,7 +83,7 @@ public class ThrowWeapon : WeaponBase
 
         if(levelcheck) // 무기가 최대레벨일때 작동방식 변경(부채꼴로 _weaponcount만큼의 단검을 투척)
         {
-            float anglestep = 60f / weaponcount; // 부채꼴 범위 (60도) 내에서 균등 분배
+            float anglestep = 60f / combineProjectileCount; // 부채꼴 범위 (60도) 내에서 균등 분배
             float currentAngle = -30f + (anglestep * count); // -30도 ~ +30도 범위에서 분배
             float radian = (currentAngle + Vector3.SignedAngle(Vector3.right, playerforward, Vector3.forward)) * Mathf.Deg2Rad; // 각도를 라디안으로 변환
 

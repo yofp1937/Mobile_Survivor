@@ -11,7 +11,13 @@ public abstract class WeaponBase : MonoBehaviour
     protected WeaponName weaponname; // 무기 이름
 
     [Header("# Essential Data")]
-    protected float coolTime;
+    protected float combineDamage;
+    protected float combineCoolTime;
+    protected float combineAttackRange;
+    protected float combineDuration;
+    protected int combineProjectileCount;
+    protected float combineProjectileSpeed;
+    protected float combineProjectileSize;
     private float lastATKtime;
 
     [Header("# Referenced")]
@@ -39,14 +45,16 @@ public abstract class WeaponBase : MonoBehaviour
         Attack();
     }
 
-    public void LevelUp(WeaponData weapon) // 무기 레벨업시 호출하는 함수
+    public void WeaponLevelUp(WeaponData weapon) // 무기 레벨업시 호출하는 함수
     {
-        weapondata.damage += weapon.damage;
-        weapondata.coolTime -= weapon.coolTime;
-        weapondata.area += weapon.area;
-        weapondata.duration += weapon.duration;
-        weapondata.count += weapon.count;
-        weapondata.speed += weapon.speed;
+        weapondata.Damage += weapon.Damage;
+        weapondata.CoolTime -= weapon.CoolTime;
+        weapondata.AttackRange += weapon.AttackRange;
+        weapondata.Duration += weapon.Duration;
+        weapondata.ProjectileCount += weapon.ProjectileCount;
+        weapondata.ProjectileSpeed += weapon.ProjectileSpeed;
+        weapondata.ProjectileSize += weapon.ProjectileSize;
+        weapondata.Knockback += weapon.Knockback;
 
         if(itemdata.itemType == ItemData.ItemType.Weapon && level == 7)
         {
@@ -56,12 +64,22 @@ public abstract class WeaponBase : MonoBehaviour
         Attack();
     }
 
+    protected void MergeWeaponAndPlayerStats() // 무기 스탯과 플레이어 스탯 결합
+    {
+        combineDamage = weapondata.Damage * player.stat.AttackPower;
+        combineCoolTime = weapondata.CoolTime * player.stat.CoolTime;
+        combineAttackRange = weapondata.AttackRange * player.stat.AttackRange;
+        combineDuration = weapondata.Duration * player.stat.Duration;
+        combineProjectileCount = weapondata.ProjectileCount * player.stat.ProjectileCount;
+        combineProjectileSpeed = weapondata.ProjectileSpeed * player.stat.ProjectileSpeed;
+        combineProjectileSize = weapondata.ProjectileSize * player.stat.ProjectileSize;
+    }
+
     protected virtual void Update() // 쿨타임마다 공격 실행
     {
-        coolTime = weapondata.coolTime * player.stat.CoolTime;
         lastATKtime += Time.deltaTime;
 
-        if(lastATKtime >= coolTime)
+        if(lastATKtime >= combineCoolTime)
         {
             Attack();
             lastATKtime = 0;

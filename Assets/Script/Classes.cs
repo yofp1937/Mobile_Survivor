@@ -6,13 +6,14 @@ using UnityEngine;
 // 무기의 기본 스테이터스
 [Serializable] public class WeaponData
 {
-    public float damage = 0;
-    public float coolTime = 0;
-    public float area = 0;
-    public float duration = 0;
-    public int count = 0;
-    public float speed = 0;
-    public float knockback = 0;
+    public float Damage = 0; // 공격력
+    public float CoolTime = 0; // 쿨타임
+    public float AttackRange = 0; // 공격 범위
+    public float Duration = 0; // 지속시간
+    public int ProjectileCount = 0; // 투사체 갯수
+    public float ProjectileSpeed = 0; // 투사체 속도
+    public float ProjectileSize = 0; // 투사체 크기
+    public float Knockback = 0; // 넉백
 
     public WeaponData Clone()
     {

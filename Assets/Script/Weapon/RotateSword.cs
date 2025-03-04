@@ -18,16 +18,17 @@ public class RotateSword : WeaponBase
     protected override void Update()
     {
         base.Update();
-        transform.Rotate(Vector3.back * weapondata.speed * player.stat.ProjectileSpeed * Time.fixedDeltaTime);
+        transform.Rotate(Vector3.back * combineProjectileSpeed * Time.fixedDeltaTime);
     }
 
     protected override void Attack()
     {
-        DeactiveSword(); // 실행되고있는 RotateSword 전부 비활성화
-        int totalweapons = weapondata.count + player.stat.ProjectileCount; // 무기의 총 개수 설정
-        float anglestep = 360f / totalweapons; // 회전 설정
+        MergeWeaponAndPlayerStats(); // 스탯 동기화
 
-        for(int index = 0; index < totalweapons; index++)
+        DeactiveSword(); // 실행되고있는 RotateSword 전부 비활성화
+        float anglestep = 360f / combineProjectileCount; // 회전 설정
+
+        for(int index = 0; index < combineProjectileCount; index++)
         {
             bool isNew;
             Transform weaponT = InGameManager.instance.WeaponManager.Get(itemdata.itemId, out isNew).transform; // 현재 InGame Scene에 존재하는 RotateSword 객체를 받아옴
@@ -36,7 +37,6 @@ public class RotateSword : WeaponBase
                 weaponT.parent = transform;
                 weaponlist.Add(weaponT.GetComponent<WeaponSetting>());
             }
-
             weaponT.localPosition = Vector3.zero; // 위치 초기화
             weaponT.localRotation = Quaternion.identity; // 회전 초기화
 
@@ -46,11 +46,11 @@ public class RotateSword : WeaponBase
             Vector3 positionOffset = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0); // 원 주변에 위치시키기 위한 벡터
 
             // 무기를 해당 위치로 이동시키고 회전 적용
-            weaponT.Translate(positionOffset * weapondata.area * player.stat.AttackRange, Space.World); // 무기의 위치 설정
+            weaponT.Translate(positionOffset * combineAttackRange, Space.World); // 무기의 위치 설정
             weaponT.up = positionOffset.normalized;
 
             // sword 객체별 정보 재설정
-            weaponT.GetComponent<WeaponSetting>().Init(weapondata.damage * player.stat.AttackPower, -1, weapondata.knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
+            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, weapondata.Knockback, Vector3.zero, weaponname); // 무한 관통이라 per는 -1로 설정
         }
         RotateSwordCoroutine();
     }
@@ -71,10 +71,9 @@ public class RotateSword : WeaponBase
         }
         coroutines.Clear();
 
-        float duration = weapondata.duration * player.stat.Duration;
         foreach(var sword in weaponlist) // sword의 각 객체마다 지속시간 부여하고 동작시킴
         {
-            coroutines.Add(StartCoroutine(sword.AttackWhileDuration(duration)));
+            coroutines.Add(StartCoroutine(sword.AttackWhileDuration(combineDuration)));
         }
     }
 }

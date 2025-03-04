@@ -11,6 +11,7 @@ public class Status : MonoBehaviour
     public float MoveSpeed; // 이동속도(MoveSpeed만큼 증가)
     public int ProjectileCount; // 투사체 개수(ProjectileCount만큼 증가)
     public float ProjectileSpeed; // 투사체 속도(ProjectileSpeed%만큼 빨라짐)
+    public float ProjectileSize; // 투사체 크기(ProjectileSize%만큼 증가)
     public float CoolTime; // 쿨타임(CoolDown%만큼 줄어듬)
     public float Duration; // 지속시간(Duration%만큼 늘어남)
     public float AttackRange; // 공격 범위(AttackRange%만큼 늘어남)
