@@ -1,44 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    #region "Singleton"
     public static GameManager instance;
-    [Header("# Game Control")]
-    public float gameSpeed = 1f; // 게임 속도
-    public float maxGameTime = 30 * 60f; // 최대 게임 시간
-    [SerializeField]
-    private bool DEVELOPE_MODE = false;
-    public bool IsMobile;
     
-    [Header("# Player Data")]
-    // 소지골드와 강화 8개 - 1.체력, 2.공격력, 3.공격속도, 4.쿨타임, 5.공격범위, 6.지속시간, 7.투사체 개수, 8.아이템 획득범위
-    [SerializeField]
-    private int Gold; // 소지 골드
-    [SerializeField]
-    public List<int> PD_List; // PlayerData의 데이터 개수만큼 초기화
-    int maxlevel = 5;
-
-    [Header("# Player Select")]
-    public GameObject SelectCharacter;
-    public ItemData SelectWeapon;
-    public int SelectArtifactId;
-
-    [Header("# Accum Data")]
-    public GameManager_InGameData InGameData;
-    public float gameTime; // 현재 게임 시간
-
-    [Header("# Accum Weapon Damage Data")]
-    public float accumWeaponDamage;
-    public Dictionary<WeaponName, AccumWeaponData> accumWeaponDamageDict = new Dictionary<WeaponName, AccumWeaponData>();
-
-    private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
-
     void Awake()
     {
-        // 싱글톤 패턴 구현
         if (instance == null)
         {
             instance = this;
@@ -48,22 +21,48 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체는 파괴
+            Destroy(gameObject);
+        }
+    }
+    #endregion
+
+    [Header("# Game Control")]
+    public float gameSpeed = 1f; // 게임 속도
+    public float maxGameTime = 30 * 60f; // 최대 게임 시간
+    public float gameTime; // 현재 게임 시간
+    [SerializeField] private bool DEVELOPER_MODE = false;
+    public bool IsDeveloperMode => DEVELOPER_MODE;
+    public bool IsMobile { get; private set; }
+    
+    [Header("# Player Data")]
+    [SerializeField] private int gold; // 소지 골드
+    public int Gold
+    {
+        get => gold;
+        set
+        {
+            gold = value;
+            PlayerPrefs.SetInt("Gold", gold);
+            PlayerPrefs.Save();
         }
     }
 
-    void Init()
-    {
-        Gold = PlayerPrefs.GetInt("Gold");
-        PD_List = new List<int>(new int[System.Enum.GetValues(typeof(PlayerData)).Length]);
-        LoadPlayerData();
-        CheckPlatform();
-    }
+    [Header("# Player Select")]
+    public GameObject SelectCharacter;
+    public int CharacterCode;
+    public ItemData SelectWeapon;
+    public int SelectArtifactId;
 
-    void Start()
+    [Header("# Sub Component")]
+    public GameManager_InGameData InGameData;
+    public GameManager_Status Status;
+
+    private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
+
+    void Init() // Awake()에서 실행
     {
-        DataReset();
-        AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
+        gold = PlayerPrefs.GetInt("Gold");
+        CheckPlatform();
     }
 
     void Update()
@@ -91,7 +90,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DataReset()
+    public void DataReset() // 게임 종료 후 이전 게임 데이터 Reset
     {
         SelectCharacter = null;
         SelectWeapon = null;
@@ -111,85 +110,26 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    // 게임 끝나고 나가기 버튼 누르면 동작
-    public void LoadLobbyScene(bool clear)
+    public void LoadInGameScene()
+    {
+        if(SelectCharacter == null)
+        {
+            return;
+        }
+        else
+        {
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+            SceneManager.LoadScene("InGame");
+        }
+    }
+
+    public void LoadLobbyScene(bool clear) // 게임 끝나고 나가기 버튼 누르면 동작
     {
         AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
         if(clear)
         {
-            SetHaveGold(InGameData.getGold);
+            Gold += InGameData.getGold;
         }
         SceneManager.LoadScene("Lobby");
-    }
-
-    public void SetHaveGold(int gold)
-    {
-        Gold = Gold + gold;
-        PlayerPrefs.SetInt("Gold", Gold);
-        PlayerPrefs.Save();
-    }
-
-    public void UseHaveGold(int usegold)
-    {
-        if(Gold >= usegold)
-        {
-            Gold = Gold - usegold;
-            PlayerPrefs.SetInt("Gold", Gold);
-            PlayerPrefs.Save();
-        }
-    }
-
-    public int GetGold()
-    {
-        return Gold;
-    }
-
-    // 레벨 가져오기
-    public int GetPlayerData(PlayerData type)
-    {
-        return PD_List[(int)type];
-    }
-
-    // 레벨업
-    public void LevelUpPlayerData(PlayerData type)
-    {
-        int index = (int)type;
-
-        if(PD_List[index] < maxlevel)
-        {
-            PD_List[index]++;
-            PlayerPrefs.SetInt(type.ToString(), PD_List[index]); // PlayerPrefs 적용
-            PlayerPrefs.Save(); // PlayerPrefs 저장
-        }
-    }
-
-    // 리스트 설정
-    public void SetPlayerDataList(PlayerData type, int value)
-    {
-        PD_List[(int)type] = value;
-    }
-
-    void LoadPlayerData()
-    {
-        foreach (PlayerData type in System.Enum.GetValues(typeof(PlayerData))) // PlayerData의 데이터를 전부 가져와 배열로 변환해서 모든 값을 순회
-        {
-            int value = PlayerPrefs.GetInt(type.ToString());
-            SetPlayerDataList(type, value);
-        }
-    }
-
-    public void ResetPD()
-    {
-        foreach (PlayerData type in System.Enum.GetValues(typeof(PlayerData))) // PlayerData의 데이터를 전부 가져와 배열로 변환해서 모든 값을 순회
-        {
-            PlayerPrefs.SetInt(type.ToString(), 0); // 0으로 설정
-            PlayerPrefs.Save();
-            SetPlayerDataList(type, 0);
-        }
-    }
-
-    public bool IsDevelopMode()
-    {
-        return DEVELOPE_MODE;
     }
 }

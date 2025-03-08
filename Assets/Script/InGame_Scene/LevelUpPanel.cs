@@ -126,44 +126,44 @@ public class LevelUpPanel : MonoBehaviour
 
     bool CheckMaxLevel(ItemData data)
     {
-        Weapon weapon;
+        WeaponBase weapon;
 
         if(data.itemType == ItemData.ItemType.Weapon)
         {
-            weapon = InGameManager.instance.WeaponManager.transform.Find("Weapon" + data.itemId).GetComponent<Weapon>();
+            weapon = InGameManager.instance.WeaponManager.transform.Find("Weapon" + data.itemId).GetComponent<WeaponBase>();
         }
         else
         {
-            weapon = InGameManager.instance.WeaponManager.transform.Find("Acce" + data.itemId).GetComponent<Weapon>();
+            weapon = InGameManager.instance.WeaponManager.transform.Find("Acce" + data.itemId).GetComponent<WeaponBase>();
         }
 
         return weapon.level == data.maxlevel;
     }
 
-    ItemData getSelectItem(List<int> usedNum)
+    ItemData GetSelectItem(List<int> usedNum)
     {
         List<ItemData> availableItems = new List<ItemData>();
 
         switch (mysitu)
         {
             case ItemSituation.Full:
-                availableItems.AddRange(InGameManager.instance.player.weapon.Select(id => InGameManager.instance.WeaponManager.weapons[id]));
-                availableItems.AddRange(InGameManager.instance.player.accesorries.Select(id => InGameManager.instance.WeaponManager.accessories[id]));
+                availableItems.AddRange(InGameManager.instance.player.weapon.Select(id => InGameManager.instance.WeaponManager.Weapons[id]));
+                availableItems.AddRange(InGameManager.instance.player.accesorries.Select(id => InGameManager.instance.WeaponManager.Accessories[id]));
                 break;
 
             case ItemSituation.OnlyWeapon:
-                availableItems.AddRange(InGameManager.instance.player.weapon.Select(id => InGameManager.instance.WeaponManager.weapons[id]));
-                availableItems.AddRange(InGameManager.instance.WeaponManager.accessories);
+                availableItems.AddRange(InGameManager.instance.player.weapon.Select(id => InGameManager.instance.WeaponManager.Weapons[id]));
+                availableItems.AddRange(InGameManager.instance.WeaponManager.Accessories);
                 break;
 
             case ItemSituation.OnlyAcce:
-                availableItems.AddRange(InGameManager.instance.WeaponManager.weapons);
-                availableItems.AddRange(InGameManager.instance.player.accesorries.Select(id => InGameManager.instance.WeaponManager.accessories[id]));
+                availableItems.AddRange(InGameManager.instance.WeaponManager.Weapons);
+                availableItems.AddRange(InGameManager.instance.player.accesorries.Select(id => InGameManager.instance.WeaponManager.Accessories[id]));
                 break;
 
             case ItemSituation.Available:
-                availableItems.AddRange(InGameManager.instance.WeaponManager.weapons);
-                availableItems.AddRange(InGameManager.instance.WeaponManager.accessories);
+                availableItems.AddRange(InGameManager.instance.WeaponManager.Weapons);
+                availableItems.AddRange(InGameManager.instance.WeaponManager.Accessories);
                 break;
         }
 
@@ -191,7 +191,7 @@ public class LevelUpPanel : MonoBehaviour
 
         while(items.Count < count) // items List의 길이가 count보다 작으면 같아질때까지 계속 추가 
         {
-            ItemData selectedItem = getSelectItem(usedNum);
+            ItemData selectedItem = GetSelectItem(usedNum);
             if (selectedItem != null)
             {
                 items.Add(selectedItem);

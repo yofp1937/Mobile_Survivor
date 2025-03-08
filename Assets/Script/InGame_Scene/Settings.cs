@@ -18,7 +18,7 @@ public class Settings : MonoBehaviour
             Image slotimage = WeaponSlots[i].transform.Find("Image").GetComponent<Image>();
             Text slottext = WeaponSlots[i].transform.Find("Text").GetComponent<Text>();
 
-            Weapon weapon = GameObject.Find("Weapon" + weapons[i]).GetComponent<Weapon>(); // weapons[i]에 들어있는 weapon 객체를 찾음
+            WeaponBase weapon = GameObject.Find("Weapon" + weapons[i]).GetComponent<WeaponBase>();
             slotimage.gameObject.SetActive(true);
             slotimage.sprite = weapon.itemdata.itemIcon;
             slotimage.SetNativeSize();
@@ -31,7 +31,7 @@ public class Settings : MonoBehaviour
             Image slotimage = AcceSlots[i].transform.Find("Image").GetComponent<Image>();
             Text slottext = AcceSlots[i].transform.Find("Text").GetComponent<Text>();
 
-            Weapon acce = GameObject.Find("Acce" + acces[i]).GetComponent<Weapon>(); // weapons[i]에 들어있는 weapon 객체를 찾음
+            WeaponBase acce = GameObject.Find("Acce" + acces[i]).GetComponent<WeaponBase>();
             slotimage.gameObject.SetActive(true);
             slotimage.sprite = acce.itemdata.itemIcon;
             slotimage.SetNativeSize();

@@ -6,13 +6,13 @@ using UnityEngine;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField]
-    GM_Inventory inven;
+    GameManager_Inventory inven;
     public InventorySlot[] slots;
     public Transform slotHolder;
 
     void Start()
     {
-        inven = GM_Inventory.instance;
+        inven = GameManager_Inventory.instance;
         slots = slotHolder.GetComponentsInChildren<InventorySlot>();
         Init();
     }
@@ -35,11 +35,11 @@ public class InventoryUI : MonoBehaviour
     public void AddSlot()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        if(GameManager.instance.GetGold() < 50)
+        if(GameManager.instance.Gold < 50)
         {
             return;
         }
-        GameManager.instance.UseHaveGold(50);
+        GameManager.instance.Gold -= 50;
         inven.SlotCnt++;
         CreateSlot();
     }

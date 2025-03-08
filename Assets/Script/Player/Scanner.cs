@@ -11,11 +11,11 @@ public class Scanner : MonoBehaviour
     public Collider2D[] targets;
     public Transform nearestTarget;
 
-    // Scene에서 플레이어의 EnemyScan 범위 표시
+    // Scene에서 플레이어의 EnemyScan 범위 초록색으로 표시
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.green; // 초록색으로 설정
-        Gizmos.DrawWireSphere(transform.position, activescanRange); // 얇은 실선으로 원 그리기
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, activescanRange);
     }
 
     public Transform GetNearestTarget() // activescanRange 내부의 가장 가까운 Enemy 레이어를 찾아서 return해주는 함수

@@ -6,10 +6,22 @@ using UnityEngine;
     각종 enum(열거형 데이터) 초기화
 */
 
-public enum PlayerData {Hp, AttackPower, AttackSpeed, Cooldown, AttackRange, Duration, Amount, Magnet} // 로비 강화 탭에서 강화하는 능력치들
+public enum UpgradeEnum {Hp, AttackPower, ProjectileCount, ProjectileSpeed, CoolTime, Duration, AttackRange, ObtainRange} // 로비 강화 탭에서 강화하는 능력치들
 
-// 무기 종류
-public enum WeaponName { RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave }
+public enum PoolList // ObjectPoolling을 활용하는 객체 리스트
+{
+    None = -1,
+    // Weapons
+    RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave,
+    // Enemies
+    FlyEye, Goblin, Mushroom, Skeleton,
+    // Items
+    ExpJewel_1, ExpJewel_3, ExpJewel_5, Gold, Magnet, Potion,
+    // DmgPopUp
+    DamagePopUp
+}
+
+public enum WeaponName { RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave } // 무기 종류
 
 
 // 아이템 등급

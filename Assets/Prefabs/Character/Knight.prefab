@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5106105773733361972}
   - component: {fileID: 2347848605123199552}
-  - component: {fileID: 8284125642603111018}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Untagged
@@ -57,34 +56,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8284125642603111018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2111109560695727482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d879c1d4ab351bf4683ca7a45573cab9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Hp: 100
-  HpRegen: 1
-  AttackPower: 30
-  Defense: 0
-  MoveSpeed: 3.5
-  ProjectileCount: 0
-  ProjectileSpeed: 1
-  ProjectileSize: 1
-  CoolTime: 1
-  Duration: 1
-  AttackRange: 1
-  ObtainRange: 3.5
-  CriticalChance: 5
-  CriticalDamage: 50
-  Luck: 0
-  Curse: 0
 --- !u!1 &4875809962043044292
 GameObject:
   m_ObjectHideFlags: 0

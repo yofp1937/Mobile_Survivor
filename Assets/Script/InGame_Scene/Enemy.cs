@@ -51,14 +51,15 @@ public class Enemy : MonoBehaviour
         spriter.flipX = target.position.x < rigid.position.x; // 플레이어 위치에따라 좌우 모습 변경
     }
 
-    public void Init(SpawnData data, int monstertype)
+    public void Init(SpawnData data, PoolList monstertype)
     {
         target = InGameManager.instance.player.GetComponent<Rigidbody2D>();
         moveSpeed = data.speed;
         health = data.health;
         gameObject.name = "Enemy";
+        gameObject.transform.parent = InGameManager.instance.PoolManager.transform.Find("Enemy");
 
-        GameObject prefab = InGameManager.instance.EnemyPoolManager.prefabs[monstertype];
+        GameObject prefab = InGameManager.instance.PoolManager.GetPrefab(monstertype);
         Animator prefabanim = prefab.GetComponent<Animator>();
         CapsuleCollider2D prefabcoll = prefab.GetComponent<CapsuleCollider2D>();
         anim.runtimeAnimatorController = prefabanim.runtimeAnimatorController;
@@ -169,21 +170,25 @@ public class Enemy : MonoBehaviour
     {
         int JewelCount = InGameManager.instance.JewelCount;
         int index;
+        PoolList item;
 
         if(GameManager.instance.gameTime >= 1680) // 28분부턴 경험치 5
         {
             index = 2;
+            item = PoolList.ExpJewel_5;
         }
         else if(GameManager.instance.gameTime >= 1200) // 20분부턴 경험치 3
         {
             index = 1;
+            item = PoolList.ExpJewel_3;
         }
         else
         {
             index = 0;
+            item = PoolList.ExpJewel_1;
         }
 
-        if(JewelCount >= 200) // 보석의 갯수가 200개가 넘어가면 가장 가까운 보석의 경험치량을 증가시킴
+        if(JewelCount >= 150) // 보석의 갯수가 150개가 넘어가면 가장 가까운 보석의 경험치량을 증가시킴
         {
             DropItem nearjewel = null;
             float finddistance = Mathf.Infinity;
@@ -211,7 +216,7 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
+            Transform itemT = InGameManager.instance.PoolManager.Get(item, out bool isNew).transform;
             itemT.position = gameObject.transform.position;
             itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
             itemT.GetComponent<DropItem>().Init(index);
@@ -221,30 +226,35 @@ public class Enemy : MonoBehaviour
     void DropItem()
     {
         float randomValue = Random.Range(0f,100f);
+        PoolList item;
         int index;
 
         if (randomValue < 0.1f)  // 0.1% 확률로 자석 드랍
         {
-            index = 5;
+            index = 4;
+            item = PoolList.Magnet;
         }
         else if (randomValue < 1.6f)  // 1.5% 확률로 골드 드랍 (0.1f 이상 1.6f 미만)
         {
             index = 3;
+            item = PoolList.Gold;
         }
         else if (randomValue < 4.6f)  // 3% 확률로 포션 드랍 (1.6f 이상 4.6f 미만)
         {
-            index = 4;
+            index = 5;
+            item = PoolList.Potion;
         }
         else // 아이템이 안뜨면 index = 0
         {
             index = 0;
+            item = PoolList.None;
         }
 
         if(index > 0 && InGameManager.instance.DropItemCount <= 49) // index가 0보다 크고, 필드에 존재하는 아이템 개수가 50개 미만이면 아이템 소환
         {
             InGameManager.instance.DropItemCount++;
 
-            Transform itemT = InGameManager.instance.PoolManager.Get(index).transform;
+            Transform itemT = InGameManager.instance.PoolManager.Get(item, out bool isNew).transform;
             itemT.position = gameObject.transform.position;
             itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
 

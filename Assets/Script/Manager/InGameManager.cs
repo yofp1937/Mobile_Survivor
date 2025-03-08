@@ -2,18 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class InGameManager : MonoBehaviour
 {
+    #region "Singleton"
     public static InGameManager instance;
+    
+    void Awake()
+    {
+        instance = this;
+    }
+    #endregion
 
     [Header("# GameObject")]
     public Player player;
-    public EnemyPoolManager EnemyPoolManager;
-    public WeaponManager WeaponManager;
     public GameObject LevelUpPanel;
+    public WeaponManager WeaponManager;
     public PoolManager PoolManager;
     public GameObject Settings;
     GameObject SettingsBtn;
@@ -36,11 +40,6 @@ public class InGameManager : MonoBehaviour
     public bool living = true;
     public bool OnSettings = false;
     public bool OnLevelUp = false;
-    
-    void Awake()
-    {
-        instance = this;
-    }
 
     void Start() // InGame으로 Scene이 전환되면 시작되는곳
     {
@@ -83,7 +82,6 @@ public class InGameManager : MonoBehaviour
         weaponT.gameObject.SetActive(true);
         WeaponBase weapon = weaponT.GetComponent<WeaponBase>();
         weapon.Init(data);
-        weapon.level++;
     }
 
     public void GameOver() // 게임 패배시 사용
@@ -186,7 +184,7 @@ public class InGameManager : MonoBehaviour
     {
         for(int i = 0; i < player.weapon.Count ; i++)
         {
-            Weapon weapon = player.transform.Find("Weapon").Find("Weapon" + player.weapon[i]).GetComponent<Weapon>();
+            WeaponBase weapon = player.transform.Find("Weapon").Find("Weapon" + player.weapon[i]).GetComponent<WeaponBase>();
 
             GameManager.instance.InGameData.accumWeaponDamageDict[weapon.weaponname].SetLevel(weapon.level);
         }

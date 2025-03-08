@@ -30,9 +30,9 @@ Transform:
   m_GameObject: {fileID: 181887081593026323}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.8872, y: 2.7281, z: 0}
-  m_LocalScale: {x: 3.6383739, y: 20.668442, z: 3.1225219}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 5, y: 21.666666, z: 1.6666666}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -186,3 +186,4 @@ MonoBehaviour:
   damage: 0
   per: 0
   knockbackForce: 0
+  weaponname: 0

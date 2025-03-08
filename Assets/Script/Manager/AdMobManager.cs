@@ -48,14 +48,13 @@ public class AdMobManager : MonoBehaviour
         
         var adRequest = new AdRequest.Builder().Build(); // 광고 데이터 생성
 
-        RewardedAd.Load(GameManager.instance.IsDevelopMode() ? testAdId : rewardAdId , adRequest, (RewardedAd ad, LoadAdError error) =>
+        RewardedAd.Load(GameManager.instance.IsDeveloperMode ? testAdId : rewardAdId , adRequest, (RewardedAd ad, LoadAdError error) =>
         {
             if (error != null || ad == null)
             {
                 Debug.LogError("광고 생성 실패 "+ error);
                 return;
             }
-            Debug.Log("광고 갱신 성공");
             rewardedAd = ad;
             RewardAdEventHandlers(rewardedAd);
         });

@@ -1,16 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SelectCharacter : MonoBehaviour
 {
-    [Header("# Character Prefab")]
-    public List<GameObject> characters; // Hierarchy상에 존재하는 캐릭터 GameObject들
-    public List<GameObject> prefabs; // Project상에 존재하는 캐릭터 Prefab들
+    [Header("# Character Data")]
+    public List<GameObject> characters; // In Hierarchy
+    public List<GameObject> prefabs; // In Project
 
-    [Header("# Weapon Prefab")]
+    [Header("# Weapon Data")]
     public List<ItemData> weapons;
 
     public Button startbtn;
@@ -24,6 +23,7 @@ public class SelectCharacter : MonoBehaviour
         }
         characters[index].SetActive(true);
         GameManager.instance.SelectCharacter = prefabs[index];
+        GameManager.instance.CharacterCode = index;
         startbtn.interactable = true;
     }
 

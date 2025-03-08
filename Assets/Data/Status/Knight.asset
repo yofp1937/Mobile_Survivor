@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e2a42ff5f641d41a7e0ca07af3a295, type: 3}
+  m_Name: Knight
+  m_EditorClassIdentifier: 
+  Stat:
+    Hp: 100
+    HpRegen: 1
+    AttackPower: 100
+    Defense: 0
+    MoveSpeed: 3.5
+    ProjectileCount: 0
+    ProjectileSpeed: 1
+    ProjectileSize: 1
+    CoolTime: 1
+    Duration: 1
+    AttackRange: 1
+    ObtainRange: 1
+    CriticalChance: 5
+    CriticalDamage: 50
+    Luck: 0
+    Curse: 0

@@ -43,7 +43,7 @@ public class DropItem : MonoBehaviour
             jewel = false;
         }
 
-        GameObject prefab = InGameManager.instance.PoolManager.items[index];
+        GameObject prefab = InGameManager.instance.PoolManager.Items[index];
         SpriteRenderer Pspriter = prefab.GetComponent<SpriteRenderer>();
         CapsuleCollider2D prefabcoll = prefab.GetComponent<CapsuleCollider2D>();
 
@@ -125,15 +125,15 @@ public class DropItem : MonoBehaviour
                     InGameManager.instance.DropItemCount--;
                     player.GetGold(1);
                 }
-                else if(type == 4) // item이 potion이면
-                {
-                    InGameManager.instance.DropItemCount--;
-                    player.GetHeal(20);
-                }
-                else if(type == 5) // item이 magnet이면
+                else if(type == 4) // item이 magnet이면
                 {
                     InGameManager.instance.DropItemCount--;
                     player.ActiveMagnet();
+                }
+                else if(type == 5) // item이 potion이면
+                {
+                    InGameManager.instance.DropItemCount--;
+                    player.GetHeal(20);
                 }
                 gameObject.SetActive(false);
             }

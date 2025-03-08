@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a04dfe70b6df7ee4a8c60a6bc4037f21, type: 3}
+  m_Name: 5.Duration
+  m_EditorClassIdentifier: 
+  EnumName: 5
+  Data:
+    Hp: 0
+    HpRegen: 0
+    AttackPower: 0
+    Defense: 0
+    MoveSpeed: 0
+    ProjectileCount: 0
+    ProjectileSpeed: 0
+    ProjectileSize: 0
+    CoolTime: 0
+    Duration: 0.04
+    AttackRange: 0
+    ObtainRange: 0
+    CriticalChance: 0
+    CriticalDamage: 0
+    Luck: 0
+    Curse: 0
+  MaxLevel: 5
+  CostList: 32000000960000002c010000f4010000e8030000
+  Desc: "\uC9C0\uC18D\uC2DC\uAC04 +4%"

@@ -18,13 +18,13 @@ public class FollowPlayer : MonoBehaviour
         }
 
         // Test Code
-        if(Input.GetButtonDown("Jump") && GameManager.instance.IsDevelopMode())
+        if(Input.GetButtonDown("Jump") && GameManager.instance.IsDeveloperMode)
         {
             InGameManager.instance.player.LevelUp();
         }
 
         // Test Code - 숫자패드 + 누르면 5초 증가
-        if(Input.GetKeyDown(KeyCode.KeypadPlus) && GameManager.instance.IsDevelopMode())
+        if(Input.GetKeyDown(KeyCode.KeypadPlus) && GameManager.instance.IsDeveloperMode)
         {
             GameManager.instance.gameTime += 5;
         }

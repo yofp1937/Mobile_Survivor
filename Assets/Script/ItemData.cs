@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Item", menuName = "Scriptable Object/ItemData", order = 1)]
@@ -17,12 +16,11 @@ public class ItemData : ScriptableObject
     public int maxlevel;
     public Sprite itemIcon;
     public WeaponData weaponData;
-    public Status acceData;
+    public AcceData acceData;
 
     [Header("# Level Data")]
     // 최대레벨만큼 배열 늘리기
     public WeaponData[] levelupdata_weapon;
-    public Status[] levelupdata_acce;
     public string[] descriptions;
 
     [Header("# Weapon")]
@@ -38,12 +36,6 @@ public class ItemData : ScriptableObject
     {
         switch(itemType)
         {
-            case ItemType.Weapon:
-                maxlevel = 8;
-                break;
-            case ItemType.Accessories:
-                maxlevel = 5;
-                break;
             case ItemType.Artifacts:
                 maxlevel = 1;
                 break;

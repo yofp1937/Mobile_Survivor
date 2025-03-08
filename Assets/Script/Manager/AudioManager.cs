@@ -77,6 +77,8 @@ public class AudioManager : MonoBehaviour
             sfxPlayers[i].bypassListenerEffects = true;
             sfxPlayers[i].volume = sfxVolume;
         }
+
+        PlayBgm(AudioManager.Bgm.Lobby);
     }
 
     public void SetBgmVolume(float volume)

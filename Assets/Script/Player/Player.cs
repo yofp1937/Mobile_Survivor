@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,7 @@ public class Player : MonoBehaviour
     public float maxHealth = 100;
     public float moveSpeed = 4f;
     public float scanRange;
-    public float magnetRange;
+    public float magnetRange = 3.5f;
     public int level;
     public int exp;
     public List<int> weapon;
@@ -26,8 +27,8 @@ public class Player : MonoBehaviour
     [Header("# Reference Object")]
     public Scanner scanner;
     public Status stat;
-
-    GameObject Character;
+    
+    GameObject character;
     Rigidbody2D rigid;
     Animator anim;
 
@@ -41,9 +42,10 @@ public class Player : MonoBehaviour
 
     public void Init()
     {
-        Character = transform.Find("character").gameObject;
-        stat = Character.GetComponent<Status>();
-        anim = Character.GetComponent<Animator>();
+        character = transform.Find("character").gameObject;
+        stat.CloneStatus(GameManager.instance.Status.StatusDataList[GameManager.instance.CharacterCode].Stat);
+        GameManager.instance.Status.CombineUpgradeStat(stat);
+        anim = character.GetComponent<Animator>();
         health = maxHealth;
     }
 
@@ -92,9 +94,9 @@ public class Player : MonoBehaviour
             anim.SetFloat("Speed", inputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
             if(inputVec.x > 0)
             {
-                Character.transform.rotation = Quaternion.Euler(0, 180, 0);
+                character.transform.rotation = Quaternion.Euler(0, 180, 0);
             } else {
-                Character.transform.rotation = Quaternion.Euler(0, 0, 0);
+                character.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }
@@ -214,4 +216,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    // Scene에서 아이템 획득 범위 회색으로 표시
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.grey;
+        Gizmos.DrawWireSphere(transform.position, magnetRange * stat.ObtainRange);
+    }
 }
