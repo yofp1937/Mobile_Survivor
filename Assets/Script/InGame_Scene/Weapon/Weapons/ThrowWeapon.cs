@@ -26,7 +26,7 @@ public class ThrowWeapon : WeaponBase
         for(int i = 0; i < combineProjectileCount; i++)
         {
             Transform weaponT = GetObjAndSetBase(PoolList.ThrowWeapon, parent, combineProjectileSize, out bool isNew);
-            playerforward = player.moveDirection.normalized; // 플레이어가 바라보는 방향
+            playerforward = player.MoveDirection.normalized; // 플레이어가 바라보는 방향
 
             weaponT = SetDir(weaponT, i); // 무기 각도 계산
 

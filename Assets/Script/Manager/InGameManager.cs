@@ -50,11 +50,11 @@ public class InGameManager : MonoBehaviour
         VolumeSettings.SetActive(false);
         ExitPanel.SetActive(false);
         GameResultPanel.SetActive(false);
-        player.joy.gameObject.SetActive(false);
+        player.JoyStick.gameObject.SetActive(false);
         OptionBtn.SetActive(false);
         if(GameManager.instance.IsMobile)
         {
-            player.joy.gameObject.SetActive(true);
+            player.JoyStick.gameObject.SetActive(true);
             OptionBtn.SetActive(true);
         }
 
@@ -93,7 +93,7 @@ public class InGameManager : MonoBehaviour
         GameExitBtn.SetActive(true);
         if(GameManager.instance.IsMobile)
         {
-            player.joy.gameObject.SetActive(false);
+            player.JoyStick.gameObject.SetActive(false);
         }
     }
 
@@ -105,7 +105,7 @@ public class InGameManager : MonoBehaviour
         GameExitBtn.SetActive(true);
         if(GameManager.instance.IsMobile)
         {
-            player.joy.gameObject.SetActive(false);
+            player.JoyStick.gameObject.SetActive(false);
         }
     }
 
@@ -120,7 +120,7 @@ public class InGameManager : MonoBehaviour
         if(GameManager.instance.IsMobile)
         {
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-            player.joy.gameObject.SetActive(false);
+            player.JoyStick.gameObject.SetActive(false);
         }
         GameManager.instance.TimerStop();
     }
@@ -134,7 +134,7 @@ public class InGameManager : MonoBehaviour
         if(GameManager.instance.IsMobile)
         {
             AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-            player.joy.gameObject.SetActive(true);
+            player.JoyStick.gameObject.SetActive(true);
         }
         GameManager.instance.TimerStart();
     }
@@ -182,9 +182,9 @@ public class InGameManager : MonoBehaviour
     // GameOver에서 통계창에서 보여줄 무기의 레벨을 적용하기위해 실행
     public void SetAccumWeaponData()
     {
-        for(int i = 0; i < player.weapon.Count ; i++)
+        for(int i = 0; i < player.WeaponList.Count ; i++)
         {
-            WeaponBase weapon = player.transform.Find("Weapon").Find("Weapon" + player.weapon[i]).GetComponent<WeaponBase>();
+            WeaponBase weapon = player.transform.Find("Weapon").Find("Weapon" + player.WeaponList[i]).GetComponent<WeaponBase>();
 
             GameManager.instance.InGameData.accumWeaponDamageDict[weapon.weaponname].SetLevel(weapon.level);
         }

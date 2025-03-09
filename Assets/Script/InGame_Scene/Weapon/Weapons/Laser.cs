@@ -14,7 +14,7 @@ public class Laser : WeaponBase
     protected override void Attack()
     {
         Transform parent = poolManager.transform.Find("Weapon").Find("Weapon2");
-        List<Transform> targets = player.scanner.GetTargetsInScanRange(combineProjectileCount);
+        List<Transform> targets = player.Scanner.GetTargetsInScanRange(combineProjectileCount);
 
         for(int i = 0; i < combineProjectileCount; i++)
         {

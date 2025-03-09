@@ -10,8 +10,8 @@ public class Settings : MonoBehaviour
 
     public void SettingSlot()
     {
-        List<int> weapons = InGameManager.instance.player.weapon;
-        List<int> acces = InGameManager.instance.player.accesorries;
+        List<int> weapons = InGameManager.instance.player.WeaponList;
+        List<int> acces = InGameManager.instance.player.AcceList;
 
         for(int i = 0; i < weapons.Count; i++)
         {

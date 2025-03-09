@@ -8,18 +8,18 @@ public class PoolManager : MonoBehaviour
     [Header(" # Prefab Data")]
     public GameObject[] Enemies;
     public GameObject[] Items;
-    public GameObject DmgPopUp;
+    public GameObject DmgPopup;
 
-    private Dictionary<PoolList, List<GameObject>> pools;
+    Dictionary<PoolList, List<GameObject>> _pools;
 
     void Awake()
     {
-        pools = new Dictionary<PoolList, List<GameObject>>();
+        _pools = new Dictionary<PoolList, List<GameObject>>();
 
         // Dictionary 초기화
-        foreach(PoolList obj in Enum.GetValues(typeof(PoolList)))
+        foreach(PoolList name in Enum.GetValues(typeof(PoolList)))
         {
-            pools[obj] = new List<GameObject>();
+            _pools[name] = new List<GameObject>();
         }
     }
 
@@ -32,7 +32,7 @@ public class PoolManager : MonoBehaviour
             return result;
         }
         
-        foreach(GameObject item in pools[obj])
+        foreach(GameObject item in _pools[obj])
         {
             if(!item.activeSelf)
             {
@@ -47,7 +47,7 @@ public class PoolManager : MonoBehaviour
             GameObject prefab = GetPrefab(obj);
             isNew = true;
             result = Instantiate(prefab, transform);
-            pools[obj].Add(result);
+            _pools[obj].Add(result);
 
             // 서브 프리팹이 있는 객체들은 여기서 추가 - 나중에 코드 개선해야함
             if(obj == PoolList.Fireball)
@@ -56,6 +56,29 @@ public class PoolManager : MonoBehaviour
                 GameObject child = Instantiate(prefab, result.transform);
             }
         }
+
+        return result;
+    }
+
+    public GameObject GetDmgPopup(float damage, Vector3 position, bool isCritical)
+    {
+        GameObject result = null;
+        Transform parent = transform.Find("DamagePopup");
+
+        foreach(GameObject item in _pools[PoolList.DamagePopUp]) // 비활성화된 DamagePopup 찾음
+        {
+            if(!item.activeSelf)
+            {
+                result = item;
+                result.transform.position = position;
+            }
+        }
+        if(!result)
+        {
+            result = Instantiate(DmgPopup, position, Quaternion.identity, parent);
+            _pools[PoolList.DamagePopUp].Add(result);
+        }
+        result = ActivePopup(result, damage, isCritical);
 
         return result;
     }
@@ -88,9 +111,17 @@ public class PoolManager : MonoBehaviour
             case PoolList.Potion: return Items[5];
 
             // DmgPopUp
-            case PoolList.DamagePopUp: return DmgPopUp;
+            case PoolList.DamagePopUp: return DmgPopup;
 
             default: return null;
         }
+    }
+    GameObject ActivePopup(GameObject obj, float damage, bool isCritical) // Popup의 표시 Damage 수정, 객체 활성화까지 시켜주는 함수
+    {
+        DamagePopup damagepopup = obj.GetComponent<DamagePopup>();
+        int roundeddamage = Mathf.RoundToInt(damage);
+        damagepopup.Setup(roundeddamage, isCritical);
+        obj.SetActive(true);
+        return obj;
     }
 }

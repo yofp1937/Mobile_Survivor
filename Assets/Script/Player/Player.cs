@@ -7,46 +7,51 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [Header("# Player Info")]
-    public float health;
-    public float maxHealth = 100;
-    public float moveSpeed = 4f;
-    public float scanRange;
-    public float magnetRange = 3.5f;
-    public int level;
-    public int exp;
-    public List<int> weapon;
-    public List<int> accesorries;
-    public int maxlevelcount;
-    public List<int> nextExp = new List<int> { 3, };
+    public float Health;
+    public float MaxHealth = 100;
+    [SerializeField] float _movespeed = 4f;
+    [SerializeField] float _magnetrange = 3.5f;
+    public int Level;
+    public int Exp;
+    public List<int> WeaponList;
+    public List<int> AcceList;
+    public int MaxLevelCount;
+    public List<int> NextExp = new List<int> { 3, };
 
     [Header("# Player Input")]
-    public Vector2 inputVec;
-    public VariableJoystick joy;
-    public Vector2 moveDirection;
+    [SerializeField] Vector2 inputVec;
+    public VariableJoystick JoyStick;
+    public Vector2 MoveDirection;
 
     [Header("# Reference Object")]
-    public Scanner scanner;
-    public Status stat;
+    public Scanner Scanner;
+    public Status Status;
     
-    GameObject character;
-    Rigidbody2D rigid;
-    Animator anim;
+    GameObject _character;
+    Rigidbody2D _rigid;
+    Animator _animator;
 
     void Awake()
     {
-        weapon = new List<int>();
-        accesorries = new List<int>();
-        rigid = GetComponent<Rigidbody2D>();
-        moveDirection = transform.right;
+        WeaponList = new List<int>();
+        AcceList = new List<int>();
+        _rigid = GetComponent<Rigidbody2D>();
+        MoveDirection = transform.right;
     }
 
     public void Init()
     {
-        character = transform.Find("character").gameObject;
-        stat.CloneStatus(GameManager.instance.Status.StatusDataList[GameManager.instance.CharacterCode].Stat);
-        GameManager.instance.Status.CombineUpgradeStat(stat);
-        anim = character.GetComponent<Animator>();
-        health = maxHealth;
+        _character = transform.Find("character").gameObject;
+        StatusSetting();
+        _animator = _character.GetComponent<Animator>();
+    }
+
+    void StatusSetting()
+    {
+        Status.CloneStatus(GameManager.instance.Status.StatusDataList[GameManager.instance.CharacterCode].Stat);
+        GameManager.instance.Status.CombineUpgradeStat(Status);
+        MaxHealth = Status.Hp;
+        Health = MaxHealth;
     }
 
     void OnMove(InputValue value)
@@ -57,6 +62,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         PullItems();
+        RegenHp();
     }
 
     void FixedUpdate()
@@ -66,8 +72,8 @@ public class Player : MonoBehaviour
             Vector2 nextVec;
             if(GameManager.instance.IsMobile)
             {
-                float x = joy.Horizontal;
-                float y = joy.Vertical;
+                float x = JoyStick.Horizontal;
+                float y = JoyStick.Vertical;
 
                 inputVec = new Vector2(x, y);
 
@@ -76,13 +82,13 @@ public class Player : MonoBehaviour
                     inputVec = inputVec.normalized;
                 }
             }
-            nextVec = inputVec * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+            nextVec = inputVec * _movespeed * Time.fixedDeltaTime; // 이동해야할 위치
             transform.Translate(nextVec); // Player 객체를 이동
-            rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
+            _rigid.velocity = Vector2.zero; // Enemy와 충돌시 밀림현상 방지
 
             if(inputVec.sqrMagnitude > 0.01f) // 움직이는 방향 저장
             {
-                moveDirection = inputVec;
+                MoveDirection = inputVec;
             }
         }
     }
@@ -91,34 +97,34 @@ public class Player : MonoBehaviour
     {
         if(InGameManager.instance.living)
         {
-            anim.SetFloat("Speed", inputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
+            _animator.SetFloat("Speed", inputVec.magnitude); // inputVec의 값이 0보다 크면 walk 애니메이션 실행
             if(inputVec.x > 0)
             {
-                character.transform.rotation = Quaternion.Euler(0, 180, 0);
+                _character.transform.rotation = Quaternion.Euler(0, 180, 0);
             } else {
-                character.transform.rotation = Quaternion.Euler(0, 0, 0);
+                _character.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
         }
     }
 
-    public void GetExp(int _exp)
+    public void GetExp(int exp)
     {
-        exp += _exp;
+        Exp += exp;
 
-        if(exp >= nextExp[level]){
+        if(Exp >= NextExp[Level]){
             LevelUp();
         }
     }
 
     public void GetHeal(int count)
     {
-        if(health + count > maxHealth)
+        if(Health + count > MaxHealth)
         {
-            health = maxHealth;
+            Health = MaxHealth;
         }
         else
         {
-            health += count;
+            Health += count;
         }
         GameManager.instance.InGameData.getPotion++;
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Heal);
@@ -126,13 +132,13 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        health -= damage;
+        Health -= damage;
         GameManager.instance.InGameData.accumDamage += damage;
-        if(health <= 0)
+        if(Health <= 0)
         {
             InGameManager.instance.GameOver();
-            anim.SetTrigger("die");
-            anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+            _animator.SetTrigger("die");
+            _animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
     }
 
@@ -149,45 +155,45 @@ public class Player : MonoBehaviour
         // 기본적으로 다음 레벨까지 필요한 경험치는 - 현재 레벨까지 필요했던 경험치 + 추가로 필요한 경험치
         if(GameManager.instance.gameTime > 1200) // 25분 이후부턴 경험치+180 필요
         {
-            NeedNextLevelExp = nextExp[level] + 180;
+            NeedNextLevelExp = NextExp[Level] + 180;
         }
         else if(GameManager.instance.gameTime > 1200) // 20분 이후부턴 경험치+80 필요
         {
-            NeedNextLevelExp = nextExp[level] + 80;
+            NeedNextLevelExp = NextExp[Level] + 80;
         }
         else if(GameManager.instance.gameTime > 900) // 15분 이후부턴 경험치+35 필요
         {
-            NeedNextLevelExp = nextExp[level] + 35;
+            NeedNextLevelExp = NextExp[Level] + 35;
         }
         else if(GameManager.instance.gameTime > 600) // 10분 이후부턴 경험치+15 필요
         {
-            NeedNextLevelExp = nextExp[level] + 15;
+            NeedNextLevelExp = NextExp[Level] + 15;
         }
         else
         {
-            NeedNextLevelExp = nextExp[level] + 5;
+            NeedNextLevelExp = NextExp[Level] + 5;
         }
 
-        nextExp.Add(NeedNextLevelExp);
+        NextExp.Add(NeedNextLevelExp);
     }
 
     public void LevelUp()
     {
         NeedNextLevelExp();
-        level++;
+        Level++;
         GameManager.instance.TimerStop();
         AudioManager.instance.EffectBgm(true);
         InGameManager.instance.LevelUpPanel.SetActive(true);
         if(GameManager.instance.IsMobile)
         {
-            joy.gameObject.SetActive(false);
+            JoyStick.gameObject.SetActive(false);
         }
-        exp = 0;
+        Exp = 0;
     }
 
     void PullItems()
     {
-        float _range = magnetRange * stat.ObtainRange;
+        float _range = _magnetrange * Status.ObtainRange;
         // 스캔 범위 내 모든 2D 콜라이더 탐색
         Collider2D[] itemsInRange = Physics2D.OverlapCircleAll(transform.position, _range);
 
@@ -200,6 +206,15 @@ public class Player : MonoBehaviour
                 item.transform.position = Vector2.MoveTowards(item.transform.position, transform.position, _speed * Time.deltaTime);
             }
         }
+    }
+
+    void RegenHp()
+    {
+        if(Health >= MaxHealth) return;
+
+        float regenhpPerSecond = Status.HpRegen / 3f;
+        Health += regenhpPerSecond * Time.deltaTime;
+        Health = Mathf.Min(Health, MaxHealth); // 최대체력 초과 방지
     }
 
     public void ActiveMagnet()
@@ -220,6 +235,9 @@ public class Player : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.color = Color.grey;
-        Gizmos.DrawWireSphere(transform.position, magnetRange * stat.ObtainRange);
+        if(Status != null)
+        {
+            Gizmos.DrawWireSphere(transform.position, _magnetrange * Status.ObtainRange);
+        }
     }
 }

@@ -52,14 +52,14 @@ public class HUD : MonoBehaviour
 
     void UpdateExp() // 경험치 표시
     {
-        float curExp = InGameManager.instance.player.exp;
-        float maxExp = InGameManager.instance.player.nextExp[InGameManager.instance.player.level];
+        float curExp = InGameManager.instance.player.Exp;
+        float maxExp = InGameManager.instance.player.NextExp[InGameManager.instance.player.Level];
         mySlider.value = curExp / maxExp;
     }
 
     void UpdateLevel() // 플레이어 레벨 표시
     {
-        myText.text = string.Format("Lv.{0:F0}", InGameManager.instance.player.level);
+        myText.text = string.Format("Lv.{0:F0}", InGameManager.instance.player.Level);
     }
 
     void UpdateKill() // 킬수 표시
@@ -81,8 +81,8 @@ public class HUD : MonoBehaviour
 
     void UpdateHealth() // 플레이어 체력 표시
     {
-        float curHealth = InGameManager.instance.player.health;
-        float maxHealth = InGameManager.instance.player.stat.Hp;
+        float curHealth = InGameManager.instance.player.Health;
+        float maxHealth = InGameManager.instance.player.Status.Hp;
         mySlider.value = curHealth / maxHealth;
     }
 

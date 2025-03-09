@@ -14,7 +14,7 @@ public class Spark : WeaponBase
     protected override void Attack()
     {
         Transform parent = poolManager.transform.Find("Weapon").Find("Weapon5");
-        List<Transform> targets = player.scanner.GetAllTargetsInAttackRange(combineAttackRange);
+        List<Transform> targets = player.Scanner.GetAllTargetsInAttackRange(combineAttackRange);
 
         if(targets.Count > 0)
         {

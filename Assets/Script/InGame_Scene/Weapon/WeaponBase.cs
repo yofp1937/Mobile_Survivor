@@ -46,7 +46,7 @@ public abstract class WeaponBase : MonoBehaviour
         // 기본 정보 설정
         itemdata = data;
         weapondata = data.weaponData.Clone();
-        player.weapon.Add(data.itemId);
+        player.WeaponList.Add(data.itemId);
         weaponname = (WeaponName)data.itemId;
 
         // 데미지 통계 정보 설정
@@ -57,8 +57,8 @@ public abstract class WeaponBase : MonoBehaviour
     public void InitAcce(ItemData data)
     {
         itemdata = data;
-        player.accesorries.Add(data.itemId);
-        player.stat.AddStatus(data.acceData);
+        player.AcceList.Add(data.itemId);
+        player.Status.AddStatus(data.acceData);
     }
 
     public void WeaponLevelUp() // 무기 레벨업시 호출하는 함수
@@ -76,7 +76,7 @@ public abstract class WeaponBase : MonoBehaviour
 
         if(itemdata.itemType == ItemData.ItemType.Weapon && level == itemdata.maxlevel - 1)
         {
-            player.maxlevelcount++;
+            player.MaxLevelCount++;
         }
 
         lastATKtime = 100;
@@ -84,13 +84,13 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected void MergeWeaponAndPlayerStats() // 무기 스탯과 플레이어 스탯 결합
     {
-        combineDamage = player.stat.AttackPower * (weapondata.Damage / 100f);
-        combineCoolTime = weapondata.CoolTime * player.stat.CoolTime;
-        combineAttackRange = weapondata.AttackRange * player.stat.AttackRange;
-        combineDuration = weapondata.Duration * player.stat.Duration;
-        combineProjectileCount = weapondata.ProjectileCount + player.stat.ProjectileCount;
-        combineProjectileSpeed = weapondata.ProjectileSpeed * player.stat.ProjectileSpeed;
-        combineProjectileSize = weapondata.ProjectileSize * player.stat.ProjectileSize;
+        combineDamage = player.Status.AttackPower * (weapondata.Damage / 100f);
+        combineCoolTime = weapondata.CoolTime * player.Status.CoolTime;
+        combineAttackRange = weapondata.AttackRange * player.Status.AttackRange;
+        combineDuration = weapondata.Duration * player.Status.Duration;
+        combineProjectileCount = weapondata.ProjectileCount + player.Status.ProjectileCount;
+        combineProjectileSpeed = weapondata.ProjectileSpeed * player.Status.ProjectileSpeed;
+        combineProjectileSize = weapondata.ProjectileSize * player.Status.ProjectileSize;
     }
 
     protected virtual void Update() // 쿨타임마다 공격 실행

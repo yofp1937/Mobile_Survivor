@@ -17,7 +17,7 @@ public class Fireball : WeaponBase
     protected override void Attack()
     {
         Transform parent = poolManager.transform.Find("Weapon").Find("Weapon3");
-        List<Transform> targets = player.scanner.GetTragetsInAttackRange(combineAttackRange, combineProjectileCount);
+        List<Transform> targets = player.Scanner.GetTragetsInAttackRange(combineAttackRange, combineProjectileCount);
 
         for(int i = 0; i < combineProjectileCount; i++)
         {

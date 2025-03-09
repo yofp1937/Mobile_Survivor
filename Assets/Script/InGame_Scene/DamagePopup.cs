@@ -10,25 +10,15 @@ public class DamagePopup : MonoBehaviour
     float disappearTimer; // 텍스트가 사라지기까지의 시간
     Vector3 textposition = new Vector3(0, 1, 0); // 텍스트가 이동할 방향과 속도
 
-    public void Setup(float damage) // 표시 데미지 설정, 사라지는 시간 설정
+    public void Setup(float damage, bool isCritical) // 표시 데미지 설정, 사라지는 시간 설정
     {
         damageText.text = damage.ToString();
-        if(damage >= 100) // 데미지 100 이상이면 빨간색
+        if(isCritical) // 크리티컬 발생시 빨간색
         {
             damageText.color = new Color(1f, 0f, 41f / 255f);
             damageText.fontSize = 0.8f;
         }
-        else if(damage >= 70) // 데미지 70 이상이면 금색
-        {
-            damageText.color = new Color(240f / 255f, 177f / 255f, 0f);
-            damageText.fontSize = 0.7f;
-        }
-        else if(damage >= 40) // 데미지 40 이상이면 초록색
-        {
-            damageText.color = new Color(0f, 177f / 255f, 230f / 255f);
-            damageText.fontSize = 0.6f;
-        }
-        else // 데미지 40 미만이면 하얀색
+        else
         {
             damageText.color = Color.white;
             damageText.fontSize = 0.5f;

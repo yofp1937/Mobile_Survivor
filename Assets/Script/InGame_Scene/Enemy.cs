@@ -86,10 +86,18 @@ public class Enemy : MonoBehaviour
         if(!isLive)
             return;
 
+        // 치명타 검사
+        bool isCritical = Random.Range(0f, 100f) < InGameManager.instance.player.Status.CriticalChance;
+        if(isCritical)
+        {
+            float CriticalDamagePer = InGameManager.instance.player.Status.CriticalDamage;
+            damage *= 1 + (CriticalDamagePer / 100f); // 백분율로 계산
+        }
+
         health -= damage;
         InGameData.accumWeaponDamage += damage; // 총 누적 데미지 증가
         InGameData.accumWeaponDamageDict[weaponname].AddDamage(damage); // 무기별 누적 데미지 증가
-        ShowDamagePopup(damage); // 데미지 팝업 생성
+        ShowDamagePopup(damage, isCritical); // 데미지 팝업 생성
 
         if (health > 0)
         {
@@ -153,10 +161,10 @@ public class Enemy : MonoBehaviour
         isKnockback = false;
     }
 
-    void ShowDamagePopup(float damage)
+    void ShowDamagePopup(float damage, bool isCritical)
     {
         Vector3 popupPosition = transform.position + new Vector3(0, 0.3f, 0); // 데미지 팝업 생성 위치 조정
-        PopupPoolManager.instance.Get(damage, popupPosition); // 데미지 팝업 생성
+        InGameManager.instance.PoolManager.GetDmgPopup(damage, popupPosition, isCritical); // 데미지 팝업 생성
     }
 
     void Dead()
