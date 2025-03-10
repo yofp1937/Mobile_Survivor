@@ -132,7 +132,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Health -= damage;
+        float reducedamage = Mathf.Max(1, Mathf.RoundToInt(damage * (1 - Status.Defense / 100f)));
+        Health -= reducedamage;
         GameManager.instance.InGameData.accumDamage += damage;
         if(Health <= 0)
         {

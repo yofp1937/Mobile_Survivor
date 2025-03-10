@@ -69,7 +69,7 @@ MonoBehaviour:
     ProjectileCount: 0
     ProjectileSpeed: 0
     ProjectileSize: 0
-    Knockback: 2.5
+    Knockback: 1
   - Damage: 2.5
     CoolTime: 0
     AttackRange: 0.25
@@ -85,7 +85,7 @@ MonoBehaviour:
     ProjectileCount: 0
     ProjectileSpeed: 0
     ProjectileSize: 0
-    Knockback: 2.5
+    Knockback: 1.5
   - Damage: 2.5
     CoolTime: 0
     AttackRange: 0

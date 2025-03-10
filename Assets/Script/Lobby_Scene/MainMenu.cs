@@ -46,6 +46,7 @@ public class MainMenu : MonoBehaviour
         Score.SetActive(false);
         Inventory.SetActive(false);
         Upgrade.gameObject.SetActive(false);
+        GameSpeedReset();
 
         killtext = Sc_kill.GetComponent<Text>();
         goldtext = Sc_gold.GetComponent<Text>();
@@ -58,16 +59,6 @@ public class MainMenu : MonoBehaviour
         VolumeSetting();
         Settings.SetActive(false);
         LoadHaveGold();
-
-        // 전판 1.5배속이였으면 체크 이미지 활성화 아니면 비활성화
-        if(GameManager.instance.gameSpeed > 1f)
-        {
-            GameSpeedImage.SetActive(true);
-        }
-        else
-        {
-            GameSpeedImage.SetActive(false);
-        }
 
         if(GameManager.instance.InGameData.boolScore)
         {

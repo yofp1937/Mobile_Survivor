@@ -34,8 +34,13 @@ public class Spawner : MonoBehaviour
         {
             level = 10 + Mathf.FloorToInt((GameManager.instance.gameTime - 1200f) / 240f); // 4분마다 레벨 1 증가 (11, 12레벨)
         }
+        
+        float curse = 1f - (InGameManager.instance.player.Status.Curse / 100f);
+        curse = Mathf.Max(0.5f, curse);
 
-        if(timer > spawnData[level].spawnTime){
+        float spawntime = spawnData[level].spawnTime * curse;
+
+        if(timer > spawntime){
             timer = 0;
             Spawn();
         }
@@ -72,11 +77,15 @@ public class Spawner : MonoBehaviour
                 randommonster = PoolList.Skeleton;
                 break;
         }
+        SummonMonster(randommonster);
+    }
 
-        GameObject enemy = InGameManager.instance.PoolManager.Get(randommonster, out bool isNew);
+    void SummonMonster(PoolList monstertype)
+    {
+        GameObject enemy = InGameManager.instance.PoolManager.Get(monstertype, out bool isNew);
         // Range()안에 1부터 하는이유는 플레이어와 겹쳐져있는 자신(0번 Spawner)을 제외하기위해
         enemy.transform.position = spawnPoint[Random.Range(1,spawnPoint.Length)].position;
-        enemy.GetComponent<Enemy>().Init(spawnData[level], randommonster);
+        enemy.GetComponent<Enemy>().Init(spawnData[level], monstertype);
     }
 }
 

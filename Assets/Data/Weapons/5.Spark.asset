@@ -64,7 +64,7 @@ MonoBehaviour:
     Knockback: 0
   - Damage: 2.5
     CoolTime: 0
-    AttackRange: 0.25
+    AttackRange: 0.5
     Duration: 0
     ProjectileCount: 0
     ProjectileSpeed: 0
@@ -88,7 +88,7 @@ MonoBehaviour:
     Knockback: 0
   - Damage: 2.5
     CoolTime: 0
-    AttackRange: 0.25
+    AttackRange: 0.5
     Duration: 0
     ProjectileCount: 0
     ProjectileSpeed: 0
@@ -96,7 +96,7 @@ MonoBehaviour:
     Knockback: 0
   - Damage: 5
     CoolTime: 0
-    AttackRange: 0.25
+    AttackRange: 1
     Duration: 0
     ProjectileCount: 0
     ProjectileSpeed: 0
@@ -105,10 +105,10 @@ MonoBehaviour:
   descriptions:
   - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
   - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
+  - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC99D\uAC00"
   - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
   - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
-  - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
-  - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
-  - "\uD53C\uD574\uB7C9 5%\uC99D\uAC00, \uBC94\uC704 \uC57D\uAC04 \uC99D\uAC00"
+  - "\uD53C\uD574\uB7C9 2.5%\uC99D\uAC00, \uBC94\uC704  \uC99D\uAC00"
+  - "\uD53C\uD574\uB7C9 5%\uC99D\uAC00, \uBC94\uC704 \uB9CE\uC774 \uC99D\uAC00"
   projectile: {fileID: 6735299443119077560, guid: 166ca6c893cb8064ba3ea0aecb10046d, type: 3}
   projectile2: {fileID: 0}

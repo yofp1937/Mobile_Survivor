@@ -17,7 +17,7 @@ public class Fireball : WeaponBase
     protected override void Attack()
     {
         Transform parent = poolManager.transform.Find("Weapon").Find("Weapon3");
-        List<Transform> targets = player.Scanner.GetTragetsInAttackRange(combineAttackRange, combineProjectileCount);
+        List<Transform> targets = player.Scanner.GetTragetsInAttackRange(combineAttackRange);
 
         for(int i = 0; i < combineProjectileCount; i++)
         {
@@ -41,16 +41,16 @@ public class Fireball : WeaponBase
         return weaponC;
     }
 
-    Vector3 GetDir(Transform weaponT,List<Transform> list)
+    Vector3 GetDir(Transform weaponT,List<Transform> enemylist)
     {
         weaponT.position = player.transform.position;
         Vector3 dir;
-        if (list.Count > 0) // 범위내에 적이 존재하면
+        if (enemylist.Count > 0) // 범위내에 적이 존재하면
         {
             // i번 무기를 랜덤 적에게 조준
-            int randomenemy = Random.Range(0, list.Count);
-            dir = list[randomenemy].position;
-            list.RemoveAt(randomenemy);
+            int randomenemy = Random.Range(0, enemylist.Count);
+            dir = enemylist[randomenemy].position;
+            enemylist.RemoveAt(randomenemy);
         }
         else
         {

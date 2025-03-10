@@ -15,12 +15,12 @@ MonoBehaviour:
   itemType: 0
   itemId: 3
   itemName: Fireball
-  itemDesc: "\uD654\uC5FC\uAD6C\uB97C \uB0A0\uB824 \uACF5\uACA9\uB825\uC758 50%\uB9CC\uD07C
+  itemDesc: "\uD654\uC5FC\uAD6C\uB97C \uB0A0\uB824 \uACF5\uACA9\uB825\uC758 80%\uB9CC\uD07C
     \uD53C\uD574\uB97C \uC8FC\uB294 \uD3ED\uBC1C\uC744 \uC77C\uC73C\uD0B5\uB2C8\uB2E4."
   maxlevel: 8
   itemIcon: {fileID: 21300000, guid: c2fb5de0681e8b24db0af503cb7a2980, type: 3}
   weaponData:
-    Damage: 50
+    Damage: 80
     CoolTime: 8
     AttackRange: 5
     Duration: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
     Luck: 0
     Curse: 0
   levelupdata_weapon:
-  - Damage: 8
+  - Damage: 10
     CoolTime: 0
     AttackRange: 0
     Duration: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
     ProjectileSpeed: 1
     ProjectileSize: 0
     Knockback: 0
-  - Damage: 7
+  - Damage: 10
     CoolTime: 1
     AttackRange: 0
     Duration: 0
@@ -62,7 +62,7 @@ MonoBehaviour:
     ProjectileSpeed: 0
     ProjectileSize: 0.25
     Knockback: 0
-  - Damage: 5
+  - Damage: 10
     CoolTime: 0
     AttackRange: 1
     Duration: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     ProjectileSpeed: 0
     ProjectileSize: 0
     Knockback: 0
-  - Damage: 8
+  - Damage: 15
     CoolTime: 1
     AttackRange: 1
     Duration: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
     ProjectileSpeed: 1
     ProjectileSize: 0
     Knockback: 0
-  - Damage: 7
+  - Damage: 20
     CoolTime: 1
     AttackRange: 1
     Duration: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
     ProjectileSpeed: 0
     ProjectileSize: 0
     Knockback: 0
-  - Damage: 5
+  - Damage: 25
     CoolTime: 0
     AttackRange: 1
     Duration: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
     ProjectileSpeed: 0
     ProjectileSize: 0.5
     Knockback: 0
-  - Damage: 10
+  - Damage: 30
     CoolTime: 1
     AttackRange: 1
     Duration: 0
@@ -103,16 +103,18 @@ MonoBehaviour:
     ProjectileSize: 0
     Knockback: 0
   descriptions:
-  - "\uD53C\uD574\uB7C9 8% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00, \uBB34\uAE30
-    \uC18D\uB3C4 \uC99D\uAC00"
-  - "\uD53C\uD574\uB7C9 7% \uC99D\uAC00, \uCFE8\uD0C0\uC784 1\uCD08 \uAC10\uC18C,
+  - "\uD53C\uD574\uB7C9 10% \uC99D\uAC00, \uBB34\uAE30 \uC18D\uB3C4 \uC99D\uAC00,
     \uBB34\uAE30 \uD06C\uAE30 \uC57D\uAC04 \uC99D\uAC00"
-  - "\uD53C\uD574\uB7C9 5% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00"
-  - "\uD53C\uD574\uB7C9 8% \uC99D\uAC00, \uBB34\uAE30 \uC18D\uB3C4 \uC99D\uAC00"
-  - "\uD53C\uD574\uB7C9 7% \uC99D\uAC00, \uCFE8\uD0C0\uC784 1\uCD08 \uAC10\uC18C"
-  - "\uD53C\uD574\uB7C9 5% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00, \uBB34\uAE30
-    \uD06C\uAE30 \uC99D\uAC00"
   - "\uD53C\uD574\uB7C9 10% \uC99D\uAC00, \uCFE8\uD0C0\uC784 1\uCD08 \uAC10\uC18C,
+    \uBB34\uAE30 1\uAC1C \uCD94\uAC00"
+  - "\uD53C\uD574\uB7C9 10% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00"
+  - "\uD53C\uD574\uB7C9 15% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00, \uBB34\uAE30
+    \uC18D\uB3C4 \uC99D\uAC00"
+  - "\uD53C\uD574\uB7C9 20% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00, \uCFE8\uD0C0\uC784
+    1\uCD08 \uAC10\uC18C"
+  - "\uD53C\uD574\uB7C9 25% \uC99D\uAC00, \uBB34\uAE30 1\uAC1C \uCD94\uAC00, \uBB34\uAE30
+    \uD06C\uAE30 \uC99D\uAC00"
+  - "\uD53C\uD574\uB7C9 30% \uC99D\uAC00, \uCFE8\uD0C0\uC784 1\uCD08 \uAC10\uC18C,
     \uBB34\uAE30 1\uAC1C \uCD94\uAC00, \uBB34\uAE30 \uC18D\uB3C4 \uC99D\uAC00"
   projectile: {fileID: 4875704739155081250, guid: 822960ef4149de64fb26f4d68606b115, type: 3}
   projectile2: {fileID: 580620553501868133, guid: 7fc42199dd6058f48bebac2417ddfef4, type: 3}
