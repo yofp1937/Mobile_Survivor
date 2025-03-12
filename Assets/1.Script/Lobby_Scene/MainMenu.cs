@@ -146,13 +146,6 @@ public class MainMenu : MonoBehaviour
             return $"{damage:0}";
     }
 
-    public void HideScore()
-    {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        Score.SetActive(false);
-        GameManager.instance.DataReset();
-    }
-
     void VolumeSetting()
     {
         // Btn 설정
@@ -195,6 +188,12 @@ public class MainMenu : MonoBehaviour
             Application.Quit();
         #endif
     }
+    
+    public void OnClickGameSpeed()
+    {
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        LobbyManager.instance.admobManager.ShowRewardedAd();
+    }
 
     public void OnClickStartGame_Start()
     {
@@ -213,10 +212,11 @@ public class MainMenu : MonoBehaviour
         Settings.SetActive(false);
     }
 
-    public void OnClickGameSpeed()
+    public void OnClickHideScore()
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
-        LobbyManager.instance.admobManager.ShowRewardedAd();
+        Score.SetActive(false);
+        GameManager.instance.DataReset();
     }
 
     public void OnClickInventory()

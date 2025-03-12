@@ -5,7 +5,7 @@ using UnityEngine;
 public class WeaponManager : MonoBehaviour
 {
     [Header("# All Weapon Data")]
-    public ItemData[] Weapons;
-    public ItemData[] Accessories;
-    public ItemData[] Etcs;
+    public WeaponData[] Weapons;
+    public WeaponData[] Accessories;
+    public WeaponData[] Etcs;
 }

@@ -21,7 +21,7 @@ public class Fireball : WeaponBase
 
         for(int i = 0; i < combineProjectileCount; i++)
         {
-            Transform weaponT = GetObjAndSetBase(PoolList.Fireball, parent, combineProjectileSize, out bool isNew);
+            Transform weaponT = GetObjAndSetBase(PoolEnum.Fireball, parent, combineProjectileSize, out bool isNew);
             Transform weaponC = weaponT.GetChild(0);
             originalchildscale = weaponC.localScale;
             weaponC = SetWeaponC(weaponC);
@@ -36,7 +36,7 @@ public class Fireball : WeaponBase
         weaponC.gameObject.SetActive(false);
         weaponC.localScale = weaponC.localScale * combineProjectileSize;
         childscale = weaponC.localScale;
-        weaponC.GetComponent<WeaponSetting>().Init(combineDamage, -1, weapondata.Knockback, Vector3.zero, weaponname);
+        weaponC.GetComponent<WeaponSetting>().Init(combineDamage, -1, _wStatusData.Knockback, Vector3.zero, weaponname);
 
         return weaponC;
     }

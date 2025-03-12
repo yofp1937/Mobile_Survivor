@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // 무기의 기본 스테이터스
-[Serializable] public class WeaponData
+[Serializable] public class WeaponStatusData
 {
     public float Damage = 0; // 공격력(percent)
     public float CoolTime = 0; // 쿨타임(seconds)
@@ -15,13 +15,13 @@ using UnityEngine;
     public float ProjectileSize = 0; // 투사체 크기(value)
     public float Knockback = 0; // 넉백(value)
 
-    public WeaponData Clone()
+    public WeaponStatusData Clone()
     {
-        return MemberwiseClone() as WeaponData;
+        return MemberwiseClone() as WeaponStatusData;
     }
 }
 
-[Serializable] public class AcceData
+[Serializable] public class AcceStatusData
 {
     public float Hp; // 체력(percent)
     public float HpRegen; // 체력 재생(value) - 3초동안 HpRegen의 값을 리젠시킴
@@ -45,11 +45,11 @@ using UnityEngine;
 // 통계창에서 띄울 무기별 데미지 데이터 저장 클래스
 public class AccumWeaponData
 {
-    public ItemData Weapon { get; set; }
+    public WeaponData Weapon { get; set; }
     public int Level { get; set; }
     public float TotalDamage { get; set; }
 
-    public void SetData(ItemData weapon)
+    public void SetData(WeaponData weapon)
     {
         Weapon = weapon;
     }

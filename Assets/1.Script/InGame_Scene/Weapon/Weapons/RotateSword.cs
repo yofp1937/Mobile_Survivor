@@ -26,13 +26,13 @@ public class RotateSword : WeaponBase
         DeactiveSword();
         for(int i = 0; i < combineProjectileCount; i++)
         {
-            Transform weaponT = GetObjAndSetBase(PoolList.RotateSword, transform, combineProjectileSize, out bool isNew);
+            Transform weaponT = GetObjAndSetBase(PoolEnum.RotateSword, transform, combineProjectileSize, out bool isNew);
             if(isNew)
             {
                 weaponlist.Add(weaponT.GetComponent<WeaponSetting>());
             }
             weaponT = SetDir(weaponT, i);
-            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, weapondata.Knockback, Vector3.zero, weaponname);
+            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, _wStatusData.Knockback, Vector3.zero, weaponname);
         }
         RotateSwordCoroutine();
     }

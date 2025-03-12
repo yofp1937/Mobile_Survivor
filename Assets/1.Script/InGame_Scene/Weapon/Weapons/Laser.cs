@@ -18,9 +18,9 @@ public class Laser : WeaponBase
 
         for(int i = 0; i < combineProjectileCount; i++)
         {
-            Transform weaponT = GetObjAndSetBase(PoolList.Laser, parent, combineProjectileSize, out bool isNew);
+            Transform weaponT = GetObjAndSetBase(PoolEnum.Laser, parent, combineProjectileSize, out bool isNew);
             weaponT = GetDir(weaponT, targets, i);
-            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, weapondata.Knockback, Vector3.zero, weaponname);
+            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, _wStatusData.Knockback, Vector3.zero, weaponname);
             weaponT.GetComponent<WeaponSetting>().StartAttackWhileDuration(3f);
         }
     }

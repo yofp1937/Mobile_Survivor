@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    public ItemData data;
+    public WeaponData data;
     
     WeaponBase weapon;
     Image image;
@@ -16,11 +16,11 @@ public class Item : MonoBehaviour
 
     void BaseSetting()
     {
-        if(data.itemType == ItemData.ItemType.Weapon)
+        if(data.itemType == WeaponData.ItemType.Weapon)
         {
             weapon = InGameManager.instance.WeaponManager.transform.Find("Weapon"+data.itemId).GetComponent<WeaponBase>();
         }
-        else if(data.itemType == ItemData.ItemType.Accessories)
+        else if(data.itemType == WeaponData.ItemType.Accessories)
         {
             weapon = InGameManager.instance.WeaponManager.transform.Find("Acce"+data.itemId).GetComponent<WeaponBase>();
         }
@@ -33,7 +33,7 @@ public class Item : MonoBehaviour
         textDesc = texts[2];
     }
 
-    public void SetItemData(ItemData data)
+    public void SetItemData(WeaponData data)
     {
         if(gameObject.activeSelf == true)
         {
@@ -55,7 +55,7 @@ public class Item : MonoBehaviour
         {
             textDesc.text = data.itemDesc;
         }
-        else if(data.itemType == ItemData.ItemType.Weapon || data.itemType == ItemData.ItemType.Accessories)
+        else if(data.itemType == WeaponData.ItemType.Weapon || data.itemType == WeaponData.ItemType.Accessories)
         {
             textDesc.text = data.descriptions[weapon.level-1];
         }
@@ -66,7 +66,7 @@ public class Item : MonoBehaviour
         switch(num)
         {
             case 0:
-                this.data = InGameManager.instance.WeaponManager.Etcs[0];
+                data = InGameManager.instance.WeaponManager.Etcs[0];
                 image.sprite = data.itemIcon;
                 image.SetNativeSize();
                 textLevel.text = data.itemName;
@@ -74,7 +74,7 @@ public class Item : MonoBehaviour
                 textDesc.text = data.itemDesc;
                 break;
             case 1:
-                this.data = InGameManager.instance.WeaponManager.Etcs[1];
+                data = InGameManager.instance.WeaponManager.Etcs[1];
                 image.sprite = data.itemIcon;
                 image.SetNativeSize();
                 textLevel.text = data.itemName;
@@ -91,27 +91,27 @@ public class Item : MonoBehaviour
     {
         switch (data.itemType)
         {
-            case ItemData.ItemType.Weapon:
+            case WeaponData.ItemType.Weapon:
                 if(weapon.level == 0)
                 {
                     weapon.gameObject.SetActive(true);
                     weapon.Init(data);
                 }
-                else if(weapon.level < weapon.itemdata.maxlevel)
+                else if(weapon.level < weapon.WeaponData.maxlevel)
                 {
                     weapon.WeaponLevelUp();
                 }
                 weapon.level++;
                 break;
-            case ItemData.ItemType.Accessories:
+            case WeaponData.ItemType.Accessories:
                 if(weapon.level == 0)
                 {
                     weapon.gameObject.SetActive(true);
                     weapon.InitAcce(data);
                 }
-                else if(weapon.level < weapon.itemdata.maxlevel)
+                else if(weapon.level < weapon.WeaponData.maxlevel)
                 {
-                    if(weapon.itemdata.itemType == ItemData.ItemType.Accessories && weapon.level == (weapon.itemdata.maxlevel - 1))
+                    if(weapon.WeaponData.itemType == WeaponData.ItemType.Accessories && weapon.level == (weapon.WeaponData.maxlevel - 1))
                     {
                         InGameManager.instance.player.MaxLevelCount++;
                     }
@@ -119,7 +119,7 @@ public class Item : MonoBehaviour
                 }
                 weapon.level++;
                 break;
-            case ItemData.ItemType.ETC:
+            case WeaponData.ItemType.ETC:
                 if(data.itemId == 0)
                 {
                     InGameManager.instance.player.GetHeal(30);

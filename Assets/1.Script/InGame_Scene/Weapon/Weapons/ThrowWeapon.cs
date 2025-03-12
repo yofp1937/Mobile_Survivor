@@ -25,7 +25,7 @@ public class ThrowWeapon : WeaponBase
 
         for(int i = 0; i < combineProjectileCount; i++)
         {
-            Transform weaponT = GetObjAndSetBase(PoolList.ThrowWeapon, parent, combineProjectileSize, out bool isNew);
+            Transform weaponT = GetObjAndSetBase(PoolEnum.ThrowWeapon, parent, combineProjectileSize, out bool isNew);
             playerforward = player.MoveDirection.normalized; // 플레이어가 바라보는 방향
 
             weaponT = SetDir(weaponT, i); // 무기 각도 계산
@@ -77,7 +77,7 @@ public class ThrowWeapon : WeaponBase
         float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
         weaponT.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90)); // weapon이 적을 바라보게 설정
 
-        weaponT.GetComponent<WeaponSetting>().Init(combineDamage, per, weapondata.Knockback, dir, weaponname); // 객체 기본 정보 설정
+        weaponT.GetComponent<WeaponSetting>().Init(combineDamage, per, _wStatusData.Knockback, dir, weaponname); // 객체 기본 정보 설정
 
         // 속도 부여
         Rigidbody2D rigid = weaponT.GetComponent<Rigidbody2D>();

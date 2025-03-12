@@ -10,24 +10,24 @@ public class PoolManager : MonoBehaviour
     public GameObject[] Items;
     public GameObject DmgPopup;
 
-    Dictionary<PoolList, List<GameObject>> _pools;
+    Dictionary<PoolEnum, List<GameObject>> _pools;
 
     void Awake()
     {
-        _pools = new Dictionary<PoolList, List<GameObject>>();
+        _pools = new Dictionary<PoolEnum, List<GameObject>>();
 
         // Dictionary 초기화
-        foreach(PoolList name in Enum.GetValues(typeof(PoolList)))
+        foreach(PoolEnum name in Enum.GetValues(typeof(PoolEnum)))
         {
             _pools[name] = new List<GameObject>();
         }
     }
 
-    public GameObject Get(PoolList obj, out bool isNew)
+    public GameObject Get(PoolEnum obj, out bool isNew)
     {
         GameObject result = null;
         isNew = false;
-        if(obj == PoolList.None)
+        if(obj == PoolEnum.None)
         {
             return result;
         }
@@ -50,7 +50,7 @@ public class PoolManager : MonoBehaviour
             _pools[obj].Add(result);
 
             // 서브 프리팹이 있는 객체들은 여기서 추가 - 나중에 코드 개선해야함
-            if(obj == PoolList.Fireball)
+            if(obj == PoolEnum.Fireball)
             {
                 prefab = InGameManager.instance.WeaponManager.Weapons[3].projectile2;
                 GameObject child = Instantiate(prefab, result.transform);
@@ -65,7 +65,7 @@ public class PoolManager : MonoBehaviour
         GameObject result = null;
         Transform parent = transform.Find("DamagePopup");
 
-        foreach(GameObject item in _pools[PoolList.DamagePopUp]) // 비활성화된 DamagePopup 찾음
+        foreach(GameObject item in _pools[PoolEnum.DamagePopUp]) // 비활성화된 DamagePopup 찾음
         {
             if(!item.activeSelf)
             {
@@ -76,42 +76,42 @@ public class PoolManager : MonoBehaviour
         if(!result)
         {
             result = Instantiate(DmgPopup, position, Quaternion.identity, parent);
-            _pools[PoolList.DamagePopUp].Add(result);
+            _pools[PoolEnum.DamagePopUp].Add(result);
         }
         result = ActivePopup(result, damage, isCritical);
 
         return result;
     }
 
-    public GameObject GetPrefab(PoolList obj) // PoolList -> Gameobject(Prefab) 변환
+    public GameObject GetPrefab(PoolEnum obj) // PoolList -> Gameobject(Prefab) 변환
     {
         switch (obj)
         {
             // Weapons
-            case PoolList.RotateSword: return InGameManager.instance.WeaponManager.Weapons[0].projectile;
-            case PoolList.ThrowWeapon: return InGameManager.instance.WeaponManager.Weapons[1].projectile;
-            case PoolList.Laser: return InGameManager.instance.WeaponManager.Weapons[2].projectile;
-            case PoolList.Fireball: return InGameManager.instance.WeaponManager.Weapons[3].projectile;
-            case PoolList.Thunder: return InGameManager.instance.WeaponManager.Weapons[4].projectile;
-            case PoolList.Spark: return InGameManager.instance.WeaponManager.Weapons[5].projectile;
-            case PoolList.Wave: return InGameManager.instance.WeaponManager.Weapons[6].projectile;
+            case PoolEnum.RotateSword: return InGameManager.instance.WeaponManager.Weapons[0].projectile;
+            case PoolEnum.ThrowWeapon: return InGameManager.instance.WeaponManager.Weapons[1].projectile;
+            case PoolEnum.Laser: return InGameManager.instance.WeaponManager.Weapons[2].projectile;
+            case PoolEnum.Fireball: return InGameManager.instance.WeaponManager.Weapons[3].projectile;
+            case PoolEnum.Thunder: return InGameManager.instance.WeaponManager.Weapons[4].projectile;
+            case PoolEnum.Spark: return InGameManager.instance.WeaponManager.Weapons[5].projectile;
+            case PoolEnum.Wave: return InGameManager.instance.WeaponManager.Weapons[6].projectile;
 
             // Enemies
-            case PoolList.FlyEye: return Enemies[0];
-            case PoolList.Goblin: return Enemies[1];
-            case PoolList.Mushroom: return Enemies[2];
-            case PoolList.Skeleton: return Enemies[3];
+            case PoolEnum.FlyEye: return Enemies[0];
+            case PoolEnum.Goblin: return Enemies[1];
+            case PoolEnum.Mushroom: return Enemies[2];
+            case PoolEnum.Skeleton: return Enemies[3];
 
             // Items
-            case PoolList.ExpJewel_1: return Items[0];
-            case PoolList.ExpJewel_3: return Items[1];
-            case PoolList.ExpJewel_5: return Items[2];
-            case PoolList.Gold: return Items[3];
-            case PoolList.Magnet: return Items[4];
-            case PoolList.Potion: return Items[5];
+            case PoolEnum.ExpJewel_1: return Items[0];
+            case PoolEnum.ExpJewel_3: return Items[1];
+            case PoolEnum.ExpJewel_5: return Items[2];
+            case PoolEnum.Gold: return Items[3];
+            case PoolEnum.Magnet: return Items[4];
+            case PoolEnum.Potion: return Items[5];
 
             // DmgPopUp
-            case PoolList.DamagePopUp: return DmgPopup;
+            case PoolEnum.DamagePopUp: return DmgPopup;
 
             default: return null;
         }

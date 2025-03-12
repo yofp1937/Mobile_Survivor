@@ -43,7 +43,7 @@ public class Status : MonoBehaviour
         Curse = param.Curse;
     }
 
-    public void CloneStatus(AcceData param)
+    public void CloneStatus(AcceStatusData param)
     {
         Hp = param.Hp;
         HpRegen = param.HpRegen;
@@ -83,7 +83,7 @@ public class Status : MonoBehaviour
         Curse += param.Curse;
     }
 
-    public void AddStatus(AcceData param) // Status 합산 메서드
+    public void AddStatus(AcceStatusData param) // Status 합산 메서드
     {
         Hp += param.Hp;
         HpRegen += param.HpRegen;

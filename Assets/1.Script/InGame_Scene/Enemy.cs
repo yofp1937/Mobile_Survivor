@@ -4,68 +4,69 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [Header("# Monster Info")]
-    public float moveSpeed = 3.8f; // 이동속도
-    public Rigidbody2D target; // 목표
-    public float health;
-    public int damage;
+    [Header("# Main Data")]
+    float _health;
+    int _damage;
+    float _moveSpeed = 3.8f; // 이동속도
+    Rigidbody2D _target; // 목표
+    bool _isLive;
+    bool _isKnockback;
 
-    bool isLive; // 죽었는지 살았는지 체크용
-    bool isKnockback; // 넉백 상태 체크용
-    Rigidbody2D rigid;
-    SpriteRenderer spriter;
-    Animator anim;
-    CapsuleCollider2D coll;
+    [Header("# Reference Data")]
+    Rigidbody2D _rigid;
+    SpriteRenderer _spriter;
+    Animator _anim;
+    CapsuleCollider2D _coll;
 
     void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
-        spriter = GetComponent<SpriteRenderer>();
-        anim = GetComponent<Animator>();
-        coll = GetComponent<CapsuleCollider2D>();
+        _rigid = GetComponent<Rigidbody2D>();
+        _spriter = GetComponent<SpriteRenderer>();
+        _anim = GetComponent<Animator>();
+        _coll = GetComponent<CapsuleCollider2D>();
     }
 
     void OnEnable()
     {
-        isLive = true;
-        isKnockback = false;
+        _isLive = true;
+        _isKnockback = false;
         SetDamage();
     }    
 
     void FixedUpdate()
     {
-        if(!isLive || isKnockback) 
+        if(!_isLive || _isKnockback) 
             return; // 죽어있거나 넉백 적용중이면 리턴
 
-        Vector2 dirVec = target.position - rigid.position; // 방향 구하기
-        Vector2 nextVec = dirVec.normalized * moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
-        rigid.MovePosition(rigid.position + nextVec);
-        rigid.velocity = Vector2.zero;
+        Vector2 dirVec = _target.position - _rigid.position; // 방향 구하기
+        Vector2 nextVec = dirVec.normalized * _moveSpeed * Time.fixedDeltaTime; // 이동해야할 위치
+        _rigid.MovePosition(_rigid.position + nextVec);
+        _rigid.velocity = Vector2.zero;
     }
 
     void LateUpdate()
     {
-        if(!isLive)
+        if(!_isLive)
             return; // 죽어있으면 리턴
 
-        spriter.flipX = target.position.x < rigid.position.x; // 플레이어 위치에따라 좌우 모습 변경
+        _spriter.flipX = _target.position.x < _rigid.position.x; // 플레이어 위치에따라 좌우 모습 변경
     }
 
-    public void Init(SpawnData data, PoolList monstertype)
+    public void Init(SpawnData data, PoolEnum monstertype)
     {
-        target = InGameManager.instance.player.GetComponent<Rigidbody2D>();
-        moveSpeed = data.speed;
-        health = data.health;
+        _target = InGameManager.instance.player.GetComponent<Rigidbody2D>();
+        _moveSpeed = data.speed;
+        _health = data.health;
         gameObject.name = "Enemy";
         gameObject.transform.parent = InGameManager.instance.PoolManager.transform.Find("Enemy");
 
         GameObject prefab = InGameManager.instance.PoolManager.GetPrefab(monstertype);
         Animator prefabanim = prefab.GetComponent<Animator>();
         CapsuleCollider2D prefabcoll = prefab.GetComponent<CapsuleCollider2D>();
-        anim.runtimeAnimatorController = prefabanim.runtimeAnimatorController;
-        coll.size = prefabcoll.size;
-        coll.offset = prefabcoll.offset;
-        coll.direction = prefabcoll.direction;
+        _anim.runtimeAnimatorController = prefabanim.runtimeAnimatorController;
+        _coll.size = prefabcoll.size;
+        _coll.offset = prefabcoll.offset;
+        _coll.direction = prefabcoll.direction;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -74,16 +75,16 @@ public class Enemy : MonoBehaviour
             Player player = collision.collider.GetComponent<Player>();
             if(player != null)
             {
-                player.TakeDamage(damage);
+                player.TakeDamage(_damage);
             }
         }
     }
 
-    public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition, WeaponName weaponname)
+    public void TakeDamage(float damage, float knockbackForce, Vector3 attackerPosition, WeaponEnum weaponname)
     {
         var InGameData = GameManager.instance.InGameData;
 
-        if(!isLive)
+        if(!_isLive)
             return;
 
         // 치명타 검사
@@ -94,18 +95,18 @@ public class Enemy : MonoBehaviour
             damage *= 1 + (CriticalDamagePer / 100f); // 백분율로 계산
         }
 
-        health -= damage;
+        _health -= damage;
         InGameData.accumWeaponDamage += damage; // 총 누적 데미지 증가
         InGameData.accumWeaponDamageDict[weaponname].AddDamage(damage); // 무기별 누적 데미지 증가
         ShowDamagePopup(damage, isCritical); // 데미지 팝업 생성
 
-        if (health > 0)
+        if (_health > 0)
         {
             Knockback(knockbackForce, attackerPosition);
         }
         else
         {
-            isLive = false;
+            _isLive = false;
             Dead();
             InGameData.kill++;
         }
@@ -113,36 +114,29 @@ public class Enemy : MonoBehaviour
 
     void SetDamage()
     {
-        // 데미지 설정
-        // 28분 이후 데미지 - 30
-        // 24분 이후 데미지 - 25
-        // 20분 이후 데미지 - 20
-        // 15분 이후 데미지 - 15
-        // 10분 이후 데미지 - 10
-        // 초반 5
         if(GameManager.instance.gameTime >= 1680) // 28분 이후
         {
-            damage = 30;
+            _damage = 40;
         }
         else if(GameManager.instance.gameTime >= 1440) // 24분 이후
         {
-            damage = 25;
+            _damage = 30;
         }
         else if(GameManager.instance.gameTime >= 1200) // 20분 이후
         {
-            damage = 20;
+            _damage = 20;
         }
         else if(GameManager.instance.gameTime >= 900) // 15분 이후
         {
-            damage = 15;
+            _damage = 15;
         }
         else if(GameManager.instance.gameTime >= 600) // 10분 이후
         {
-            damage = 10;
+            _damage = 10;
         }
         else
         {
-            damage = 5;
+            _damage = 5;
         }
     }
 
@@ -154,11 +148,11 @@ public class Enemy : MonoBehaviour
 
     IEnumerator ApplyKnockback(Vector2 direction, float force)
     {
-        isKnockback = true;
-        rigid.velocity = Vector2.zero; // 기존 속도 제거
-        rigid.AddForce(direction * force, ForceMode2D.Impulse);
+        _isKnockback = true;
+        _rigid.velocity = Vector2.zero; // 기존 속도 제거
+        _rigid.AddForce(direction * force, ForceMode2D.Impulse);
         yield return new WaitForSeconds(0.3f); // 넉백 효과를 0.5초 동안 유지 (원하는 시간으로 조절 가능)
-        isKnockback = false;
+        _isKnockback = false;
     }
 
     void ShowDamagePopup(float damage, bool isCritical)
@@ -177,23 +171,23 @@ public class Enemy : MonoBehaviour
     void DropJewel()
     {
         int JewelCount = InGameManager.instance.JewelCount;
-        int index;
-        PoolList item;
+        DropItemEnum dropItem;
+        PoolEnum poolItem;
 
         if(GameManager.instance.gameTime >= 1680) // 28분부턴 경험치 5
         {
-            index = 2;
-            item = PoolList.ExpJewel_5;
+            dropItem = DropItemEnum.ExpJewel_5;
+            poolItem = PoolEnum.ExpJewel_5;
         }
         else if(GameManager.instance.gameTime >= 1200) // 20분부턴 경험치 3
         {
-            index = 1;
-            item = PoolList.ExpJewel_3;
+            dropItem = DropItemEnum.ExpJewel_3;
+            poolItem = PoolEnum.ExpJewel_3;
         }
         else
         {
-            index = 0;
-            item = PoolList.ExpJewel_1;
+            dropItem = DropItemEnum.ExpJewel_1;
+            poolItem = PoolEnum.ExpJewel_1;
         }
 
         if(JewelCount >= 150) // 보석의 갯수가 150개가 넘어가면 가장 가까운 보석의 경험치량을 증가시킴
@@ -203,7 +197,7 @@ public class Enemy : MonoBehaviour
 
             foreach (Transform jewelT in InGameManager.instance.PoolManager.transform.Find("Item")) // 풀매니저 Item.Exp의 모든 자식객체들을 순회하면서 거리 측정
             {
-                if(!jewelT.GetComponent<DropItem>().jewel) // jewelT가 경험치 보석이 아니면 아래 코드 실행 안함
+                if(jewelT.GetComponent<DropItem>().Exp < 1) // 경험치 보석 아니면 건너뜀
                 {
                     continue;
                 }
@@ -219,54 +213,53 @@ public class Enemy : MonoBehaviour
             // 가장 가까운 보석의 경험치 증가
             if (nearjewel != null)
             {
-                nearjewel.AddExp(index); // 경험치 증가 함수 호출
+                nearjewel.AddExp(dropItem); // 경험치 증가 함수 호출
             }
         }
         else
         {
-            Transform itemT = InGameManager.instance.PoolManager.Get(item, out bool isNew).transform;
+            Transform itemT = InGameManager.instance.PoolManager.Get(poolItem, out bool isNew).transform;
             itemT.position = gameObject.transform.position;
             itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
-            itemT.GetComponent<DropItem>().Init(index);
+            itemT.GetComponent<DropItem>().Init(dropItem);
         }
     }
 
     void DropItem()
     {
         float randomValue = Random.Range(0f,100f);
-        PoolList item;
-        int index;
+        PoolEnum poolItem;
+        DropItemEnum dropItem = DropItemEnum.Potion;
 
         if (randomValue < 0.1f)  // 0.1% 확률로 자석 드랍
         {
-            index = 4;
-            item = PoolList.Magnet;
+            poolItem = PoolEnum.Magnet;
+            dropItem = DropItemEnum.Magnet;
         }
         else if (randomValue < 1.6f)  // 1.5% 확률로 골드 드랍 (0.1f 이상 1.6f 미만)
         {
-            index = 3;
-            item = PoolList.Gold;
+            poolItem = PoolEnum.Gold;
+            dropItem = DropItemEnum.Gold;
         }
-        else if (randomValue < 4.6f)  // 3% 확률로 포션 드랍 (1.6f 이상 4.6f 미만)
+        else if (randomValue < 4.1f)  // 2.5% 확률로 포션 드랍 (1.6f 이상 4.1f 미만)
         {
-            index = 5;
-            item = PoolList.Potion;
+            poolItem = PoolEnum.Potion;
+            dropItem = DropItemEnum.Potion;
         }
-        else // 아이템이 안뜨면 index = 0
+        else
         {
-            index = 0;
-            item = PoolList.None;
+            poolItem = PoolEnum.None;
         }
 
-        if(index > 0 && InGameManager.instance.DropItemCount <= 49) // index가 0보다 크고, 필드에 존재하는 아이템 개수가 50개 미만이면 아이템 소환
+        if(poolItem != PoolEnum.None && InGameManager.instance.DropItemCount < 50) // None이 아니고, 필드에 존재하는 아이템 개수가 50개 미만이면 아이템 소환
         {
             InGameManager.instance.DropItemCount++;
 
-            Transform itemT = InGameManager.instance.PoolManager.Get(item, out bool isNew).transform;
+            Transform itemT = InGameManager.instance.PoolManager.Get(poolItem, out bool isNew).transform;
             itemT.position = gameObject.transform.position;
             itemT.parent = InGameManager.instance.PoolManager.transform.Find("Item");
 
-            itemT.GetComponent<DropItem>().Init(index);
+            itemT.GetComponent<DropItem>().Init(dropItem);
         }
     }
 }

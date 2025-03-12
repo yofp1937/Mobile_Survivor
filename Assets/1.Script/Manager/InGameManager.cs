@@ -76,7 +76,7 @@ public class InGameManager : MonoBehaviour
         SetWeapon(GameManager.instance.SelectWeapon);
     }
 
-    void SetWeapon(ItemData data)
+    void SetWeapon(WeaponData data)
     {
         Transform weaponT = WeaponManager.transform.Find("Weapon"+data.itemId);
         weaponT.gameObject.SetActive(true);

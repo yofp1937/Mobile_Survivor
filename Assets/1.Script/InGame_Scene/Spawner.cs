@@ -48,21 +48,21 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
-        PoolList[] monsters = { PoolList.FlyEye, PoolList.Goblin, PoolList.Mushroom, PoolList.Skeleton };
-        PoolList randommonster;
+        PoolEnum[] monsters = { PoolEnum.FlyEye, PoolEnum.Goblin, PoolEnum.Mushroom, PoolEnum.Skeleton };
+        PoolEnum randommonster;
         switch (level) // 시간대별 스폰되는 몬스터 변경
         {
             case int n when (n <= 2): // 30~24분 사이
-                randommonster = PoolList.FlyEye;
+                randommonster = PoolEnum.FlyEye;
                 break;
             case int n when (n <= 4): // 24~20분 사이
-                randommonster = PoolList.Goblin;
+                randommonster = PoolEnum.Goblin;
                 break;
             case int n when (n <= 6): // 20~16분 사이
                 randommonster = monsters[Random.Range(0, 1)];
                 break;
             case int n when (n <= 7): // 16~14분
-                randommonster = PoolList.Mushroom;
+                randommonster = PoolEnum.Mushroom;
                 break;
             case int n when (n <= 9): // 14~10분
                 randommonster = monsters[Random.Range(1, 2)];
@@ -74,13 +74,13 @@ public class Spawner : MonoBehaviour
                 randommonster = monsters[Random.Range(0, 3)];
                 break;
             default: // 2~0분
-                randommonster = PoolList.Skeleton;
+                randommonster = PoolEnum.Skeleton;
                 break;
         }
         SummonMonster(randommonster);
     }
 
-    void SummonMonster(PoolList monstertype)
+    void SummonMonster(PoolEnum monstertype)
     {
         GameObject enemy = InGameManager.instance.PoolManager.Get(monstertype, out bool isNew);
         // Range()안에 1부터 하는이유는 플레이어와 겹쳐져있는 자신(0번 Spawner)을 제외하기위해

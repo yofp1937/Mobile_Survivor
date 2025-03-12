@@ -8,10 +8,10 @@ public class Wave : WeaponBase
     {
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Wave);
 
-        Transform weaponT = GetObjAndSetBase(PoolList.Wave, transform, combineAttackRange, out bool isNew);
+        Transform weaponT = GetObjAndSetBase(PoolEnum.Wave, transform, combineAttackRange, out bool isNew);
         weaponT.position = player.transform.position;
         
-        weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, weapondata.Knockback, Vector3.zero, weaponname);
+        weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, _wStatusData.Knockback, Vector3.zero, weaponname);
         weaponT.GetComponent<WeaponSetting>().StartAttackWhileDuration(0.45f);
     }
 }

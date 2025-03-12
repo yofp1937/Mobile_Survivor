@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Status", menuName = "Scriptable Object/StatusData", order = 1)]
 public class StatusData : ScriptableObject
 {
-    public AcceData Stat;
+    public AcceStatusData Stat;
 }

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    private EquipmentData data;
+    public EquipmentData Data;
 }

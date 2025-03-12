@@ -10,7 +10,7 @@ public class SelectCharacter : MonoBehaviour
     public List<GameObject> prefabs; // In Project
 
     [Header("# Weapon Data")]
-    public List<ItemData> weapons;
+    public List<WeaponData> weapons;
 
     public Button startbtn;
     public Image weaponImage;

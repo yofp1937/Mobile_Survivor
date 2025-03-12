@@ -6,14 +6,14 @@ public abstract class WeaponBase : MonoBehaviour
 {
     [Header("# Base Data")]
     [SerializeField] public int level; // 장비의 현재 레벨
-    public ItemData itemdata; // 장비의 전체 정보
+    public WeaponData WeaponData; // 장비의 전체 정보
 
     [Header("# Weapon Data")]
-    [SerializeField] protected WeaponData weapondata; // 무기의 Stat 정보
-    public WeaponName weaponname; // 무기 이름
+    [SerializeField] protected WeaponStatusData _wStatusData; // 무기의 Stat 정보
+    public WeaponEnum weaponname; // 무기 이름
 
     [Header("# Acce Data")]
-    [SerializeField] protected AcceData accedata; // 악세의 Stat 정보
+    [SerializeField] protected AcceStatusData accedata; // 악세의 Stat 정보
 
     [Header("# Combine Status")]
     protected float combineDamage;
@@ -39,42 +39,42 @@ public abstract class WeaponBase : MonoBehaviour
         MergeWeaponAndPlayerStats();
     }
 
-    public void Init(ItemData data) // 외부에서 무기 획득시 호출해서 무기의 정보를 설정하는 함수
+    public void Init(WeaponData data) // 외부에서 무기 획득시 호출해서 무기의 정보를 설정하는 함수
     {
         level++;
 
         // 기본 정보 설정
-        itemdata = data;
-        weapondata = data.weaponData.Clone();
+        WeaponData = data;
+        _wStatusData = data.weaponData.Clone();
         player.WeaponList.Add(data.itemId);
-        weaponname = (WeaponName)data.itemId;
+        weaponname = (WeaponEnum)data.itemId;
 
         // 데미지 통계 정보 설정
         GameManager.instance.InGameData.accumWeaponDamageDict[weaponname] = new AccumWeaponData();
         GameManager.instance.InGameData.accumWeaponDamageDict[weaponname].SetData(data);
     }
 
-    public void InitAcce(ItemData data)
+    public void InitAcce(WeaponData data)
     {
-        itemdata = data;
+        WeaponData = data;
         player.AcceList.Add(data.itemId);
         player.Status.AddStatus(data.acceData);
     }
 
     public void WeaponLevelUp() // 무기 레벨업시 호출하는 함수
     {
-        var data = itemdata.levelupdata_weapon[level-1];
+        var data = WeaponData.levelupdata_weapon[level-1];
 
-        weapondata.Damage += data.Damage;
-        weapondata.CoolTime -= data.CoolTime;
-        weapondata.AttackRange += data.AttackRange;
-        weapondata.Duration += data.Duration;
-        weapondata.ProjectileCount += data.ProjectileCount;
-        weapondata.ProjectileSpeed += data.ProjectileSpeed;
-        weapondata.ProjectileSize += data.ProjectileSize;
-        weapondata.Knockback += data.Knockback;
+        _wStatusData.Damage += data.Damage;
+        _wStatusData.CoolTime -= data.CoolTime;
+        _wStatusData.AttackRange += data.AttackRange;
+        _wStatusData.Duration += data.Duration;
+        _wStatusData.ProjectileCount += data.ProjectileCount;
+        _wStatusData.ProjectileSpeed += data.ProjectileSpeed;
+        _wStatusData.ProjectileSize += data.ProjectileSize;
+        _wStatusData.Knockback += data.Knockback;
 
-        if(itemdata.itemType == ItemData.ItemType.Weapon && level == itemdata.maxlevel - 1)
+        if(WeaponData.itemType == WeaponData.ItemType.Weapon && level == WeaponData.maxlevel - 1)
         {
             player.MaxLevelCount++;
         }
@@ -84,18 +84,18 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected void MergeWeaponAndPlayerStats() // 무기 스탯과 플레이어 스탯 결합
     {
-        combineDamage = player.Status.AttackPower * (weapondata.Damage / 100f);
-        combineCoolTime = weapondata.CoolTime * player.Status.CoolTime;
-        combineAttackRange = weapondata.AttackRange * player.Status.AttackRange;
-        combineDuration = weapondata.Duration * player.Status.Duration;
-        combineProjectileCount = weapondata.ProjectileCount + player.Status.ProjectileCount;
-        combineProjectileSpeed = weapondata.ProjectileSpeed * player.Status.ProjectileSpeed;
-        combineProjectileSize = weapondata.ProjectileSize * player.Status.ProjectileSize;
+        combineDamage = player.Status.AttackPower * (_wStatusData.Damage / 100f);
+        combineCoolTime = _wStatusData.CoolTime * player.Status.CoolTime;
+        combineAttackRange = _wStatusData.AttackRange * player.Status.AttackRange;
+        combineDuration = _wStatusData.Duration * player.Status.Duration;
+        combineProjectileCount = _wStatusData.ProjectileCount + player.Status.ProjectileCount;
+        combineProjectileSpeed = _wStatusData.ProjectileSpeed * player.Status.ProjectileSpeed;
+        combineProjectileSize = _wStatusData.ProjectileSize * player.Status.ProjectileSize;
     }
 
     protected virtual void Update() // 쿨타임마다 공격 실행
     {
-        if(itemdata.itemType == ItemData.ItemType.Weapon)
+        if(WeaponData.itemType == WeaponData.ItemType.Weapon)
         {
             lastATKtime += Time.deltaTime;
 
@@ -110,7 +110,7 @@ public abstract class WeaponBase : MonoBehaviour
 
     protected abstract void Attack(); // 오버라이딩해서 사용할것
 
-    protected virtual Transform GetObjAndSetBase(PoolList type, Transform parent, float scaleparam, out bool isNew)
+    protected virtual Transform GetObjAndSetBase(PoolEnum type, Transform parent, float scaleparam, out bool isNew)
     {
         isNew = false;
         Transform weaponT = poolManager.Get(type, out bool _isnew).transform;

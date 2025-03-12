@@ -7,7 +7,7 @@ public class WeaponSetting : MonoBehaviour
     public float damage;
     public int per;
     public float knockbackForce;
-    public WeaponName weaponname;
+    public WeaponEnum weaponname;
     Rigidbody2D rigid;
     private Coroutine weaponCoroutine;
 
@@ -16,7 +16,7 @@ public class WeaponSetting : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void Init(float damage, int per, float knockbackForce, Vector3 dir, WeaponName weaponname)
+    public void Init(float damage, int per, float knockbackForce, Vector3 dir, WeaponEnum weaponname)
     {
         this.damage = damage;
         this.per = per;

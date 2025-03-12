@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager_InGameData : MonoBehaviour
+public class GameManagerInGameData : MonoBehaviour
 {
     [Header("# InGame Data")] // 게임 종료 후 표시되는 정보들
     public bool boolScore = false;
@@ -14,7 +14,7 @@ public class GameManager_InGameData : MonoBehaviour
 
     [Header("# Accum Weapon Damage Data")]
     public float accumWeaponDamage;
-    public Dictionary<WeaponName, AccumWeaponData> accumWeaponDamageDict = new Dictionary<WeaponName, AccumWeaponData>();
+    public Dictionary<WeaponEnum, AccumWeaponData> accumWeaponDamageDict = new Dictionary<WeaponEnum, AccumWeaponData>();
 
     public void DataReset() // 데이터 초기화
     {
@@ -24,6 +24,6 @@ public class GameManager_InGameData : MonoBehaviour
         getMagnet = 0;
         accumDamage = 0;
         accumWeaponDamage = 0f;
-        accumWeaponDamageDict = new Dictionary<WeaponName, AccumWeaponData>();
+        accumWeaponDamageDict = new Dictionary<WeaponEnum, AccumWeaponData>();
     }
 }

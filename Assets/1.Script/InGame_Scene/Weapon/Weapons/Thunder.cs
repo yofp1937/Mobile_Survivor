@@ -12,11 +12,11 @@ public class Thunder : WeaponBase
 
         for(int i = 0; i < combineProjectileCount; i++)
         {
-            Transform weaponT = GetObjAndSetBase(PoolList.Thunder, parent, combineAttackRange, out bool isNew);
+            Transform weaponT = GetObjAndSetBase(PoolEnum.Thunder, parent, combineAttackRange, out bool isNew);
 
             weaponT = SetDir(weaponT, targets); // 번개 타격 좌표 설정
 
-            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, weapondata.Knockback, Vector3.zero, weaponname);
+            weaponT.GetComponent<WeaponSetting>().Init(combineDamage, -1, _wStatusData.Knockback, Vector3.zero, weaponname);
             weaponT.GetComponent<WeaponSetting>().StartAttackWhileDuration(0.45f);
         }
     }

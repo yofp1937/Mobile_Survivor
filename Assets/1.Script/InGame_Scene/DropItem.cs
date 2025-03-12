@@ -4,46 +4,40 @@ using UnityEngine;
 
 public class DropItem : MonoBehaviour
 {
-    public int exp;
-    public int type;
-    public bool jewel = false;
-    bool BigJewel = false; // AddExp로 exp가 10이 넘어가서 RedJewel로 바뀌면 true로 변경
-    Rigidbody2D rigid;
+    [Header("# Main Data")]
+    public int Exp;
+    DropItemEnum _item;
+    bool isBigJewel = false; // AddExp로 exp가 10이 넘어가서 RedJewel로 바뀌면 true로 변경
+
+    [Header("# Reference Data")]
     SpriteRenderer spriter;
     CapsuleCollider2D coll;
 
     void Awake()
     {
-        rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         coll = GetComponent<CapsuleCollider2D>();
     }
 
-    public void Init(int index)
+    public void Init(DropItemEnum dropItem)
     {
-        type = index;
-        if(index == 0)
+        _item = dropItem;
+        Exp = 0;
+
+        switch(dropItem)
         {
-            exp = 1;
-            jewel = true;
-        }
-        else if (index == 1)
-        {
-            exp = 3;
-            jewel = true;
-        }
-        else if (index == 2)
-        {
-            exp = 5;
-            jewel = true;
-        }
-        else
-        {
-            exp = 0;
-            jewel = false;
+            case DropItemEnum.ExpJewel_1:
+                Exp = 1;
+                break;
+            case DropItemEnum.ExpJewel_3:
+                Exp = 3;
+                break;
+            case DropItemEnum.ExpJewel_5:
+                Exp = 5;
+                break;
         }
 
-        GameObject prefab = InGameManager.instance.PoolManager.Items[index];
+        GameObject prefab = InGameManager.instance.PoolManager.Items[(int)dropItem];
         SpriteRenderer Pspriter = prefab.GetComponent<SpriteRenderer>();
         CapsuleCollider2D prefabcoll = prefab.GetComponent<CapsuleCollider2D>();
 
@@ -62,24 +56,24 @@ public class DropItem : MonoBehaviour
         coll.direction = prefabcoll.direction;
     }
 
-    public void AddExp(int index)
+    public void AddExp(DropItemEnum dropItem)
     {
-        if(index == 0)
+        if(dropItem == DropItemEnum.ExpJewel_1)
         {
-            exp += 1;
+            Exp += 1;
         }
-        else if (index == 1)
+        else if (dropItem == DropItemEnum.ExpJewel_3)
         {
-            exp += 3;
+            Exp += 3;
         }
-        else if(index == 2)
+        else if(dropItem == DropItemEnum.ExpJewel_5)
         {
-            exp += 5;
+            Exp += 5;
         }
 
-        if(exp >= 10 && !BigJewel)
+        if(Exp >= 10 && !isBigJewel)
         {
-            BigJewel = true;
+            isBigJewel = true;
             gameObject.transform.localScale = new Vector3(3.192213f, 3.192213f, 3.192213f);
             spriter.color = Color.red;
         }
@@ -115,22 +109,22 @@ public class DropItem : MonoBehaviour
             Player player = collision.GetComponent<Player>();
             if(player != null)
             {
-                if(type >= 0 && type <= 2) // item이 경험치 보석이면
+                if(_item == DropItemEnum.ExpJewel_1 || _item == DropItemEnum.ExpJewel_3 || _item == DropItemEnum.ExpJewel_5)
                 {
                     InGameManager.instance.JewelCount--;
-                    player.GetExp(exp);
+                    player.GetExp(Exp);
                 }
-                else if(type == 3) // item이 gold면
+                else if(_item == DropItemEnum.Gold)
                 {
                     InGameManager.instance.DropItemCount--;
                     player.GetGold(1);
                 }
-                else if(type == 4) // item이 magnet이면
+                else if(_item == DropItemEnum.Magnet)
                 {
                     InGameManager.instance.DropItemCount--;
                     player.ActiveMagnet();
                 }
-                else if(type == 5) // item이 potion이면
+                else if(_item == DropItemEnum.Potion)
                 {
                     InGameManager.instance.DropItemCount--;
                     player.GetHeal(20);

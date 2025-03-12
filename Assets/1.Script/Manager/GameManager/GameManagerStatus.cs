@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager_Status : MonoBehaviour
+public class GameManagerStatus : MonoBehaviour
 {
     [Header("# Main Data")]
     public List<StatusData> StatusDataList; // 캐릭터별 Status Data List

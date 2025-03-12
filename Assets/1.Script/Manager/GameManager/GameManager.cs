@@ -50,12 +50,13 @@ public class GameManager : MonoBehaviour
     [Header("# Player Select")]
     public GameObject SelectCharacter;
     public int CharacterCode;
-    public ItemData SelectWeapon;
+    public WeaponData SelectWeapon;
     public int SelectArtifactId;
 
     [Header("# Sub Component")]
-    public GameManager_InGameData InGameData;
-    public GameManager_Status Status;
+    public GameManagerInGameData InGameData;
+    public GameManagerStatus Status;
+    public GameManagerInventory Inventory;
 
     private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
 

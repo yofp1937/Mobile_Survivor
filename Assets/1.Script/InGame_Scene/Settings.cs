@@ -20,7 +20,7 @@ public class Settings : MonoBehaviour
 
             WeaponBase weapon = GameObject.Find("Weapon" + weapons[i]).GetComponent<WeaponBase>();
             slotimage.gameObject.SetActive(true);
-            slotimage.sprite = weapon.itemdata.itemIcon;
+            slotimage.sprite = weapon.WeaponData.itemIcon;
             slotimage.SetNativeSize();
 
             slottext.text = "Lv." + weapon.level;
@@ -33,7 +33,7 @@ public class Settings : MonoBehaviour
 
             WeaponBase acce = GameObject.Find("Acce" + acces[i]).GetComponent<WeaponBase>();
             slotimage.gameObject.SetActive(true);
-            slotimage.sprite = acce.itemdata.itemIcon;
+            slotimage.sprite = acce.WeaponData.itemIcon;
             slotimage.SetNativeSize();
 
             slottext.text = "Lv." + acce.level;

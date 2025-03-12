@@ -84,7 +84,7 @@ public class LevelUpPanel : MonoBehaviour
         else
         {
             // 3개의 랜덤 아이템 선택
-            ItemData[] randomItems = RandomItemSelect(selectcount);
+            WeaponData[] randomItems = RandomItemSelect(selectcount);
             
             for(int i = 0; i < randomItems.Length; i++)
             {
@@ -124,11 +124,11 @@ public class LevelUpPanel : MonoBehaviour
         return InGameManager.instance.player.AcceList.Count > 5;
     }
 
-    bool CheckMaxLevel(ItemData data)
+    bool CheckMaxLevel(WeaponData data)
     {
         WeaponBase weapon;
 
-        if(data.itemType == ItemData.ItemType.Weapon)
+        if(data.itemType == WeaponData.ItemType.Weapon)
         {
             weapon = InGameManager.instance.WeaponManager.transform.Find("Weapon" + data.itemId).GetComponent<WeaponBase>();
         }
@@ -140,9 +140,9 @@ public class LevelUpPanel : MonoBehaviour
         return weapon.level == data.maxlevel;
     }
 
-    ItemData GetSelectItem(List<int> usedNum)
+    WeaponData GetSelectItem(List<int> usedNum)
     {
-        List<ItemData> availableItems = new List<ItemData>();
+        List<WeaponData> availableItems = new List<WeaponData>();
 
         switch (mysitu)
         {
@@ -167,7 +167,7 @@ public class LevelUpPanel : MonoBehaviour
                 break;
         }
 
-        ItemData item = null;
+        WeaponData item = null;
         int randomnum = Random.Range(0, availableItems.Count);
 
         if (!usedNum.Contains(randomnum))
@@ -184,14 +184,14 @@ public class LevelUpPanel : MonoBehaviour
     }
 
     // 랜덤으로 count만큼 아이템을 골라주는 함수
-    ItemData[] RandomItemSelect(int count)
+    WeaponData[] RandomItemSelect(int count)
     {
-        List<ItemData> items = new List<ItemData>();
+        List<WeaponData> items = new List<WeaponData>();
         List<int> usedNum = new List<int>();
 
         while(items.Count < count) // items List의 길이가 count보다 작으면 같아질때까지 계속 추가 
         {
-            ItemData selectedItem = GetSelectItem(usedNum);
+            WeaponData selectedItem = GetSelectItem(usedNum);
             if (selectedItem != null)
             {
                 items.Add(selectedItem);
