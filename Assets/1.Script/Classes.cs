@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 무기의 기본 스테이터스
-[Serializable] public class WeaponStatusData
+[Serializable] public class WeaponStatusData // 무기의 기본 능력치
 {
     public float Damage = 0; // 공격력(percent)
     public float CoolTime = 0; // 쿨타임(seconds)
@@ -21,7 +20,7 @@ using UnityEngine;
     }
 }
 
-[Serializable] public class AcceStatusData
+[Serializable] public class AcceStatusData // 악세서리 능력치 목록
 {
     public float Hp; // 체력(percent)
     public float HpRegen; // 체력 재생(value) - 3초동안 HpRegen의 값을 리젠시킴
@@ -42,25 +41,24 @@ using UnityEngine;
     public float Curse; // 몬스터 스폰 속도(Curse%만큼 빨리 스폰, 최대 50퍼로 제한)
 }
 
-// 통계창에서 띄울 무기별 데미지 데이터 저장 클래스
-public class AccumWeaponData
+
+public class AccumWeaponData // 통계창에서 표시할 무기별 데미지 데이터 저장 클래스
 {
-    public WeaponData Weapon { get; set; }
-    public int Level { get; set; }
-    public float TotalDamage { get; set; }
+    public WeaponData Data;
+    public int Level;
+    public float TotalDamage;
+}
 
-    public void SetData(WeaponData weapon)
-    {
-        Weapon = weapon;
-    }
+[Serializable] public class SpawnData // Spawner 동작할때 필요한 데이터들
+{
+    public float spawnTime; // 리젠 시간
+    public int health; // 몬스터 체력
+    public float moveSpeed; // 몬스터 속도
 
-    public void SetLevel(int level)
+    public SpawnData(float spawnTime, int health, float moveSpeed)
     {
-        Level = level;
-    }
-
-    public void AddDamage(float damage)
-    {
-        TotalDamage += damage;
+        this.spawnTime = spawnTime;
+        this.health = health;
+        this.moveSpeed = moveSpeed;
     }
 }

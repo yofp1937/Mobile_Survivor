@@ -11,6 +11,7 @@ public abstract class WeaponBase : MonoBehaviour
     [Header("# Weapon Data")]
     [SerializeField] protected WeaponStatusData _wStatusData; // 무기의 Stat 정보
     public WeaponEnum weaponname; // 무기 이름
+    public AccesorriesEnum accename; // 장신구 이름
 
     [Header("# Acce Data")]
     [SerializeField] protected AcceStatusData accedata; // 악세의 Stat 정보
@@ -34,15 +35,13 @@ public abstract class WeaponBase : MonoBehaviour
 
     void OnEnable()
     {
-        player = InGameManager.instance.player.GetComponent<Player>();
+        player = InGameManager.instance.Player.GetComponent<Player>();
         poolManager = InGameManager.instance.PoolManager;
         MergeWeaponAndPlayerStats();
     }
 
     public void Init(WeaponData data) // 외부에서 무기 획득시 호출해서 무기의 정보를 설정하는 함수
     {
-        level++;
-
         // 기본 정보 설정
         WeaponData = data;
         _wStatusData = data.weaponData.Clone();
@@ -50,8 +49,8 @@ public abstract class WeaponBase : MonoBehaviour
         weaponname = (WeaponEnum)data.itemId;
 
         // 데미지 통계 정보 설정
-        GameManager.instance.InGameData.accumWeaponDamageDict[weaponname] = new AccumWeaponData();
-        GameManager.instance.InGameData.accumWeaponDamageDict[weaponname].SetData(data);
+        GameManager.instance.InGameDataManager.AccumWeponData[weaponname] = new AccumWeaponData();
+        GameManager.instance.InGameDataManager.AccumWeponData[weaponname].Data = data;
     }
 
     public void InitAcce(WeaponData data)
@@ -59,6 +58,10 @@ public abstract class WeaponBase : MonoBehaviour
         WeaponData = data;
         player.AcceList.Add(data.itemId);
         player.Status.AddStatus(data.acceData);
+        accename = (AccesorriesEnum)data.itemId;
+
+        GameManager.instance.InGameDataManager.AccumAcceData[accename] = new AccumWeaponData();
+        GameManager.instance.InGameDataManager.AccumAcceData[accename].Data = data;
     }
 
     public void WeaponLevelUp() // 무기 레벨업시 호출하는 함수

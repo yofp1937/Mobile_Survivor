@@ -1,8 +1,244 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour
 {
-    public EquipmentData Data;
+    [Header("# Constant Data")]
+    [SerializeField] string name;
+    public string Name
+    {
+        get => name;
+        private set => name = value;
+    }
+    EquipGrade grade; // 장비 등급
+    public EquipGrade Grade
+    {
+        get => grade;
+        private set => grade = value;
+    }
+    EquipPart part; // 장비 부위
+    public EquipPart Part
+    {
+        get => part;
+        private set => part = value;
+    }
+    Sprite sprite; // 장비의 이미지
+    public Sprite Sprite
+    {
+        get => sprite;
+        private set => sprite = value;
+    }
+    int _maxLevel; // 장비의 최고 레벨(Grade에따라 1~5)
+
+    [Header("# Main Data")]
+    public int EquipLevel; // 장비의 레벨
+    public int[] UpgradeCost; // 강화에 필요한 골드
+    public int SellCost; // 판매금
+
+    [Header("# Option Data")]
+    int _maxObtionCount; // 옵션 최대갯수
+    public List<StatusEnum> Options = new List<StatusEnum>(); // 옵션 종류
+    public List<int> OptionUpgradeCounts = new List<int>(); // n번째 옵션이 몇번 강화됐는지 표시
+    public List<float> OptionsValue = new List<float>(); // n번째 옵션의 값(Options[0]이 HP + 50 두번이면 OptionsValue[0]은 100)
+
+    [Header("# Curse")]
+    public bool IsCurse;
+    public float CurseValue;
+
+    public void CreateEquip(EquipmentData data) // data를 기반으로 새로운 장비 객체 생성
+    {
+        Grade = data.Grade;
+        Part = data.Part;
+        Sprite = data.Sprite;
+        Name = data.Name;
+        SettingOptions();
+    }
+
+    void SettingOptions()
+    {
+        SettingCursedEquip();
+        SetMaxLevelAndStatusCount();
+        SetRandomOption();
+        SettingUpgradeCost();
+    }
+
+    void SettingCursedEquip() // 10% 확률로 저주 아이템 설정
+    {
+        float[] curseValues = { 2.5f, 5f, 7.5f, 10f, 12.5f };
+        int randomPer = Random.Range(0, 100);
+
+        if(randomPer < 10)
+        {
+            IsCurse = true;
+            CurseValue = curseValues[(int)Grade];
+            Name = "저주받은 " + Name;
+        }
+    }
+
+    void SetMaxLevelAndStatusCount() // 등급에따라 최대레벨과 최대옵션수 정하고 배열 크기 설정
+    {
+        switch(Grade)
+        {
+            case EquipGrade.Rare:
+            case EquipGrade.Unique:
+                _maxLevel = 4;
+                _maxObtionCount = 4;
+                break;
+            case EquipGrade.Legendary:
+                _maxLevel = 5;
+                _maxObtionCount = 5;
+                break;
+            default:
+                _maxLevel = 3;
+                _maxObtionCount = 3;
+                break;
+        }
+        UpgradeCost = new int[_maxLevel];
+    }
+
+    void SetRandomOption() // 아이템 생성시 옵션 초기 생성 갯수만큼 랜덤 옵션 부여
+    {
+        int[] baseOptionCounts = { 1, 2, 2, 3, 4 }; // 등급에따른 기본 옵션 생성 갯수
+        int[] addOptionPer = { 50, 33, 50, 33, 25 }; // 등급에따른 추가 옵션 생성 확률
+        int optionCount = baseOptionCounts[(int)Grade]; // 생성해야할 옵션 갯수
+        
+        if(Random.Range(0, 100) < addOptionPer[(int)Grade])
+        {
+            optionCount++;
+        }
+
+        GenerateOptions(optionCount);
+    }
+
+    void GenerateOptions(int generateCount) // 옵션 부여하고 List에 추가
+    {
+        List<StatusEnum> appearOptions = new() // 무조건 출현하는 옵션
+        {
+            StatusEnum.Hp, StatusEnum.AttackPower, StatusEnum.Defense,
+            StatusEnum.ObtainRange, StatusEnum.CriticalChance, StatusEnum.CriticalDamage
+        };
+        
+        switch(Part) // 부위별 추가 등장 옵션 설정
+        {
+            case EquipPart.Hat:
+                appearOptions.Add(StatusEnum.CoolTime);
+                appearOptions.Add(StatusEnum.Duration);
+                break;
+            case EquipPart.Armor:
+                appearOptions.Add(StatusEnum.AttackRange);
+                appearOptions.Add(StatusEnum.ProjectileCount);
+                break;
+            case EquipPart.Ring:
+                appearOptions.Add(StatusEnum.ProjectileSpeed);
+                appearOptions.Add(StatusEnum.ProjectileSize);
+                break;
+            case EquipPart.Necklace:
+                appearOptions.Add(StatusEnum.MoveSpeed);
+                break;
+        }
+
+        List<StatusEnum> filteredOptions = appearOptions.Except(Options).ToList();
+
+        for(int i = 0; i < generateCount; i++)
+        {
+            int random = Random.Range(0, filteredOptions.Count);
+            StatusEnum selectedOption = filteredOptions[random];
+
+            Options.Add(selectedOption);
+            OptionUpgradeCounts.Add(0);
+            OptionsValue.Add(SetOptionsValue(selectedOption));
+
+            filteredOptions.RemoveAt(random);
+        }
+    }
+
+    float SetOptionsValue(StatusEnum option) // Option에따라 OptionValue 추가
+    {
+        float result = 0;
+        float[] Hp = { 20, 50, 100, 250, 500 };
+        float[] AttackPower = { 70, 140, 125, 200, 265 };
+        float[] Defense = { 1, 2, 3, 4, 5 };
+        float[] VariousValue = { 0.1f, 0.1f, 0.15f, 0.15f, 0.2f }; // AttackRange, ObtainRange, ProjectileSize, ProjectileSpeed, MoveSpeed
+        float[] CriticalChance = { 1.5f, 3f, 4.5f, 6f, 7.5f };
+        float[] CriticalDamage = { 3, 6, 9, 12, 15 };
+        float[] CoolTimeAndDuration = { 0.01f, 0.02f, 0.03f, 0.04f, 0.05f };
+        int ProjectileCount = 1;
+
+        switch(option)
+        {
+            case StatusEnum.Hp:
+                result += Hp[(int)Grade];
+                break;
+            case StatusEnum.AttackPower:
+                result += AttackPower[(int)Grade];
+                break;
+            case StatusEnum.Defense:
+                result += Defense[(int)Grade];
+                break;
+            case StatusEnum.AttackRange:
+            case StatusEnum.ObtainRange:
+            case StatusEnum.ProjectileSize:
+            case StatusEnum.ProjectileSpeed:
+            case StatusEnum.MoveSpeed:
+                result += VariousValue[(int)Grade];
+                break;
+            case StatusEnum.CriticalChance:
+                result += CriticalChance[(int)Grade];
+                break;
+            case StatusEnum.CriticalDamage:
+                result += CriticalDamage[(int)Grade];
+                break;
+            case StatusEnum.CoolTime:
+            case StatusEnum.Duration:
+                result += CoolTimeAndDuration[(int)Grade];
+                break;
+            case StatusEnum.ProjectileCount:
+                result += ProjectileCount;
+                break;
+        }
+
+        return result;
+    }
+
+    void SettingUpgradeCost() // 강화비용, 판매금 설정
+    {
+        int[] needCosts = { 500, 750, 1250, 1500, 2000 };
+
+        int cost = 0;
+        for(int i=0; i < _maxLevel; i++)
+        {
+            cost += needCosts[(int)Grade];
+            UpgradeCost[i] = cost;
+        }
+        SellCost = needCosts[(int)Grade];
+    }
+
+    public void UpgradeEquip() // 강화
+    {
+        if(EquipLevel == _maxLevel || GameManager.instance.Gold < UpgradeCost[EquipLevel])
+            return;
+
+        GameManager.instance.Gold -= UpgradeCost[EquipLevel];
+        EquipLevel++;
+
+        if(_maxObtionCount > Options.Count)
+        {
+            GenerateOptions(1);
+        }
+        else
+        {
+            UpgradeOption();
+        }
+    }
+
+    void UpgradeOption() // 강화로인한 옵션 업그레이드 발생시 호출
+    {
+        int randomNum = Random.Range(0, Options.Count);
+        StatusEnum target = Options[randomNum];
+
+        OptionUpgradeCounts[randomNum]++;
+        OptionsValue[randomNum] = SetOptionsValue(target);
+    }
 }

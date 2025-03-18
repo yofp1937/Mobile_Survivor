@@ -6,14 +6,22 @@ using UnityEngine.UI;
 public class InventorySlot : MonoBehaviour
 {
     [Header("# Main Data")]
-    Equipment _equip;
+    public GameObject Data;
 
     [Header("# Reference Data")]
     [SerializeField] Image _childImage;
 
-    public void SetItemSlot(Equipment data)
+    public void SetItemSlot(GameObject data)
     {
-        _equip = data;
-        _childImage.sprite = _equip.Data.Sprite;
+        Data = data;
+        _childImage.sprite = Data.GetComponent<Equipment>().Sprite;
+        _childImage.gameObject.SetActive(true);
+    }
+
+    public void Reload()
+    {
+        Data = null;
+        _childImage.sprite = null;
+        _childImage.gameObject.SetActive(false);
     }
 }

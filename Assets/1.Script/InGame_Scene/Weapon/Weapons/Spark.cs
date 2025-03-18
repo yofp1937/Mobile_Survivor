@@ -18,12 +18,12 @@ public class Spark : WeaponBase
 
         if(targets.Count > 0)
         {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Saprk);
+            AudioManager.instance.PlaySfx(Sfx.Saprk);
             foreach(Transform enemy in targets)
             {
                 Transform weaponT = GetObjAndSetBase(PoolEnum.Spark, parent, 1, out bool isNew);
                 weaponT.position = enemy.transform.position;
-                enemy.GetComponent<Enemy>().TakeDamage(combineDamage, -1, transform.position, weaponname);
+                enemy.GetComponent<EnemyBase>().TakeDamage(combineDamage, -1, transform.position, weaponname);
                 weaponT.GetComponent<WeaponSetting>().StartAttackWhileDuration(0.3f);
             }
         }

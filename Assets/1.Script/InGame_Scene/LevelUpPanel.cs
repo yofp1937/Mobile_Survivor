@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class LevelUpPanel : MonoBehaviour
 {
-    public Item[] ItemLists;
+    LevelUpPanelItem[] _itemLists;
 
     ItemSituation mysitu;
     int weaponcount;
@@ -21,13 +21,7 @@ public class LevelUpPanel : MonoBehaviour
 
     void Awake()
     {
-        ItemLists = GetComponentsInChildren<Item>();
-    }
-
-    void BaseSetting()
-    {
-        GetMyEquipSituation(CheckWeapon(), CheckAcce());
-        GetSelectItemCount();
+        _itemLists = GetComponentsInChildren<LevelUpPanelItem>();
     }
 
     void OnEnable()
@@ -36,12 +30,18 @@ public class LevelUpPanel : MonoBehaviour
         LoadLevelUpPanel();
     }
 
+    void BaseSetting()
+    {
+        GetMyEquipSituation(CheckWeapon(), CheckAcce());
+        GetSelectItemCount();
+    }
+
     public void HideLevelUpPanel()
     {
-        InGameManager.instance.LevelUpPanel.SetActive(false);
+        gameObject.SetActive(false);
         if(GameManager.instance.IsMobile)
         {
-            InGameManager.instance.player.JoyStick.gameObject.SetActive(true);
+            InGameManager.instance.Player.JoyStick.gameObject.SetActive(true);
         }
         GameManager.instance.TimerStart();
     }
@@ -49,20 +49,20 @@ public class LevelUpPanel : MonoBehaviour
     void GetSelectItemCount()
     {
         // 아이템을 가져올 개수를 구해주는 함수
-        if(mysitu == ItemSituation.Full && InGameManager.instance.player.MaxLevelCount > weaponcount - 1)
+        if(mysitu == ItemSituation.Full && InGameManager.instance.Player.MaxLevelCount > weaponcount - 1)
         {
             selectcount = 0;
-            ItemLists[0].gameObject.SetActive(false);
+            _itemLists[0].gameObject.SetActive(false);
         }
-        else if(mysitu == ItemSituation.Full && InGameManager.instance.player.MaxLevelCount > weaponcount - 2)
+        else if(mysitu == ItemSituation.Full && InGameManager.instance.Player.MaxLevelCount > weaponcount - 2)
         {
             selectcount = 1;
-            ItemLists[1].gameObject.SetActive(false);
+            _itemLists[1].gameObject.SetActive(false);
         }
-        else if(mysitu == ItemSituation.Full && InGameManager.instance.player.MaxLevelCount > weaponcount - 3)
+        else if(mysitu == ItemSituation.Full && InGameManager.instance.Player.MaxLevelCount > weaponcount - 3)
         {
             selectcount = 2;
-            ItemLists[2].gameObject.SetActive(false);
+            _itemLists[2].gameObject.SetActive(false);
         }
         else
         {
@@ -76,10 +76,10 @@ public class LevelUpPanel : MonoBehaviour
         
         if(selectcount == 0)
         {
-            ItemLists[0].MaxLevelSetting(0);
-            ItemLists[0].gameObject.SetActive(true);
-            ItemLists[1].MaxLevelSetting(1);
-            ItemLists[1].gameObject.SetActive(true);
+            _itemLists[0].MaxLevelSetting(0);
+            _itemLists[0].gameObject.SetActive(true);
+            _itemLists[1].MaxLevelSetting(1);
+            _itemLists[1].gameObject.SetActive(true);
         }
         else
         {
@@ -88,7 +88,7 @@ public class LevelUpPanel : MonoBehaviour
             
             for(int i = 0; i < randomItems.Length; i++)
             {
-                ItemLists[i].SetItemData(randomItems[i]);
+                _itemLists[i].SetItemData(randomItems[i]);
             }
         }
     }
@@ -98,7 +98,7 @@ public class LevelUpPanel : MonoBehaviour
         if(myweapon && myacce)
         {
             mysitu = ItemSituation.Full;
-            weaponcount = InGameManager.instance.player.WeaponList.Count + InGameManager.instance.player.AcceList.Count;
+            weaponcount = InGameManager.instance.Player.WeaponList.Count + InGameManager.instance.Player.AcceList.Count;
         }
         else if(myweapon)
         {
@@ -116,12 +116,12 @@ public class LevelUpPanel : MonoBehaviour
 
     bool CheckWeapon()
     {
-        return InGameManager.instance.player.WeaponList.Count > 5;
+        return InGameManager.instance.Player.WeaponList.Count > 5;
     }
 
     bool CheckAcce()
     {
-        return InGameManager.instance.player.AcceList.Count > 5;
+        return InGameManager.instance.Player.AcceList.Count > 5;
     }
 
     bool CheckMaxLevel(WeaponData data)
@@ -147,18 +147,18 @@ public class LevelUpPanel : MonoBehaviour
         switch (mysitu)
         {
             case ItemSituation.Full:
-                availableItems.AddRange(InGameManager.instance.player.WeaponList.Select(id => InGameManager.instance.WeaponManager.Weapons[id]));
-                availableItems.AddRange(InGameManager.instance.player.AcceList.Select(id => InGameManager.instance.WeaponManager.Accessories[id]));
+                availableItems.AddRange(InGameManager.instance.Player.WeaponList.Select(id => InGameManager.instance.WeaponManager.Weapons[id]));
+                availableItems.AddRange(InGameManager.instance.Player.AcceList.Select(id => InGameManager.instance.WeaponManager.Accessories[id]));
                 break;
 
             case ItemSituation.OnlyWeapon:
-                availableItems.AddRange(InGameManager.instance.player.WeaponList.Select(id => InGameManager.instance.WeaponManager.Weapons[id]));
+                availableItems.AddRange(InGameManager.instance.Player.WeaponList.Select(id => InGameManager.instance.WeaponManager.Weapons[id]));
                 availableItems.AddRange(InGameManager.instance.WeaponManager.Accessories);
                 break;
 
             case ItemSituation.OnlyAcce:
                 availableItems.AddRange(InGameManager.instance.WeaponManager.Weapons);
-                availableItems.AddRange(InGameManager.instance.player.AcceList.Select(id => InGameManager.instance.WeaponManager.Accessories[id]));
+                availableItems.AddRange(InGameManager.instance.Player.AcceList.Select(id => InGameManager.instance.WeaponManager.Accessories[id]));
                 break;
 
             case ItemSituation.Available:

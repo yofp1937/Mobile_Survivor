@@ -8,7 +8,7 @@ public class Thunder : WeaponBase
     {
         Transform parent = poolManager.transform.Find("Weapon").Find("Weapon4");
         List<Transform> targets = player.Scanner.GetAllTargetsInAttackRange(player.Scanner.activescanRange * combineAttackRange);
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Thunder);
+        AudioManager.instance.PlaySfx(Sfx.Thunder);
 
         for(int i = 0; i < combineProjectileCount; i++)
         {

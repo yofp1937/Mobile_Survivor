@@ -16,7 +16,7 @@ public class Reposition : MonoBehaviour
         if(!collision.CompareTag("Area"))
             return;
 
-        GameObject playerObj = InGameManager.instance.player.gameObject;
+        GameObject playerObj = InGameManager.instance.Player.gameObject;
         Vector3 playerPos = playerObj.transform.position;
         Vector3 myPos = transform.position;
 

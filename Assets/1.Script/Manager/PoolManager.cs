@@ -7,6 +7,7 @@ public class PoolManager : MonoBehaviour
 {
     [Header(" # Prefab Data")]
     public GameObject[] Enemies;
+    public GameObject[] Bosses;
     public GameObject[] Items;
     public GameObject DmgPopup;
 
@@ -27,10 +28,6 @@ public class PoolManager : MonoBehaviour
     {
         GameObject result = null;
         isNew = false;
-        if(obj == PoolEnum.None)
-        {
-            return result;
-        }
         
         foreach(GameObject item in _pools[obj])
         {
@@ -102,6 +99,9 @@ public class PoolManager : MonoBehaviour
             case PoolEnum.Mushroom: return Enemies[2];
             case PoolEnum.Skeleton: return Enemies[3];
 
+            // Bosses
+            case PoolEnum.Boss: return Bosses[UnityEngine.Random.Range(0, Bosses.Length)];
+
             // Items
             case PoolEnum.ExpJewel_1: return Items[0];
             case PoolEnum.ExpJewel_3: return Items[1];
@@ -109,6 +109,8 @@ public class PoolManager : MonoBehaviour
             case PoolEnum.Gold: return Items[3];
             case PoolEnum.Magnet: return Items[4];
             case PoolEnum.Potion: return Items[5];
+            case PoolEnum.Equipment: return Items[6];
+
 
             // DmgPopUp
             case PoolEnum.DamagePopUp: return DmgPopup;

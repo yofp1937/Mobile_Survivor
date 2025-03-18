@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -19,13 +20,39 @@ public class LobbyManager : MonoBehaviour
         }
     }
     #endregion
-    
-    public AdMobManager admobManager;
-    public MainMenu mainMenu;
+    [Header("# Main Data")]
+    public Text HaveGold;
+
+    [Header("# Reference Data")]
+    public StartGamePanel StartGamePanel;
+    public UpgradePanel UpgradePanel;
+    public SettingPanel SettingPanel;
+    public ScorePanel ScorePanel;
+    public InventoryPanel InventoryPanel;
+    public AdMobManager AdMobManager;
 
     private void Init() // Awake에서 실행
     {
-        
+        StartGamePanel.gameObject.SetActive(false);
+        UpgradePanel.gameObject.SetActive(false);
+        SettingPanel.gameObject.SetActive(false);
+        ScorePanel.gameObject.SetActive(false);
+        InventoryPanel.gameObject.SetActive(true);
+        InventoryPanel.gameObject.SetActive(false);
+    }
+
+    void Start()
+    {
+        LoadHaveGold();
+        if(GameManager.instance.InGameDataManager.isClear)
+        {
+            ScorePanel.ActiveScore();
+        }
+    }
+
+    public void LoadHaveGold()
+    {
+        HaveGold.text = string.Format("{0:F0}", GameManager.instance.Gold);
     }
 
     void Update()
@@ -34,20 +61,20 @@ public class LobbyManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.KeypadPlus) && GameManager.instance.IsDeveloperMode)
         {
             GameManager.instance.Gold += 100;
-            mainMenu.LoadHaveGold();
+            LoadHaveGold();
         }
 
         // Test Code - 숫자패드 - 누르면 골드 초기화
         if(Input.GetKeyDown(KeyCode.KeypadMinus) && GameManager.instance.IsDeveloperMode)
         {
             GameManager.instance.Gold = 0;
-            mainMenu.LoadHaveGold();
+            LoadHaveGold();
         }
 
         // Test Code - Space 누르면 GameManager의 UpgradeLevelDict 내용물 출력
         if(Input.GetKeyDown(KeyCode.Space) && GameManager.instance.IsDeveloperMode)
         {
-            var test = GameManager.instance.Status.UpgradeLevelDict;
+            var test = GameManager.instance.StatusManager.UpgradeLevelDict;
 
             foreach(var _ in test)
             {
@@ -55,4 +82,14 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
+    #region "Btn"
+    public void OnClickQuit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+    #endregion
 }

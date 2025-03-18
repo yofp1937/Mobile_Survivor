@@ -21,7 +21,7 @@ public class ThrowWeapon : WeaponBase
     IEnumerator AttackCoroutine()
     {
         Transform parent = poolManager.transform.Find("Weapon").Find("Weapon1");
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
+        AudioManager.instance.PlaySfx(Sfx.ThrowWeapon);
 
         for(int i = 0; i < combineProjectileCount; i++)
         {
@@ -34,7 +34,7 @@ public class ThrowWeapon : WeaponBase
 
             if(!levelcheck && i > 0) // 최대레벨 아니면 무기 던질때마다 사운드 출력
             {
-                AudioManager.instance.PlaySfx(AudioManager.Sfx.ThrowWeapon);
+                AudioManager.instance.PlaySfx(Sfx.ThrowWeapon);
             }
 
             yield return new WaitForSeconds(interval);

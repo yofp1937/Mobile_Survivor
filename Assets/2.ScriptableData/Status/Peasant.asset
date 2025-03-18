@@ -28,4 +28,4 @@ MonoBehaviour:
     CriticalChance: 5
     CriticalDamage: 50
     Luck: 0
-    Curse: 0
+    Curse: 1

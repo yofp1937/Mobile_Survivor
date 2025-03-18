@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5563830e6dc2a74f8d8d0b6f8d722a7, type: 3}
+  m_Name: 2.RareArmor
+  m_EditorClassIdentifier: 
+  Name: "\uD2B9\uBCC4\uD55C \uAC11\uC637"
+  Grade: 2
+  Part: 1
+  Sprite: {fileID: 21300000, guid: 105774b9b1e38414d94cd73897f40ee2, type: 3}

@@ -6,16 +6,7 @@ using UnityEngine.UI;
 // 각 정보를 화면에 표시
 public class HUD : MonoBehaviour
 {
-    public enum InfoType // 화면에서 표시할 데이터들의 이름
-    {
-        Exp, // 경험치
-        Level, // 플레이어 레벨
-        Kill, // 킬수
-        Time, // 남은 시간
-        Health, // 플레이어 체력
-        Gold // 획득 골드
-    }
-    public InfoType type;
+    public HudType type;
 
     Text myText;
     Slider mySlider;
@@ -29,22 +20,22 @@ public class HUD : MonoBehaviour
     void LateUpdate()
     {
         switch(type){
-            case InfoType.Exp:
+            case HudType.Exp:
                 UpdateExp();
                 break;
-            case InfoType.Level:
+            case HudType.Level:
                 UpdateLevel();
                 break;
-            case InfoType.Kill:
+            case HudType.Kill:
                 UpdateKill();
                 break;
-            case InfoType.Time:
+            case HudType.Time:
                 UpdateTime();
                 break;
-            case InfoType.Health:
+            case HudType.Health:
                 UpdateHealth();
                 break;
-            case InfoType.Gold:
+            case HudType.Gold:
                 UpdateGold();
                 break;
         }
@@ -52,24 +43,24 @@ public class HUD : MonoBehaviour
 
     void UpdateExp() // 경험치 표시
     {
-        float curExp = InGameManager.instance.player.Exp;
-        float maxExp = InGameManager.instance.player.NextExp[InGameManager.instance.player.Level];
+        float curExp = InGameManager.instance.Player.Exp;
+        float maxExp = InGameManager.instance.Player.NextExp[InGameManager.instance.Player.Level];
         mySlider.value = curExp / maxExp;
     }
 
     void UpdateLevel() // 플레이어 레벨 표시
     {
-        myText.text = string.Format("Lv.{0:F0}", InGameManager.instance.player.Level);
+        myText.text = string.Format("Lv.{0:F0}", InGameManager.instance.Player.Level);
     }
 
     void UpdateKill() // 킬수 표시
     {
-        myText.text = string.Format("{0:F0}", GameManager.instance.InGameData.kill);
+        myText.text = string.Format("{0:F0}", GameManager.instance.InGameDataManager.Kill);
     }
 
     void UpdateTime() // 남은 시간 표시
     {
-        float remaintime = GameManager.instance.maxGameTime - GameManager.instance.gameTime;
+        float remaintime = GameManager.instance.MaxGameTime - GameManager.instance.GameTime;
         if (remaintime < 0)
             {
                 remaintime = 0;
@@ -81,13 +72,13 @@ public class HUD : MonoBehaviour
 
     void UpdateHealth() // 플레이어 체력 표시
     {
-        float curHealth = InGameManager.instance.player.Health;
-        float maxHealth = InGameManager.instance.player.Status.Hp;
+        float curHealth = InGameManager.instance.Player.Health;
+        float maxHealth = InGameManager.instance.Player.Status.Hp;
         mySlider.value = curHealth / maxHealth;
     }
 
     void UpdateGold() // 획득 골드 표시
     {
-        myText.text = string.Format("{0:F0}", GameManager.instance.InGameData.getGold);
+        myText.text = string.Format("{0:F0}", GameManager.instance.InGameDataManager.GetGold);
     }
 }

@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 5268836311287884186}
   - component: {fileID: 2056623290253716376}
   - component: {fileID: -7204746904097697401}
-  - component: {fileID: 414287212948324930}
+  - component: {fileID: 3120141478558456534}
   m_Layer: 6
   m_Name: Goblin
   m_TagString: Enemy
@@ -269,7 +269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf34c2f984380e04aa00a37f58b07673, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &414287212948324930
+--- !u!114 &3120141478558456534
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,10 +278,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6959304280127034871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f35b730efe3e734c8f8310941a6ae98, type: 3}
+  m_Script: {fileID: 11500000, guid: 35548ac8ebb9b20469c0a1b4dfcb4c3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3.8
-  target: {fileID: 0}
-  health: 0
-  damage: 0

@@ -8,6 +8,7 @@ public class DropItem : MonoBehaviour
     public int Exp;
     DropItemEnum _item;
     bool isBigJewel = false; // AddExp로 exp가 10이 넘어가서 RedJewel로 바뀌면 true로 변경
+    public EquipmentData EquipmentData; 
 
     [Header("# Reference Data")]
     SpriteRenderer spriter;
@@ -91,7 +92,7 @@ public class DropItem : MonoBehaviour
 
     IEnumerator PullToPlayerCoroutine()
     {
-        Transform _player = InGameManager.instance.player.transform;
+        Transform _player = InGameManager.instance.Player.transform;
         // 이동 속도 설정
         float _speed = 8f;
         
@@ -105,29 +106,34 @@ public class DropItem : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player")){
+        if(collision.CompareTag("Player"))
+        {
             Player player = collision.GetComponent<Player>();
             if(player != null)
             {
-                if(_item == DropItemEnum.ExpJewel_1 || _item == DropItemEnum.ExpJewel_3 || _item == DropItemEnum.ExpJewel_5)
+                switch(_item)
                 {
-                    InGameManager.instance.JewelCount--;
-                    player.GetExp(Exp);
-                }
-                else if(_item == DropItemEnum.Gold)
-                {
-                    InGameManager.instance.DropItemCount--;
-                    player.GetGold(1);
-                }
-                else if(_item == DropItemEnum.Magnet)
-                {
-                    InGameManager.instance.DropItemCount--;
-                    player.ActiveMagnet();
-                }
-                else if(_item == DropItemEnum.Potion)
-                {
-                    InGameManager.instance.DropItemCount--;
-                    player.GetHeal(20);
+                    case DropItemEnum.ExpJewel_1:
+                    case DropItemEnum.ExpJewel_3:
+                    case DropItemEnum.ExpJewel_5:
+                        InGameManager.instance.JewelCount--;
+                        player.Exp += Exp;
+                        break;
+                    case DropItemEnum.Gold:
+                        InGameManager.instance.DropItemCount--;
+                        player.GetGold(1);
+                        break;
+                    case DropItemEnum.Magnet:
+                        InGameManager.instance.DropItemCount--;
+                        player.ActiveMagnet();
+                        break;
+                    case DropItemEnum.Potion:
+                        InGameManager.instance.DropItemCount--;
+                        player.GetPotion(20);
+                        break;
+                    case DropItemEnum.Equipment:
+                        GameManager.instance.InGameDataManager.GetEquip.Add(EquipmentData);
+                        break;
                 }
                 gameObject.SetActive(false);
             }

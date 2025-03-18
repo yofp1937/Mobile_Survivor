@@ -6,37 +6,8 @@ using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    #region "Singleton"
     public static AudioManager instance;
-
-    [Header(" # BGM")]
-    public AudioClip[] bgmClip;
-    
-    public float bgmVolume;
-    AudioSource bgmPlayer;
-    AudioHighPassFilter bgmEffect;
-    
-    [Header(" # UI")]
-    public AudioClip[] uiClip;
-    public float uiVolume;
-    AudioSource uiPlayer;
-
-    [Header(" # SFX")]
-    public AudioClip[] sfxClips;
-    public float sfxVolume;
-    public int channels;
-    AudioSource[] sfxPlayers;
-    int channelIndex;
-
-    public enum Bgm
-    {
-        Lobby, InGame
-    }
-
-    public enum Sfx
-    {
-        Click, Heal, ThrowWeapon, Fireball, Explosion, Laser, Thunder, Wave, Saprk
-    }
-
     void Awake()
     {
         // 싱글톤 패턴 구현
@@ -51,115 +22,111 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체는 파괴
         }
     }
+    #endregion
 
-    void Init()
+    [Header(" # BGM")]
+    [SerializeField] AudioClip[] _bgmClip;
+    public float BgmVolume;
+    AudioSource _bgmPlayer;
+    AudioHighPassFilter _bgmEffect;
+    
+    [Header(" # SFX")]
+    [SerializeField] AudioClip[] _sfxClips;
+    public float SfxVolume;
+    public int Channels;
+    AudioSource[] _sfxPlayers;
+    int _channelIndex;
+
+    void Init() // Awake에서 실행
     {
-        bgmVolume = PlayerPrefs.GetFloat("Bgm", 1);
-        sfxVolume = PlayerPrefs.GetFloat("Sfx", 1);
+        BgmVolume = PlayerPrefs.GetFloat("Bgm", 1);
+        SfxVolume = PlayerPrefs.GetFloat("Sfx", 1);
 
         // 배경음 플레이어 초기화
         GameObject bgmObject = new GameObject("BgmPlayer");
         bgmObject.transform.parent = transform;
-        bgmPlayer = bgmObject.AddComponent<AudioSource>();
-        bgmPlayer.playOnAwake = false; // Active True가 되자마자 실행되는거 방지
-        bgmPlayer.loop = true; // bgm이 종료되면 처음부터 다시 반복
-        bgmPlayer.volume = bgmVolume;
+        _bgmPlayer = bgmObject.AddComponent<AudioSource>();
+        _bgmPlayer.playOnAwake = false; // Active True가 되자마자 실행되는거 방지
+        _bgmPlayer.loop = true; // bgm이 종료되면 처음부터 다시 반복
+        _bgmPlayer.volume = BgmVolume;
         
         // 효과음 플레이어 초기화
         GameObject sfxObject = new GameObject("SfxPlayer");
         sfxObject.transform.parent = transform;
-        sfxPlayers = new AudioSource[channels];
+        _sfxPlayers = new AudioSource[Channels];
 
-        for(int i = 0; i < sfxPlayers.Length; i++)
+        for(int i = 0; i < _sfxPlayers.Length; i++)
         {
-            sfxPlayers[i] = sfxObject.AddComponent<AudioSource>();
-            sfxPlayers[i].playOnAwake = false;
-            sfxPlayers[i].bypassListenerEffects = true;
-            sfxPlayers[i].volume = sfxVolume;
+            _sfxPlayers[i] = sfxObject.AddComponent<AudioSource>();
+            _sfxPlayers[i].playOnAwake = false;
+            _sfxPlayers[i].bypassListenerEffects = true;
+            _sfxPlayers[i].volume = SfxVolume;
         }
 
-        PlayBgm(AudioManager.Bgm.Lobby);
+        PlayBgm(Bgm.Lobby);
     }
 
     public void SetBgmVolume(float volume)
     {
         PlayerPrefs.SetFloat("Bgm", volume);
         PlayerPrefs.Save();
-        bgmVolume = volume;
-        bgmPlayer.volume = volume;
+        BgmVolume = volume;
+        _bgmPlayer.volume = volume;
     }
 
     public void SetSfxVolume(float volume)
     {
         PlayerPrefs.SetFloat("Sfx", volume);
         PlayerPrefs.Save();
-        sfxVolume = volume;
-        for(int i = 0; i < sfxPlayers.Length; i++)
+        SfxVolume = volume;
+        for(int i = 0; i < _sfxPlayers.Length; i++)
         {
-            sfxPlayers[i].volume = volume;
+            _sfxPlayers[i].volume = volume;
         }
-    }
-
-    public void InGameInit()
-    {
-        bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
-
-        // AudioManager와 설정창 Slider, Btn 연결
-        GameObject volset = InGameManager.instance.VolumeSettings;
-        Slider bgm = volset.transform.Find("Bgm_Group").Find("Bgm_Slider").GetComponent<Slider>();
-        bgm.value = bgmVolume;
-        Slider sfx = volset.transform.Find("Sfx_Group").Find("Sfx_Slider").GetComponent<Slider>();
-        sfx.value = sfxVolume;
-        
-        bgm.onValueChanged.AddListener(AudioManager.instance.SetBgmVolume);
-        sfx.onValueChanged.AddListener(AudioManager.instance.SetSfxVolume);
-        volset.transform.Find("Sfx_Group").Find("Sfx_TestBtn").GetComponent<Button>().onClick.AddListener(AudioManager.instance.TestSfx);
     }
 
     public void PlayBgm(Bgm bgm)
     {
-        bgmPlayer.Stop(); // 이전 진행중이던 Bgm 정지
-        bgmPlayer.clip = bgmClip[(int)bgm];
-        bgmPlayer.Play(); // 원하는 Bgm 실행
+        _bgmPlayer.Stop();
+        _bgmPlayer.clip = _bgmClip[(int)bgm];
+        _bgmPlayer.Play();
     }
 
-    public void StopBgm()
+    public void PlaySfx(Sfx sfx)
     {
-        bgmPlayer.Stop();
-    }
-
-    public void EffectBgm(bool isPlay)
-    {
-        bgmEffect.enabled = isPlay;
-    }
-
-    public void PlaySfx(Sfx sfx) // 비어있는 Player를 찾아서 sfx 브금을 동작시킴
-    {
-        for(int i=0; i < sfxPlayers.Length; i++)
+        for(int i=0; i < _sfxPlayers.Length; i++)
         {
-            int loopIndex = (i + channelIndex) % sfxPlayers.Length;
+            int loopIndex = (i + _channelIndex) % _sfxPlayers.Length;
 
-            if(sfxPlayers[loopIndex].isPlaying)
+            if(_sfxPlayers[loopIndex].isPlaying)
                 continue;
 
-            sfxPlayers[loopIndex].clip = sfxClips[(int)sfx];
-            sfxPlayers[loopIndex].Play();
+            _sfxPlayers[loopIndex].clip = _sfxClips[(int)sfx];
+            _sfxPlayers[loopIndex].Play();
             break;
         }
     }
 
-    public void TestSfx()
+    public void EffectBgm(bool isPlay) // 레벨업시 Bgm에 마스크씌움
     {
-        for(int i=0; i < sfxPlayers.Length; i++)
-        {
-            int loopIndex = (i + channelIndex) % sfxPlayers.Length;
+        _bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
+        _bgmEffect.enabled = isPlay;
+    }
 
-            if(sfxPlayers[loopIndex].isPlaying)
+    #region "Btn"
+    public void OnClickTestSfx()
+    {
+        for(int i=0; i < _sfxPlayers.Length; i++)
+        {
+            int loopIndex = (i + _channelIndex) % _sfxPlayers.Length;
+
+            if(_sfxPlayers[loopIndex].isPlaying)
                 continue;
 
-            sfxPlayers[loopIndex].clip = sfxClips[0];
-            sfxPlayers[loopIndex].Play();
+            _sfxPlayers[loopIndex].clip = _sfxClips[0];
+            _sfxPlayers[loopIndex].Play();
             break;
         }
     }
+    #endregion
 }

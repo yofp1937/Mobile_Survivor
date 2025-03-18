@@ -51,7 +51,7 @@ public class WeaponSetting : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Enemy")){
-            Enemy enemy = collision.GetComponent<Enemy>();
+            EnemyBase enemy = collision.GetComponent<EnemyBase>();
             if(enemy != null)
             {
                 enemy.TakeDamage(damage, knockbackForce, transform.position, weaponname);

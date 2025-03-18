@@ -32,7 +32,7 @@ public class UpgradePanel : MonoBehaviour
     public void SetCost() // 필요한 골드 표시
     {
         // 종류는 data로 구분, level은 _level로 구분하여 작성
-        int _level = GameManager.instance.Status.GetUpgradeLevel(data.EnumName);
+        int _level = GameManager.instance.StatusManager.GetUpgradeLevel(data.EnumName);
 
         if(_level == data.MaxLevel)
         {
@@ -45,7 +45,7 @@ public class UpgradePanel : MonoBehaviour
 
     void SetUpgradeSlots() // Lobby Scene 입장시 Level 이미지 변경
     {
-        List<int> _list = GameManager.instance.Status.UpgradeLevelDict.Values.ToList();
+        List<int> _list = GameManager.instance.StatusManager.UpgradeLevelDict.Values.ToList();
 
         for(int i = 0; i < _list.Count; i++)
         {
@@ -58,7 +58,7 @@ public class UpgradePanel : MonoBehaviour
 
     void ResetUpgradeSlots() // Upgrade 리셋시 Level 이미지 변경
     {
-        List<int> _list = GameManager.instance.Status.UpgradeLevelDict.Values.ToList();
+        List<int> _list = GameManager.instance.StatusManager.UpgradeLevelDict.Values.ToList();
 
         for(int i = 0; i < _list.Count; i++)
         {
@@ -74,21 +74,21 @@ public class UpgradePanel : MonoBehaviour
 
     void LevelUpgradeSlots(UpgradeData data) // Upgrade 구매시 Level 이미지 변경
     {
-        int level = GameManager.instance.Status.UpgradeLevelDict[data.EnumName];
+        int level = GameManager.instance.StatusManager.UpgradeLevelDict[data.EnumName];
 
         slots[(int)data.EnumName].transform.Find("Level_Panel").Find(level.ToString()).GetComponent<Image>().sprite = levelImage;
     }
 
     #region "Btn"
-    public void OnClickUpgrades()
+    public void OnClickUpgradePanel()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        AudioManager.instance.PlaySfx(Sfx.Click);
         gameObject.SetActive(true);
     }
 
     public void OnClickUpgrade_Exit()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        AudioManager.instance.PlaySfx(Sfx.Click);
         gameObject.SetActive(false);
         buyBtn.GetComponent<Button>().interactable = false;
         cost = 0;
@@ -98,9 +98,9 @@ public class UpgradePanel : MonoBehaviour
 
     public void OnClickUpgradeSlots(int num)
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        AudioManager.instance.PlaySfx(Sfx.Click);
 
-        data = GameManager.instance.Status.UpgradeDataList[num];
+        data = GameManager.instance.StatusManager.UpgradeDataList[num];
         descText.text = data.Desc;
 
         buyBtn.GetComponent<Button>().interactable = true;
@@ -109,13 +109,13 @@ public class UpgradePanel : MonoBehaviour
     
     public void OnClickResetBtn()
     {
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        AudioManager.instance.PlaySfx(Sfx.Click);
         // 강화에 사용된 골드 반환
         int resetgold = PlayerPrefs.GetInt("UseUpgradeGold", 0);
         GameManager.instance.Gold += resetgold;
 
         // 보유 골드 텍스트 갱신
-        LobbyManager.instance.mainMenu.LoadHaveGold();
+        LobbyManager.instance.LoadHaveGold();
         
         // UseUpgradeGold 초기화
         PlayerPrefs.SetInt("UseUpgradeGold", 0);
@@ -125,7 +125,7 @@ public class UpgradePanel : MonoBehaviour
         ResetUpgradeSlots();
 
         // 데이터 리셋
-        GameManager.instance.Status.ResetUpgrade();
+        GameManager.instance.StatusManager.ResetUpgrade();
 
         // 설명, 필요 골드 텍스트 갱신
         descText.text = "";
@@ -134,7 +134,7 @@ public class UpgradePanel : MonoBehaviour
 
     public void OnClickBuyBtn()
     {
-        int level = GameManager.instance.Status.UpgradeLevelDict[data.EnumName];
+        int level = GameManager.instance.StatusManager.UpgradeLevelDict[data.EnumName];
 
         if(GameManager.instance.Gold < cost) // 골드 부족하면 안눌림
         {
@@ -144,7 +144,7 @@ public class UpgradePanel : MonoBehaviour
         {
             return;
         }
-        AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+        AudioManager.instance.PlaySfx(Sfx.Click);
 
         // 골드 사용
         GameManager.instance.Gold -= cost;
@@ -157,10 +157,10 @@ public class UpgradePanel : MonoBehaviour
         PlayerPrefs.Save();
 
         // 보유 골드 텍스트 갱신
-        LobbyManager.instance.mainMenu.LoadHaveGold();
+        LobbyManager.instance.LoadHaveGold();
 
         // 레벨업
-        GameManager.instance.Status.SetUpgradeLevel(data.EnumName, level);
+        GameManager.instance.StatusManager.SetUpgradeLevel(data.EnumName, level);
 
         // 필요 골드 텍스트 갱신
         SetCost();

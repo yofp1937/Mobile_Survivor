@@ -83,14 +83,14 @@ public class AdMobManager : MonoBehaviour
         {
             Debug.Log("Load RewardAdEventHandlers => OnAdFullScreenContentClosed");
             LoadRewardedAd(); // 광고 갱신
-            LobbyManager.instance.mainMenu.GameSpeedUp();
+            LobbyManager.instance.StartGamePanel.SetGameSpeedUp();
         };
         // 광고가 비정상적으로 종료됐을때 수신
         ad.OnAdFullScreenContentFailed += (AdError error) =>
         {
             Debug.Log("Load RewardAdEventHandlers => OnAdFullScreenContentFailed");
             LoadRewardedAd(); // 광고 갱신
-            LobbyManager.instance.mainMenu.GameSpeedReset();
+            LobbyManager.instance.StartGamePanel.ResetGameSpeed();
         };
     }
 }

@@ -8,7 +8,7 @@ public class FollowPlayer : MonoBehaviour
 
     void Update()
     {
-        GameObject player = InGameManager.instance.player.transform.Find("character").gameObject;
+        GameObject player = InGameManager.instance.Player.transform.Find("character").gameObject;
 
         if(player != null)
         {
@@ -20,13 +20,13 @@ public class FollowPlayer : MonoBehaviour
         // Test Code
         if(Input.GetButtonDown("Jump") && GameManager.instance.IsDeveloperMode)
         {
-            InGameManager.instance.player.LevelUp();
+            InGameManager.instance.Player.LevelUp();
         }
 
         // Test Code - 숫자패드 + 누르면 5초 증가
         if(Input.GetKeyDown(KeyCode.KeypadPlus) && GameManager.instance.IsDeveloperMode)
         {
-            GameManager.instance.gameTime += 5;
+            GameManager.instance.GameTime += 5;
         }
 
         // Esc 누르면 일시정지하고 설정창 띄움
@@ -34,11 +34,11 @@ public class FollowPlayer : MonoBehaviour
         {
             if(InGameManager.instance.OnSettings) // 설정창이 열려있으면
             {
-                InGameManager.instance.HideSettings();
+                InGameManager.instance.SettingPanel.OnClickExit();
             }
             else
             {
-                InGameManager.instance.ActiveSettings();
+                InGameManager.instance.SettingPanel.OnClickSettingPanel();
             }
         }
     }

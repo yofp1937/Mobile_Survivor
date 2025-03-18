@@ -1,10 +1,14 @@
 /*
     각종 enum(열거형 데이터) 초기화
 */
-
+public enum Scene { Lobby, InGame }
+public enum Bgm { Lobby, InGame } // Bgm 종류
+public enum Sfx { Click, Heal, ThrowWeapon, Explosion, Laser, Thunder, Wave, Saprk } // 효과음 종류
+public enum DifficultyLevels{ Normal, Hard, Hell, God, Nightmare} // 난이도 종류
 public enum UpgradeEnum {Hp, AttackPower, ProjectileCount, ProjectileSpeed, CoolTime, Duration, AttackRange, ObtainRange} // 강화 능력치 종류
-public enum WeaponEnum { RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave } // 무기 종류
-public enum DropItemEnum { ExpJewel_1, ExpJewel_3, ExpJewel_5, Gold, Magnet, Potion} // 몬스터 드랍 아이템 종류
+public enum WeaponEnum{ RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave} // 무기 종류
+public enum AccesorriesEnum { Ruby, Feather, Book, Candle, Gear, Belt, Coin } // 장신구 종류
+public enum DropItemEnum { ExpJewel_1, ExpJewel_3, ExpJewel_5, Gold, Magnet, Potion, Equipment} // 몬스터 드랍 아이템 종류
 
 public enum PoolEnum // ObjectPoolling을 활용하는 객체 리스트
 {
@@ -12,27 +16,36 @@ public enum PoolEnum // ObjectPoolling을 활용하는 객체 리스트
     // Weapons
     RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave,
     // Enemies
-    FlyEye, Goblin, Mushroom, Skeleton,
+    Boss, FlyEye, Goblin, Mushroom, Skeleton,
     // Items
     ExpJewel_1, ExpJewel_3, ExpJewel_5, Gold, Magnet, Potion,
+    // Equipment
+    Equipment,
     // DmgPopUp
     DamagePopUp
 }
-
-
+public enum HudType // InGameScene에서 화면에 표시할 데이터들의 이름
+{
+    Exp, // 경험치
+    Level, // 플레이어 레벨
+    Kill, // 킬수
+    Time, // 남은 시간
+    Health, // 플레이어 체력
+    Gold // 획득 골드
+}
 
 public enum EquipGrade // 아이템 등급
 {
-    Common, // 흔함
-    UnCommon, // 안흔함
-    Rare, // 특별
-    Unique, // 희귀
-    Legendary // 전설
+    Common, // 흔한
+    UnCommon, // 드문
+    Rare, // 특별한
+    Unique, // 희귀한
+    Legendary // 전설적인
 }
 
 public enum EquipPart // 아이템 부위
 {
-    Hat, Armor, Leggings, Boots
+    Hat, Armor, Ring, Necklace
 }
 
 public enum StatusEnum // 열거형 스탯

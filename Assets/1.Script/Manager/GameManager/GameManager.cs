@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            Application.targetFrameRate = 60;
             Init();
             DontDestroyOnLoad(gameObject); // 씬 전환 시에도 값이 유지되도록 설정
         }
@@ -27,9 +26,20 @@ public class GameManager : MonoBehaviour
     #endregion
 
     [Header("# Game Control")]
-    public float gameSpeed = 1f; // 게임 속도
-    public float maxGameTime = 30 * 60f; // 최대 게임 시간
-    public float gameTime; // 현재 게임 시간
+    public float GameSpeed = 1f; // 게임 속도
+    public float MaxGameTime = 30 * 60f; // 최대 게임 시간
+    public float GameTime; // 현재 게임 시간
+    [SerializeField] DifficultyLevels _difficultyLevel;
+    public DifficultyLevels DifficultyLevel
+    {
+        get => _difficultyLevel;
+        set
+        {
+            _difficultyLevel = value;
+            PlayerPrefs.SetString("DifficultyLevel", _difficultyLevel.ToString());
+            PlayerPrefs.Save();
+        }
+    }
     [SerializeField] private bool DEVELOPER_MODE = false;
     public bool IsDeveloperMode => DEVELOPER_MODE;
     public bool IsMobile { get; private set; }
@@ -46,35 +56,35 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.Save();
         }
     }
-
-    [Header("# Player Select")]
     public GameObject SelectCharacter;
     public int CharacterCode;
     public WeaponData SelectWeapon;
     public int SelectArtifactId;
 
     [Header("# Sub Component")]
-    public GameManagerInGameData InGameData;
-    public GameManagerStatus Status;
-    public GameManagerInventory Inventory;
+    public InGameDataManager InGameDataManager;
+    public StatusManager StatusManager;
+    public InventoryManager InventoryManager;
 
     private bool timerrunning = false; // InGame Scene로 이동하면 시간을 측정하기위함
 
     void Init() // Awake()에서 실행
     {
+        Application.targetFrameRate = 60;
         gold = PlayerPrefs.GetInt("Gold");
         CheckPlatform();
+        LoadDifficulty();
     }
 
     void Update()
     {
         if(timerrunning)
         {
-            gameTime += Time.deltaTime;
+            GameTime += Time.deltaTime;
 
-            if(gameTime >= maxGameTime)
+            if(GameTime >= MaxGameTime)
             {
-                InGameManager.instance.GameVictory();
+                InGameManager.instance.CheckGameResult(true);
             }
         }
     }
@@ -91,24 +101,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void DataReset() // 게임 종료 후 이전 게임 데이터 Reset
+    void LoadDifficulty()
     {
-        SelectCharacter = null;
-        SelectWeapon = null;
-        gameTime = 0;
-        InGameData.DataReset();
-    }
-
-    public void TimerStart() // InGame Scene에 입장하면 실행됨
-    {
-        timerrunning = true;
-        Time.timeScale = gameSpeed;
-    }
-
-    public void TimerStop() // InGame Scene에서 게임 일시정지할때 실행됨
-    {
-        timerrunning = false;
-        Time.timeScale = 0;
+        string savedDif = PlayerPrefs.GetString("DifficultyLevel", DifficultyLevels.Normal.ToString());
+        _difficultyLevel = Enum.TryParse(savedDif, out DifficultyLevels difficulty) ? difficulty : DifficultyLevels.Normal;
     }
 
     public void LoadInGameScene()
@@ -119,18 +115,36 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            AudioManager.instance.PlaySfx(AudioManager.Sfx.Click);
+            AudioManager.instance.PlaySfx(Sfx.Click);
             SceneManager.LoadScene("InGame");
         }
     }
 
-    public void LoadLobbyScene(bool clear) // 게임 끝나고 나가기 버튼 누르면 동작
+    public void TimerStart() // InGame Scene에 입장하면 실행됨
     {
-        AudioManager.instance.PlayBgm(AudioManager.Bgm.Lobby);
-        if(clear)
-        {
-            Gold += InGameData.getGold;
-        }
+        timerrunning = true;
+        Time.timeScale = GameSpeed;
+    }
+
+    public void TimerStop() // InGame Scene에서 게임 일시정지할때 실행됨
+    {
+        timerrunning = false;
+        Time.timeScale = 0;
+    }
+
+    public void LoadLobbyScene() // InGame Scene에서 게임 종료할때 동작
+    {
+        AudioManager.instance.PlayBgm(Bgm.Lobby);
+        InGameDataManager.SetAccumWeaponData();
+        Gold += InGameDataManager.GetGold;
         SceneManager.LoadScene("Lobby");
+    }
+
+    public void ResetInGameData() // 게임 종료 후 이전 게임 데이터 Reset
+    {
+        SelectCharacter = null;
+        SelectWeapon = null;
+        GameTime = 0;
+        InGameDataManager.ResetData();
     }
 }
