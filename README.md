@@ -1,8 +1,3 @@
-PC버전 다운로드 링크: <http://naver.me/xjgAJbhb> <br>
-Mobile버전 다운로드 링크 : <https://drive.google.com/file/d/1W6pEgg7PA-AaJAN0onk_lofh-f4TKWJc/view?usp=sharing> <br>
-조작키: WASD, 방향키, ESC <br>
-모바일 버전은 UI가 불안정합니다.(수정예정) <br>
-
 # Mobile Survivor
 Unity 개인 프로젝트
 <br>
@@ -12,7 +7,8 @@ Unity 개인 프로젝트
 <br>
 
 ## 🕰개발 기간
-- 2024.04.25 ~ 2024.12.15 - ver1.0
+- 2024.04.25 ~ 2024.12.15 - ver1.0(테스트 버전)
+- 2024.12.16 ~ ing
 <br>
 
 ## ⚙ 개발 환경
