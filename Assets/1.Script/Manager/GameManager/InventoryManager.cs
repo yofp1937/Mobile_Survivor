@@ -6,10 +6,11 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     [Header("# Main Data")]
-    public List<GameObject> Equips = new List<GameObject>(); // 장비 프리팹
+    public List<GameObject> EquippedEquips = new List<GameObject>(); // 장착한 장비
+    public List<GameObject> Equips = new List<GameObject>(); // 갖고있는 장비
 
     [Header("# Inventory Slot Data")]
-    private int slotCnt;
+    int slotCnt;
     public int SlotCnt
     {
         get => slotCnt;

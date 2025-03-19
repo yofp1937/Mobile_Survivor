@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Peasant
   m_EditorClassIdentifier: 
   Stat:
-    Hp: 100
+    Hp: 1000000
     HpRegen: 1
-    AttackPower: 100
+    AttackPower: 1000000
     Defense: 0
     MoveSpeed: 3.5
     ProjectileCount: 0

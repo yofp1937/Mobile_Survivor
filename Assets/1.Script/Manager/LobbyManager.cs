@@ -66,7 +66,7 @@ public class LobbyManager : MonoBehaviour
         // Test Code - 숫자패드 - 누르면 골드 초기화
         if(Input.GetKeyDown(KeyCode.KeypadMinus) && GameManager.instance.IsDeveloperMode)
         {
-            GameManager.instance.Gold = 0;
+            GameManager.instance.InventoryManager.SlotCnt--;
         }
 
         // Test Code - Space 누르면 GameManager의 UpgradeLevelDict 내용물 출력

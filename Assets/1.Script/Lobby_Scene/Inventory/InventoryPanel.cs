@@ -78,19 +78,16 @@ public class InventoryPanel : MonoBehaviour
     {
         GameManager.instance.InventoryManager.DeleteNullInEquips();
         ResetSlot();
-        foreach(GameObject equip in GameManager.instance.InventoryManager.Equips)
+        foreach(GameObject equip in GameManager.instance.InventoryManager.EquippedEquips) // 장착중인 아이템 세팅
         {
             Equipment data = equip.GetComponent<Equipment>();
-
-            if(data.IsEquip)
-            {
-                _equipSlots[(int)data.Part].SetItemSlot(equip);
-            }
-            else
-            {
-                InventorySlot slot = GetNullInventorySlot();
-                slot.SetItemSlot(equip);
-            }
+            _equipSlots[(int)data.Part].SetItemSlot(equip);
+        }
+        foreach(GameObject equip in GameManager.instance.InventoryManager.Equips) // 미장착 아이템 세팅
+        {
+            Equipment data = equip.GetComponent<Equipment>();
+            InventorySlot slot = GetNullInventorySlot();
+            slot.SetItemSlot(equip);
         }
     }
 
@@ -242,6 +239,8 @@ public class InventoryPanel : MonoBehaviour
         _equipSlots[(int)data.Part].ResetData();
         inven.SetItemSlot(obj);
         data.IsEquip = false;
+        GameManager.instance.InventoryManager.EquippedEquips.Remove(obj);
+        GameManager.instance.InventoryManager.Equips.Add(obj);
 
         // Status 반영
 
@@ -252,21 +251,26 @@ public class InventoryPanel : MonoBehaviour
     }
     void EquippedEquipment() // 장비를 장착(이미 장착중이면 빼고 새로 장착)
     {
+        GameObject obj = _selectObject;
+        Equipment objData = obj.GetComponent<Equipment>();
+
         _selectSlot.ResetData(); // 우선 장착하려는 장비 슬롯 비움
         if(_equipSlots[(int)_selectEquipData.Part].Data != null) // 이미 해당 슬롯에 장비가 장착중이면 장비를 인벤토리로 이동
         {
-            MoveEquippedEquipment(_equipSlots[(int)_selectEquipData.Part].gameObject);
+            MoveEquippedEquipment(_equipSlots[(int)_selectEquipData.Part].Data);
         }
 
         // 장비 장착
-        _equipSlots[(int)_selectEquipData.Part].SetItemSlot(_selectObject);
-        _selectEquipData.IsEquip = true;
+        _equipSlots[(int)objData.Part].SetItemSlot(obj);
+        objData.IsEquip = true;
+        GameManager.instance.InventoryManager.Equips.Remove(obj);
+        GameManager.instance.InventoryManager.EquippedEquips.Add(obj);
 
         // Status 반영
 
 
         // 버튼 변경
-        ChangeEquipBtnText(_selectEquipData.IsEquip);
+        ChangeEquipBtnText(objData.IsEquip);
     }
     void ResetSellPanel()
     {
