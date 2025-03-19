@@ -113,9 +113,6 @@ public class UpgradePanel : MonoBehaviour
         // 강화에 사용된 골드 반환
         int resetgold = PlayerPrefs.GetInt("UseUpgradeGold", 0);
         GameManager.instance.Gold += resetgold;
-
-        // 보유 골드 텍스트 갱신
-        LobbyManager.instance.LoadHaveGold();
         
         // UseUpgradeGold 초기화
         PlayerPrefs.SetInt("UseUpgradeGold", 0);
@@ -155,9 +152,6 @@ public class UpgradePanel : MonoBehaviour
         usedgold += cost;
         PlayerPrefs.SetInt("UseUpgradeGold", usedgold);
         PlayerPrefs.Save();
-
-        // 보유 골드 텍스트 갱신
-        LobbyManager.instance.LoadHaveGold();
 
         // 레벨업
         GameManager.instance.StatusManager.SetUpgradeLevel(data.EnumName, level);

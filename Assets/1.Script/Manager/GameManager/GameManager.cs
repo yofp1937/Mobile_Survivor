@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
             gold = value;
             PlayerPrefs.SetInt("Gold", gold);
             PlayerPrefs.Save();
+            LobbyManager.instance.LoadHaveGold();
         }
     }
     public GameObject SelectCharacter;
@@ -136,7 +137,6 @@ public class GameManager : MonoBehaviour
     {
         AudioManager.instance.PlayBgm(Bgm.Lobby);
         InGameDataManager.SetAccumWeaponData();
-        Gold += InGameDataManager.GetGold;
         SceneManager.LoadScene("Lobby");
     }
 

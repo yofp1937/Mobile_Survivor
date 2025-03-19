@@ -49,6 +49,11 @@ public class InventoryManager : MonoBehaviour
         Equips = Equips.OrderByDescending(e => e.GetComponent<Equipment>().Grade)
                        .ThenBy(e => e.GetComponent<Equipment>().Part)
                        .ToList();
-        LobbyManager.instance.InventoryPanel.LoadEquipPanelInInvetorySlot();
+        LobbyManager.instance.InventoryPanel.LoadEquipmentInInvetorySlot();
+    }
+
+    public void DeleteNullInEquips()
+    {
+        Equips.RemoveAll(equip => equip == null);
     }
 }

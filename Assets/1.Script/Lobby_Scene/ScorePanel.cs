@@ -22,6 +22,7 @@ public class ScorePanel : MonoBehaviour
     public void ActiveScore() // 게임 종료후 통계창 설정
     {
         InGameData = GameManager.instance.InGameDataManager;
+        GameManager.instance.Gold += InGameData.GetGold;
         SettingPlayCharacter();
         SettingGetItemText();
         SettingWeaponAndAcceData();

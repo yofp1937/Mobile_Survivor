@@ -6,11 +6,11 @@ using UnityEngine;
 public class Equipment : MonoBehaviour
 {
     [Header("# Constant Data")]
-    [SerializeField] string name;
-    public string Name
+    [SerializeField] string equipName;
+    public string EquipName
     {
-        get => name;
-        private set => name = value;
+        get => equipName;
+        private set => equipName = value;
     }
     EquipGrade grade; // 장비 등급
     public EquipGrade Grade
@@ -30,7 +30,12 @@ public class Equipment : MonoBehaviour
         get => sprite;
         private set => sprite = value;
     }
-    int _maxLevel; // 장비의 최고 레벨(Grade에따라 1~5)
+    int maxLevel;
+    public int MaxLevel // 장비의 최고 레벨(Grade에따라 1~5)
+    {
+        get => maxLevel;
+        private set => maxLevel = value;
+    }
 
     [Header("# Main Data")]
     public int EquipLevel; // 장비의 레벨
@@ -42,17 +47,18 @@ public class Equipment : MonoBehaviour
     public List<StatusEnum> Options = new List<StatusEnum>(); // 옵션 종류
     public List<int> OptionUpgradeCounts = new List<int>(); // n번째 옵션이 몇번 강화됐는지 표시
     public List<float> OptionsValue = new List<float>(); // n번째 옵션의 값(Options[0]이 HP + 50 두번이면 OptionsValue[0]은 100)
-
-    [Header("# Curse")]
     public bool IsCurse;
     public float CurseValue;
+
+    [Header("# State Data")]
+    public bool IsEquip;
 
     public void CreateEquip(EquipmentData data) // data를 기반으로 새로운 장비 객체 생성
     {
         Grade = data.Grade;
         Part = data.Part;
         Sprite = data.Sprite;
-        Name = data.Name;
+        EquipName = data.Name;
         SettingOptions();
     }
 
@@ -73,7 +79,7 @@ public class Equipment : MonoBehaviour
         {
             IsCurse = true;
             CurseValue = curseValues[(int)Grade];
-            Name = "저주받은 " + Name;
+            EquipName = "저주받은 " + EquipName;
         }
     }
 
@@ -83,19 +89,19 @@ public class Equipment : MonoBehaviour
         {
             case EquipGrade.Rare:
             case EquipGrade.Unique:
-                _maxLevel = 4;
+                MaxLevel = 4;
                 _maxObtionCount = 4;
                 break;
             case EquipGrade.Legendary:
-                _maxLevel = 5;
+                MaxLevel = 5;
                 _maxObtionCount = 5;
                 break;
             default:
-                _maxLevel = 3;
+                MaxLevel = 3;
                 _maxObtionCount = 3;
                 break;
         }
-        UpgradeCost = new int[_maxLevel];
+        UpgradeCost = new int[MaxLevel];
     }
 
     void SetRandomOption() // 아이템 생성시 옵션 초기 생성 갯수만큼 랜덤 옵션 부여
@@ -207,7 +213,7 @@ public class Equipment : MonoBehaviour
         int[] needCosts = { 500, 750, 1250, 1500, 2000 };
 
         int cost = 0;
-        for(int i=0; i < _maxLevel; i++)
+        for(int i=0; i < MaxLevel; i++)
         {
             cost += needCosts[(int)Grade];
             UpgradeCost[i] = cost;
@@ -217,7 +223,7 @@ public class Equipment : MonoBehaviour
 
     public void UpgradeEquip() // 강화
     {
-        if(EquipLevel == _maxLevel || GameManager.instance.Gold < UpgradeCost[EquipLevel])
+        if(EquipLevel == MaxLevel || GameManager.instance.Gold < UpgradeCost[EquipLevel])
             return;
 
         GameManager.instance.Gold -= UpgradeCost[EquipLevel];
