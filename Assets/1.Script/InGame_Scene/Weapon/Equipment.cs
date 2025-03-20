@@ -72,7 +72,7 @@ public class Equipment : MonoBehaviour
 
     void SettingCursedEquip() // 10% 확률로 저주 아이템 설정
     {
-        float[] curseValues = { 2.5f, 5f, 7.5f, 10f, 12.5f };
+        float[] curseValues = { 0.025f, 0.05f, 0.075f, 0.1f, 0.125f };
         int randomPer = Random.Range(0, 100);
 
         if(randomPer < 10)
@@ -226,6 +226,8 @@ public class Equipment : MonoBehaviour
         if(EquipLevel == MaxLevel || GameManager.instance.Gold < UpgradeCost[EquipLevel])
             return;
 
+        if(IsEquip) SubEquipStatus();
+
         GameManager.instance.Gold -= UpgradeCost[EquipLevel];
         EquipLevel++;
 
@@ -237,6 +239,26 @@ public class Equipment : MonoBehaviour
         {
             UpgradeOption();
         }
+
+        if(IsEquip) AddEquipStatus();
+    }
+
+    public void AddEquipStatus()
+    {
+        if(IsCurse) GameManager.instance.StatusManager.AddEquipStatus(StatusEnum.Curse, CurseValue);
+        for(int i = 0; i < Options.Count; i++)
+        {
+            GameManager.instance.StatusManager.AddEquipStatus(Options[i], OptionsValue[i] * (OptionUpgradeCounts[i] + 1));
+        }
+    }
+
+    public void SubEquipStatus()
+    {
+        if(IsCurse) GameManager.instance.StatusManager.SubEquipStatus(StatusEnum.Curse, CurseValue);
+        for(int i = 0; i < Options.Count; i++)
+        {
+            GameManager.instance.StatusManager.SubEquipStatus(Options[i], OptionsValue[i] * (OptionUpgradeCounts[i] + 1));
+        }
     }
 
     void UpgradeOption() // 강화로인한 옵션 업그레이드 발생시 호출
@@ -246,5 +268,55 @@ public class Equipment : MonoBehaviour
 
         OptionUpgradeCounts[randomNum]++;
         OptionsValue[randomNum] = SetOptionsValue(target);
+    }
+
+    public string GetOptionString(StatusEnum status)
+    {
+        string result = null;
+
+        switch(status)
+        {
+            case StatusEnum.Hp:
+                result = "체력";
+                break;
+            case StatusEnum.AttackPower:
+                result = "공격력";
+                break;
+            case StatusEnum.Defense:
+                result = "방어력";
+                break;
+            case StatusEnum.MoveSpeed:
+                result = "이동속도";
+                break;
+            case StatusEnum.ProjectileCount:
+                result = "투사체 개수";
+                break;
+            case StatusEnum.ProjectileSpeed:
+                result = "투사체 속도";
+                break;
+            case StatusEnum.ProjectileSize:
+                result = "투사체 크기";
+                break;
+            case StatusEnum.CoolTime:
+                result = "쿨타임";
+                break;
+            case StatusEnum.Duration:
+                result = "지속시간";
+                break;
+            case StatusEnum.AttackRange:
+                result = "공격범위";
+                break;
+            case StatusEnum.ObtainRange:
+                result = "획득범위";
+                break;
+            case StatusEnum.CriticalChance:
+                result = "치명타 확률";
+                break;
+            case StatusEnum.CriticalDamage:
+                result = "치명타 데미지";
+                break;
+        }
+
+        return result;
     }
 }

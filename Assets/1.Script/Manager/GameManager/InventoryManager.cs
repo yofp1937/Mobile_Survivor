@@ -31,6 +31,7 @@ public class InventoryManager : MonoBehaviour
     void Awake()
     {
         SlotCnt = PlayerPrefs.GetInt("InvenSlot", 15);
+        // 여기서 DB 아이템정보를 불러왔을때 장착된 장비들 옵션만큼 GameManager.instance.StatusManager.AddEquipStatus() 호출해야함
     }
 
     public void GetEquipment(GameObject equipment) // 아이템 획득시 호출
@@ -55,6 +56,7 @@ public class InventoryManager : MonoBehaviour
 
     public void DeleteNullInEquips()
     {
+        EquippedEquips.RemoveAll(equip => equip == null);
         Equips.RemoveAll(equip => equip == null);
     }
 }

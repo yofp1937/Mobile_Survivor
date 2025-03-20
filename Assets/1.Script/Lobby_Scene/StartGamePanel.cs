@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,11 @@ public class StartGamePanel : MonoBehaviour
     [Header("# Character Data")]
     public List<GameObject> Characters; // In Hierarchy
     [SerializeField] List<GameObject> _prefabs; // In Project
+
+    [Header("# Status Data")]
+    [SerializeField] Status _tempStatus;
+    [SerializeField] List<GameObject> _statuses;
+    Dictionary<string, FieldInfo> _statusFields = new Dictionary<string, FieldInfo>();
 
     [Header("# Weapon Data")]
     [SerializeField] List<WeaponData> _weapons;
@@ -25,12 +31,19 @@ public class StartGamePanel : MonoBehaviour
     [SerializeField] Button _speedBtn;
     [SerializeField] GameObject _speedImage;
     [SerializeField] Image _weaponImage;
+    StatusManager StatusManager;
 
     void Awake()
     {
+        StatusManager = GameManager.instance.StatusManager;
         _difficultPanel.SetActive(false);
         ResetGameSpeed();
         SetDifficultText();
+    }
+
+    void OnEnable()
+    {
+        SetStatusPanel();
     }
 
     void Select(int index) // 캐릭터 선택
@@ -43,6 +56,7 @@ public class StartGamePanel : MonoBehaviour
         GameManager.instance.SelectCharacter = _prefabs[index];
         GameManager.instance.CharacterCode = index;
         _startBtn.interactable = true;
+        SetStatusPanel();
     }
 
     void SelectWeapon(int index) // 무기 선택
@@ -140,6 +154,72 @@ public class StartGamePanel : MonoBehaviour
         GameManager.instance.GameSpeed = 1f;
         _speedBtn.interactable = true;
         _speedImage.SetActive(false);
+    }
+
+    public void SetStatusPanel()
+    {
+        // 캐릭터, 강화, 장비 스탯 적용
+        ApplyStatusToPanel(StatusManager.StatusDataList[GameManager.instance.CharacterCode].Stat, "Value");
+        ApplyStatusToPanel(StatusManager.GetUpgradeStatus(), "Upgrade");
+        ApplyStatusToPanel(StatusManager.EquipStatus, "Equip");
+    }
+
+    private void ApplyStatusToPanel(Status sourceStatus, string targetTextName)
+    {
+        _tempStatus = new Status();
+        _tempStatus.CloneStatus(sourceStatus);
+        LoadStatusField();
+        
+        foreach(GameObject group in _statuses)
+        {
+            string optionName = group.name;
+            Text text = group.transform.Find("Option").Find(targetTextName).GetComponent<Text>();
+            
+            if (_statusFields.TryGetValue(optionName, out FieldInfo field))
+            {
+                float value = Convert.ToSingle(field.GetValue(_tempStatus));
+                if (value == 0 || (targetTextName == "Value" && value == 1)) // 값이 없으면 패스
+                {
+                    text.text = "";
+                    continue;
+                }
+                
+                bool isPercent = optionName switch // * 100 && 뒤에 % 붙여야하는 옵션들
+                {
+                    "ProjectileSpeed" or "ProjectileSize" or "Duration" or "CoolTime" or "AttackRange" or "ObtainRange" or "Curse" => true,
+                    _ => false
+                };
+                
+                bool isCriticalOrDefense = optionName switch
+                {
+                    "Defense" or "CriticalChance" or "CriticalDamage" => true,
+                    _ => false
+                };
+                
+                string prefix = targetTextName == "Value" ? "" : "+";
+                string suffix = isPercent ? "%" : "";
+                string suffix2 = isCriticalOrDefense ? "%" : "";
+                float displayValue = isPercent ? value * 100 : value;
+                if(optionName == "MoveSpeed") displayValue = value * 100;
+                
+                if (optionName == "CoolTime" && targetTextName == "Upgrade") prefix = "";
+                else if(optionName == "CoolTime" && targetTextName == "Equip") prefix = "-";
+
+                text.text = $"{prefix}{displayValue:0}{suffix}{suffix2}";
+            }
+            else
+            {
+                text.text = "";
+            }
+        }
+    }
+
+    void LoadStatusField()
+    {
+        foreach(var field in typeof(Status).GetFields(BindingFlags.Public | BindingFlags.Instance))
+        {
+            _statusFields[field.Name] = field;
+        }
     }
 
     #region "Btn"

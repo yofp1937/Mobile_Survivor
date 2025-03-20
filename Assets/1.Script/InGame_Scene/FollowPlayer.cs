@@ -23,10 +23,10 @@ public class FollowPlayer : MonoBehaviour
             InGameManager.instance.Player.LevelUp();
         }
 
-        // Test Code - 숫자패드 + 누르면 60초 증가
+        // Test Code - 숫자패드 + 누르면 300초 증가
         if(Input.GetKeyDown(KeyCode.KeypadPlus) && GameManager.instance.IsDeveloperMode)
         {
-            GameManager.instance.GameTime += 60;
+            GameManager.instance.GameTime += 300;
         }
 
         // Esc 누르면 일시정지하고 설정창 띄움

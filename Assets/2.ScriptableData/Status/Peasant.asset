@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Stat:
     Hp: 1000000
-    HpRegen: 1
+    HpRegen: 3
     AttackPower: 1000000
     Defense: 0
     MoveSpeed: 3.5

@@ -63,10 +63,10 @@ public class LobbyManager : MonoBehaviour
             GameManager.instance.Gold += 100;
         }
 
-        // Test Code - 숫자패드 - 누르면 골드 초기화
+        // Test Code - 숫자패드 - 누르면 골드 10000원 증가
         if(Input.GetKeyDown(KeyCode.KeypadMinus) && GameManager.instance.IsDeveloperMode)
         {
-            GameManager.instance.InventoryManager.SlotCnt--;
+            GameManager.instance.Gold += 10000;
         }
 
         // Test Code - Space 누르면 GameManager의 UpgradeLevelDict 내용물 출력

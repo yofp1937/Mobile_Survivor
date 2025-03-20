@@ -16,7 +16,7 @@ public class WeaponData : ScriptableObject
     public int maxlevel;
     public Sprite itemIcon;
     public WeaponStatusData weaponData;
-    public AcceStatusData acceData;
+    public Status acceData;
 
     [Header("# Level Data")]
     // 최대레벨만큼 배열 늘리기

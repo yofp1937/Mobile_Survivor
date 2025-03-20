@@ -14,7 +14,7 @@ public abstract class WeaponBase : MonoBehaviour
     public AccesorriesEnum accename; // 장신구 이름
 
     [Header("# Acce Data")]
-    [SerializeField] protected AcceStatusData accedata; // 악세의 Stat 정보
+    [SerializeField] protected Status accedata; // 악세의 Stat 정보
 
     [Header("# Combine Status")]
     protected float combineDamage;

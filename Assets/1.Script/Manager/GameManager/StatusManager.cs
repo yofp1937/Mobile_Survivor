@@ -9,8 +9,12 @@ public class StatusManager : MonoBehaviour
     public List<StatusData> StatusDataList; // 캐릭터별 Status Data List
     public List<UpgradeData> UpgradeDataList; // Upgrade Data List
 
-    [Header("# Player Data")]
+    [Header("# Upgrade Data")]
+    [SerializeField] Status _upgradeStatus;
     public Dictionary<UpgradeEnum, int> UpgradeLevelDict = new Dictionary<UpgradeEnum, int>(); // Upgrade 레벨 저장용
+
+    [Header("# Equipment Data")]
+    public Status EquipStatus;
 
     void Awake()
     {
@@ -61,6 +65,116 @@ public class StatusManager : MonoBehaviour
                     stat.AddStatus(data.Data);
                 }
             }
+        }
+    }
+
+    public Status GetUpgradeStatus()
+    {
+        _upgradeStatus = new Status();
+        CombineUpgradeStat(_upgradeStatus);
+        return _upgradeStatus;
+    }
+
+    public void CombineEquipStat(Status stat)
+    {
+        stat.AddStatus(EquipStatus);
+    }
+
+    public void AddEquipStatus(StatusEnum option, float value)
+    {
+        switch(option)
+        {
+            case StatusEnum.Hp:
+                EquipStatus.Hp += value;
+                break;
+            case StatusEnum.AttackPower:
+                EquipStatus.AttackPower += value;
+                break;
+            case StatusEnum.Defense:
+                EquipStatus.Defense += value;
+                break;
+            case StatusEnum.ObtainRange:
+                EquipStatus.ObtainRange += value;
+                break;
+            case StatusEnum.CriticalChance:
+                EquipStatus.CriticalChance += value;
+                break;
+            case StatusEnum.CriticalDamage:
+                EquipStatus.CriticalDamage += value;
+                break;
+            case StatusEnum.CoolTime:
+                EquipStatus.CoolTime += value;
+                break;
+            case StatusEnum.Duration:
+                EquipStatus.Duration += value;
+                break;
+            case StatusEnum.AttackRange:
+                EquipStatus.AttackRange += value;
+                break;
+            case StatusEnum.ProjectileCount:
+                EquipStatus.ProjectileCount += (int)value;
+                break;
+            case StatusEnum.ProjectileSize:
+                EquipStatus.ProjectileSize += value;
+                break;
+            case StatusEnum.ProjectileSpeed:
+                EquipStatus.ProjectileSpeed += value;
+                break;
+            case StatusEnum.MoveSpeed:
+                EquipStatus.MoveSpeed += value;
+                break;
+            case StatusEnum.Curse:
+                EquipStatus.Curse += value;
+                break;
+        }
+    }
+
+    public void SubEquipStatus(StatusEnum option, float value)
+    {
+        switch(option)
+        {
+            case StatusEnum.Hp:
+                EquipStatus.Hp -= value;
+                break;
+            case StatusEnum.AttackPower:
+                EquipStatus.AttackPower -= value;
+                break;
+            case StatusEnum.Defense:
+                EquipStatus.Defense -= value;
+                break;
+            case StatusEnum.ObtainRange:
+                EquipStatus.ObtainRange -= value;
+                break;
+            case StatusEnum.CriticalChance:
+                EquipStatus.CriticalChance -= value;
+                break;
+            case StatusEnum.CriticalDamage:
+                EquipStatus.CriticalDamage -= value;
+                break;
+            case StatusEnum.CoolTime:
+                EquipStatus.CoolTime -= value;
+                break;
+            case StatusEnum.Duration:
+                EquipStatus.Duration -= value;
+                break;
+            case StatusEnum.AttackRange:
+                EquipStatus.AttackRange -= value;
+                break;
+            case StatusEnum.ProjectileCount:
+                EquipStatus.ProjectileCount -= (int)value;
+                break;
+            case StatusEnum.ProjectileSize:
+                EquipStatus.ProjectileSize -= value;
+                break;
+            case StatusEnum.ProjectileSpeed:
+                EquipStatus.ProjectileSpeed -= value;
+                break;
+            case StatusEnum.MoveSpeed:
+                EquipStatus.MoveSpeed -= value;
+                break;
+            case StatusEnum.Curse:
+                EquipStatus.Curse -= value;
+                break;
         }
     }
 }

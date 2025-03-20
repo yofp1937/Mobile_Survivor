@@ -37,6 +37,7 @@ public class Player : MonoBehaviour
     public List<int> AcceList;
     public int MaxLevelCount;
     public List<int> NextExp = new List<int> { 3, };
+    public Status Status;
 
     [Header("# Player Input")]
     [SerializeField] Vector2 inputVec;
@@ -45,7 +46,6 @@ public class Player : MonoBehaviour
 
     [Header("# Reference Object")]
     public Scanner Scanner;
-    public Status Status;
     
     GameObject _character;
     Rigidbody2D _rigid;
@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
     {
         Status.CloneStatus(GameManager.instance.StatusManager.StatusDataList[GameManager.instance.CharacterCode].Stat);
         GameManager.instance.StatusManager.CombineUpgradeStat(Status);
+        GameManager.instance.StatusManager.CombineEquipStat(Status);
         MaxHealth = Status.Hp;
         Health = MaxHealth;
         _movespeed = Status.MoveSpeed;
