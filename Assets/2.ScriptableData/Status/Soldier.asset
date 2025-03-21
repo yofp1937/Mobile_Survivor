@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Soldier
   m_EditorClassIdentifier: 
   Stat:
-    Hp: 100
+    Hp: 150
     HpRegen: 3
-    AttackPower: 100
+    AttackPower: 120
     Defense: 0
     MoveSpeed: 3.5
     ProjectileCount: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
     ProjectileSize: 1
     CoolTime: 1
     Duration: 1
-    AttackRange: 1
+    AttackRange: 1.1
     ObtainRange: 1
     CriticalChance: 5
     CriticalDamage: 50

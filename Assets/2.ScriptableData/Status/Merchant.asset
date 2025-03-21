@@ -18,9 +18,9 @@ MonoBehaviour:
     AttackPower: 100
     Defense: 0
     MoveSpeed: 3.5
-    ProjectileCount: 0
-    ProjectileSpeed: 1
-    ProjectileSize: 1
+    ProjectileCount: 2
+    ProjectileSpeed: 1.1
+    ProjectileSize: 1.1
     CoolTime: 1
     Duration: 1
     AttackRange: 1

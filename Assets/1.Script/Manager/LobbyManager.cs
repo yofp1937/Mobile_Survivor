@@ -44,7 +44,7 @@ public class LobbyManager : MonoBehaviour
     void Start()
     {
         LoadHaveGold();
-        if(GameManager.instance.InGameDataManager.isClear)
+        if(GameManager.instance.InGameDataManager.isQuit)
         {
             ScorePanel.ActiveScore();
         }

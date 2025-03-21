@@ -5,6 +5,7 @@ using UnityEngine;
 public class InGameDataManager : MonoBehaviour
 {
     [Header("# InGame Data")] // 게임 종료 후 표시되는 정보들
+    public bool isQuit = false;
     public bool isClear = false;
     public int Kill; // 잡은 몬스터 수
     public int GetGold; // 획득한 골드량
@@ -19,6 +20,7 @@ public class InGameDataManager : MonoBehaviour
 
     public void ResetData() // 데이터 초기화
     {
+        isClear = false;
         Kill = 0;
         GetGold = 0;
         GetPotion = 0;
@@ -31,7 +33,7 @@ public class InGameDataManager : MonoBehaviour
     
     public void SetAccumWeaponData() // 게임 종료할때 현재 무기레벨을 저장
     {
-        isClear = true;
+        isQuit = true;
         Player player = InGameManager.instance.Player;
         for(int i = 0; i < player.WeaponList.Count; i++) // 무기 저장
         {

@@ -3,24 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[Serializable] public class WeaponStatusData // 무기의 기본 능력치
-{
-    public float Damage = 0; // 공격력(percent)
-    public float CoolTime = 0; // 쿨타임(seconds)
-    public float AttackRange = 0; // 공격 범위(value)
-    public float Duration = 0; // 지속시간(seconds)
-    public int ProjectileCount = 0; // 투사체 갯수
-    public float ProjectileSpeed = 0; // 투사체 속도(value)
-    public float ProjectileSize = 0; // 투사체 크기(value)
-    public float Knockback = 0; // 넉백(value)
-
-    public WeaponStatusData Clone()
-    {
-        return MemberwiseClone() as WeaponStatusData;
-    }
-}
-
-[Serializable] public class Status // 악세서리 능력치 목록
+[Serializable] public class Status // 능력치
 {
     public float Hp; // 체력(percent)
     public float HpRegen; // 체력 재생(value) - 3초동안 HpRegen의 값을 리젠시킴
@@ -81,6 +64,22 @@ using UnityEngine;
     }
 }
 
+[Serializable] public class WeaponStatusData // 무기의 기본 능력치
+{
+    public float Damage = 0; // 공격력(percent)
+    public float CoolTime = 0; // 쿨타임(seconds)
+    public float AttackRange = 0; // 공격 범위(value)
+    public float Duration = 0; // 지속시간(seconds)
+    public int ProjectileCount = 0; // 투사체 갯수
+    public float ProjectileSpeed = 0; // 투사체 속도(value)
+    public float ProjectileSize = 0; // 투사체 크기(value)
+    public float Knockback = 0; // 넉백(value)
+
+    public WeaponStatusData Clone()
+    {
+        return MemberwiseClone() as WeaponStatusData;
+    }
+}
 
 public class AccumWeaponData // 통계창에서 표시할 무기별 데미지 데이터 저장 클래스
 {

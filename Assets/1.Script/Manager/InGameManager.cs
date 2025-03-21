@@ -88,6 +88,7 @@ public class InGameManager : MonoBehaviour
         if(isClear)
         {
             GameResultPanel.transform.Find("GameVictory").gameObject.SetActive(true);
+            GameManager.instance.InGameDataManager.isClear = true;
         }
         else
         {   
