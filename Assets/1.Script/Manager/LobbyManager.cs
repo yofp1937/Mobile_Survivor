@@ -22,6 +22,8 @@ public class LobbyManager : MonoBehaviour
     #endregion
     [Header("# Main Data")]
     public Text HaveGold;
+    public Text TestText;
+    public Button LoginBtn;
 
     [Header("# Reference Data")]
     public StartGamePanel StartGamePanel;
@@ -83,11 +85,17 @@ public class LobbyManager : MonoBehaviour
     #region "Btn"
     public void OnClickQuit()
     {
+        AudioManager.instance.PlaySfx(Sfx.Click);
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
         #else
             Application.Quit();
         #endif
+    }
+    public void OnClickLoginPlayGames()
+    {
+        AudioManager.instance.PlaySfx(Sfx.Click);
+        GameManager.instance.GoogleManager.LoginPlayGames();
     }
     #endregion
 }

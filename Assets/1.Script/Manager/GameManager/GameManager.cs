@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -63,6 +64,7 @@ public class GameManager : MonoBehaviour
     public int SelectArtifactId;
 
     [Header("# Sub Component")]
+    public GoogleManager GoogleManager;
     public InGameDataManager InGameDataManager;
     public StatusManager StatusManager;
     public InventoryManager InventoryManager;
@@ -75,6 +77,7 @@ public class GameManager : MonoBehaviour
         gold = PlayerPrefs.GetInt("Gold");
         CheckPlatform();
         LoadDifficulty();
+        SetFirebaseDatabase();
     }
 
     void Update()
@@ -106,6 +109,11 @@ public class GameManager : MonoBehaviour
     {
         string savedDif = PlayerPrefs.GetString("DifficultyLevel", DifficultyLevels.Normal.ToString());
         _difficultyLevel = Enum.TryParse(savedDif, out DifficultyLevels difficulty) ? difficulty : DifficultyLevels.Normal;
+    }
+
+    void SetFirebaseDatabase()
+    {
+        GoogleManager.InitFirebase();
     }
 
     public void LoadInGameScene()

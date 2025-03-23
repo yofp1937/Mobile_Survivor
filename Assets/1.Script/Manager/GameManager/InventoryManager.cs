@@ -54,7 +54,7 @@ public class InventoryManager : MonoBehaviour
         LobbyManager.instance.InventoryPanel.LoadEquipmentInInvetorySlot();
     }
 
-    public void DeleteNullInEquips()
+    public void DeleteNullInEquips() // 보유 장비 목록에서 Null인것 제거
     {
         EquippedEquips.RemoveAll(equip => equip == null);
         Equips.RemoveAll(equip => equip == null);
