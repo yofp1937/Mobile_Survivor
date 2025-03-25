@@ -12,20 +12,17 @@ public class StatusManager : MonoBehaviour
     [Header("# Upgrade Data")]
     [SerializeField] Status _upgradeStatus;
     public Dictionary<UpgradeEnum, int> UpgradeLevelDict = new Dictionary<UpgradeEnum, int>(); // Upgrade 레벨 저장용
+    public int UpgradeCost;
 
     [Header("# Equipment Data")]
     public Status EquipStatus;
 
-    void Awake()
+    public void LoadUpgradeLevelInDB(UpgradeLevelData data) // 게임 실행시 1회만 실행 - 유저의 저장된 UpgradeData 로드
     {
-        LoadUpgradeLevel();
-    }
-
-    void LoadUpgradeLevel() // 게임 실행시 1회만 실행 - 유저의 저장된 UpgradeData 로드
-    {
-        foreach (UpgradeEnum type in Enum.GetValues(typeof(UpgradeEnum)))
+        foreach(var pair in data.dict)
         {
-            SetUpgradeLevel(type, PlayerPrefs.GetInt(type.ToString(), 0));
+            UpgradeEnum key = (UpgradeEnum)Enum.Parse(typeof(UpgradeEnum), pair.Key);
+            UpgradeLevelDict[key] = Convert.ToInt32(pair.Value);
         }
     }
 
@@ -34,20 +31,21 @@ public class StatusManager : MonoBehaviour
     public void SetUpgradeLevel(UpgradeEnum data, int level) // Upgrade 레벨 변경 및 저장
     {
         UpgradeLevelDict[data] = level;
-        PlayerPrefs.SetInt(data.ToString(), level);
-        PlayerPrefs.Save();
+        UpdateUpgradeLevelInDB(data, level);
+    }
+
+    void UpdateUpgradeLevelInDB(UpgradeEnum data, int level) // 특정 Upgrade 값만 DB에 저장
+    {
+        Dictionary<string, object> updateData = new Dictionary<string, object>();
+        updateData[data.ToString()] = level;
+
+        DBManager.instance.UpdateUpgradeDataInUserData(updateData);
     }
 
     public void ResetUpgrade() // UpgradePanel에서 Upgrade Reset버튼 동작시 실행
     {
-        foreach (UpgradeEnum type in Enum.GetValues(typeof(UpgradeEnum))) // 유저의 UpgradeData를 초기화
-        {
-            SetUpgradeLevel(type, 0);
-            PlayerPrefs.SetInt(type.ToString(), 0);
-            PlayerPrefs.Save();
-        }
+        DBManager.instance.CreateUserUpgradeData();
     }
-
     public void CombineUpgradeStat(Status stat) // stat을 UpgradeData에 기반하여 증가시킴
     {
         List<UpgradeEnum> keys = new List<UpgradeEnum>(UpgradeLevelDict.Keys);

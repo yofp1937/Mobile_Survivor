@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a04dfe70b6df7ee4a8c60a6bc4037f21, type: 3}
-  m_Name: 3.ProjectileSpeed
+  m_Name: 5.ObtainRange
   m_EditorClassIdentifier: 
-  EnumName: 3
+  EnumName: 5
   Data:
     Hp: 0
     HpRegen: 0
@@ -20,16 +20,16 @@ MonoBehaviour:
     Defense: 0
     MoveSpeed: 0
     ProjectileCount: 0
-    ProjectileSpeed: 0.05
+    ProjectileSpeed: 0
     ProjectileSize: 0
     CoolTime: 0
     Duration: 0
     AttackRange: 0
-    ObtainRange: 0
+    ObtainRange: 0.2
     CriticalChance: 0
     CriticalDamage: 0
     Luck: 0
     Curse: 0
   MaxLevel: 5
-  CostList: 0a0000003200000064000000c8000000f4010000
-  Desc: "\uD22C\uC0AC\uCCB4 \uC18D\uB3C4 +5%"
+  CostList: 32000000960000002c010000f4010000e8030000
+  Desc: "\uC544\uC774\uD15C \uD68D\uB4DD\uBC94\uC704 +20%"

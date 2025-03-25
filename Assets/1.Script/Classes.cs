@@ -101,3 +101,58 @@ public class AccumWeaponData // 통계창에서 표시할 무기별 데미지 �
         this.moveSpeed = moveSpeed;
     }
 }
+
+[Serializable] public class UserData // User 데이터를 표현하는 클래스 (JSON으로 변환하려면 Serializable 속성이 필요)
+{
+    public int Gold;
+    public int SlotCnt;
+    public int UpgradeCost;
+
+    public UserData(int gold, int slotCnt, int upgradeCost)
+    {
+        Gold = gold;
+        SlotCnt = slotCnt;
+        UpgradeCost = upgradeCost;
+    }
+}
+
+[Serializable] public class UpgradeLevelData // 플레이어 Upgrade DB 저장을 위한 클래스
+{
+    public Dictionary<string, object> dict;
+
+    public UpgradeLevelData()
+    {
+        dict = new Dictionary<string, object>();
+    }
+
+    public void ResetData()
+    {
+        foreach(UpgradeEnum key in Enum.GetValues(typeof(UpgradeEnum)))
+        {
+            dict[key.ToString()] = 0;
+        }
+    }
+}
+
+[Serializable] public class EquipmentDataClass // 장비 DB 저장을 위한 클래스
+{
+    public EquipGrade EquipGrade;
+    public EquipPart EquipPart;
+    public int EquipLevel;
+    public List<StatusEnum> Options;
+    public List<int> OptionUpgradeCounts;
+    public bool IsCurse;
+    public bool IsEquip;
+
+    public EquipmentDataClass(EquipGrade grade, EquipPart part, int equipLevel,
+                         List<StatusEnum> options, List<int> optionUpgradeCounts, bool isCurse, bool isEquip)
+    {
+        EquipGrade = grade;
+        EquipPart = part;
+        EquipLevel = equipLevel;
+        Options = options;
+        OptionUpgradeCounts = optionUpgradeCounts;
+        IsCurse = isCurse;
+        IsEquip = isEquip;
+    }
+}

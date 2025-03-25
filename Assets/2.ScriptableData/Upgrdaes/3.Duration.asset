@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a04dfe70b6df7ee4a8c60a6bc4037f21, type: 3}
-  m_Name: 0.Hp
+  m_Name: 3.Duration
   m_EditorClassIdentifier: 
-  EnumName: 0
+  EnumName: 3
   Data:
-    Hp: 20
+    Hp: 0
     HpRegen: 0
     AttackPower: 0
     Defense: 0
@@ -23,7 +23,7 @@ MonoBehaviour:
     ProjectileSpeed: 0
     ProjectileSize: 0
     CoolTime: 0
-    Duration: 0
+    Duration: 0.04
     AttackRange: 0
     ObtainRange: 0
     CriticalChance: 0
@@ -31,5 +31,5 @@ MonoBehaviour:
     Luck: 0
     Curse: 0
   MaxLevel: 5
-  CostList: 0a0000003200000064000000c8000000f4010000
-  Desc: "\uCCB4\uB825 +20"
+  CostList: 32000000960000002c010000f4010000e8030000
+  Desc: "\uC9C0\uC18D\uC2DC\uAC04 +4%"

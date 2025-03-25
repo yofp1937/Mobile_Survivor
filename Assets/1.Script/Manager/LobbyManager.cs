@@ -22,7 +22,6 @@ public class LobbyManager : MonoBehaviour
     #endregion
     [Header("# Main Data")]
     public Text HaveGold;
-    public Text TestText;
     public Button LoginBtn;
 
     [Header("# Reference Data")]
@@ -32,6 +31,7 @@ public class LobbyManager : MonoBehaviour
     public ScorePanel ScorePanel;
     public InventoryPanel InventoryPanel;
     public AdMobManager AdMobManager;
+    public GameObject LoadingPanel;
 
     private void Init() // Awake에서 실행
     {
@@ -82,6 +82,20 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
+
+    public void ShowLoadingPanel(float duration)
+    {
+        LoadingPanel.SetActive(true);
+        StartCoroutine(ShowWhileDuration(duration));
+    }
+
+    IEnumerator ShowWhileDuration(float duration)
+    {
+        yield return new WaitForSecondsRealtime(duration); // duration 값만큼 기다렸다가
+
+        LoadingPanel.SetActive(false); // 비활성화
+    }
+
     #region "Btn"
     public void OnClickQuit()
     {
@@ -95,7 +109,7 @@ public class LobbyManager : MonoBehaviour
     public void OnClickLoginPlayGames()
     {
         AudioManager.instance.PlaySfx(Sfx.Click);
-        GameManager.instance.GoogleManager.LoginPlayGames();
+        GoogleManager.instance.LoginPlayGames();
     }
     #endregion
 }

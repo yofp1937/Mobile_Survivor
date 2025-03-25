@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a04dfe70b6df7ee4a8c60a6bc4037f21, type: 3}
-  m_Name: 2.ProjectileCount
+  m_Name: 2.CoolTime
   m_EditorClassIdentifier: 
   EnumName: 2
   Data:
@@ -19,10 +19,10 @@ MonoBehaviour:
     AttackPower: 0
     Defense: 0
     MoveSpeed: 0
-    ProjectileCount: 1
+    ProjectileCount: 0
     ProjectileSpeed: 0
     ProjectileSize: 0
-    CoolTime: 0
+    CoolTime: 0.04
     Duration: 0
     AttackRange: 0
     ObtainRange: 0
@@ -30,6 +30,6 @@ MonoBehaviour:
     CriticalDamage: 0
     Luck: 0
     Curse: 0
-  MaxLevel: 2
-  CostList: f4010000e8030000
-  Desc: "\uD22C\uC0AC\uCCB4 \uAC2F\uC218 +1"
+  MaxLevel: 5
+  CostList: 32000000960000002c010000f4010000e8030000
+  Desc: "\uCFE8\uD0C0\uC784 -4%"

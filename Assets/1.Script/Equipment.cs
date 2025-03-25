@@ -1,11 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Equipment : MonoBehaviour
 {
     [Header("# Constant Data")]
+    [SerializeField] public string GUID;
     [SerializeField] string equipName;
     public string EquipName
     {
@@ -55,11 +60,18 @@ public class Equipment : MonoBehaviour
 
     public void CreateEquip(EquipmentData data) // data를 기반으로 새로운 장비 객체 생성
     {
+        SetGUID();
         Grade = data.Grade;
         Part = data.Part;
         Sprite = data.Sprite;
         EquipName = data.Name;
         SettingOptions();
+        CreateInDataBase();
+    }
+
+    void SetGUID()
+    {
+        GUID = Guid.NewGuid().ToString();
     }
 
     void SettingOptions()
@@ -70,10 +82,18 @@ public class Equipment : MonoBehaviour
         SettingUpgradeCost();
     }
 
+    void CreateInDataBase()
+    {
+        EquipmentDataClass data = new EquipmentDataClass(Grade, Part, EquipLevel, Options, OptionUpgradeCounts, IsCurse, IsEquip);
+        string json = JsonConvert.SerializeObject(data);
+        Debug.Log("CreateInDataBase-json:" + json);
+        DBManager.instance.CreateEquipInDB(GUID, json);
+    }
+
     void SettingCursedEquip() // 10% 확률로 저주 아이템 설정
     {
         float[] curseValues = { 0.025f, 0.05f, 0.075f, 0.1f, 0.125f };
-        int randomPer = Random.Range(0, 100);
+        int randomPer = UnityEngine.Random.Range(0, 100);
 
         if(randomPer < 10)
         {
@@ -110,7 +130,7 @@ public class Equipment : MonoBehaviour
         int[] addOptionPer = { 50, 33, 50, 33, 25 }; // 등급에따른 추가 옵션 생성 확률
         int optionCount = baseOptionCounts[(int)Grade]; // 생성해야할 옵션 갯수
         
-        if(Random.Range(0, 100) < addOptionPer[(int)Grade])
+        if(UnityEngine.Random.Range(0, 100) < addOptionPer[(int)Grade])
         {
             optionCount++;
         }
@@ -149,7 +169,7 @@ public class Equipment : MonoBehaviour
 
         for(int i = 0; i < generateCount; i++)
         {
-            int random = Random.Range(0, filteredOptions.Count);
+            int random = UnityEngine.Random.Range(0, filteredOptions.Count);
             StatusEnum selectedOption = filteredOptions[random];
 
             Options.Add(selectedOption);
@@ -234,10 +254,21 @@ public class Equipment : MonoBehaviour
         if(_maxObtionCount > Options.Count)
         {
             GenerateOptions(1);
+            // DB에 EquipLevel, Options, OptionUpgradeCounts 세개 전송
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["EquipLevel"] = EquipLevel;
+            dict["Options"] = Options;
+            dict["OptionUpgradeCounts"] = OptionUpgradeCounts;
+            DBManager.instance.UpdateEquipInDB(GUID, dict);
         }
         else
         {
             UpgradeOption();
+            // DB에 EquipLevel, OptionUpgradeCounts 두개 전송
+            Dictionary<string, object> dict = new Dictionary<string, object>();
+            dict["EquipLevel"] = EquipLevel;
+            dict["OptionUpgradeCounts"] = OptionUpgradeCounts;
+            DBManager.instance.UpdateEquipInDB(GUID, dict);
         }
 
         if(IsEquip) AddEquipStatus();
@@ -263,7 +294,7 @@ public class Equipment : MonoBehaviour
 
     void UpgradeOption() // 강화로인한 옵션 업그레이드 발생시 호출
     {
-        int randomNum = Random.Range(0, Options.Count);
+        int randomNum = UnityEngine.Random.Range(0, Options.Count);
         StatusEnum target = Options[randomNum];
 
         OptionUpgradeCounts[randomNum]++;
@@ -318,5 +349,86 @@ public class Equipment : MonoBehaviour
         }
 
         return result;
+    }
+
+    public void SetInfo(Dictionary<string, object> data) // DB에서 읽어온 장비 생성하는 함수
+    {
+        // Grade, Part, Sprite 설정
+        int grade = Convert.ToInt32(data["EquipGrade"]);
+        Grade = (EquipGrade)grade;
+        int part = Convert.ToInt32(data["EquipPart"]);
+        Part = (EquipPart)part;
+        gameObject.name = Grade.ToString() + "_" + Part.ToString();
+        Image img = gameObject.AddComponent<Image>();
+        switch(Grade)
+        {
+            case EquipGrade.Common:
+                Sprite = GameManager.instance.InventoryManager.Common[(int)Part].Sprite;
+                img.sprite = Sprite;
+                equipName = GameManager.instance.InventoryManager.Common[(int)Part].Name;
+                break;
+            case EquipGrade.UnCommon:
+                Sprite = GameManager.instance.InventoryManager.UnCommon[(int)Part].Sprite;
+                img.sprite = Sprite;
+                equipName = GameManager.instance.InventoryManager.UnCommon[(int)Part].Name;
+                break;
+            case EquipGrade.Rare:
+                Sprite = GameManager.instance.InventoryManager.Rare[(int)Part].Sprite;
+                img.sprite = Sprite;
+                equipName = GameManager.instance.InventoryManager.Rare[(int)Part].Name;
+                break;
+            case EquipGrade.Unique:
+                Sprite = GameManager.instance.InventoryManager.Unique[(int)Part].Sprite;
+                img.sprite = Sprite;
+                equipName = GameManager.instance.InventoryManager.Unique[(int)Part].Name;
+                break;
+            case EquipGrade.Legendary:
+                Sprite = GameManager.instance.InventoryManager.Legendary[(int)Part].Sprite;
+                img.sprite = Sprite;
+                equipName = GameManager.instance.InventoryManager.Legendary[(int)Part].Name;
+                break;
+        }
+
+        // MaxLevel, MaxOptionCount 설정
+        SetMaxLevelAndStatusCount();
+
+        // UpgradeCost, SellCost 설정
+        SettingUpgradeCost();
+
+        // EquipLevel 설정
+        EquipLevel = Convert.ToInt32(data["EquipLevel"]);
+
+        // Options Data 설정
+        List<int> options = ((JArray)data["Options"]).ToObject<List<int>>();
+        foreach(int op in options)
+        {
+            Options.Add((StatusEnum)op);
+            OptionsValue.Add(SetOptionsValue((StatusEnum)op));
+        }
+        List<int> levels = ((JArray)data["OptionUpgradeCounts"]).ToObject<List<int>>();
+        foreach(int lev in levels)
+        {
+            OptionUpgradeCounts.Add(lev);
+        }
+
+        // Curse 설정
+        IsCurse = Convert.ToBoolean(data["IsCurse"]);
+        if(IsCurse)
+        {
+            float[] curseValues = { 0.025f, 0.05f, 0.075f, 0.1f, 0.125f };
+            CurseValue = curseValues[(int)Grade];
+            equipName = "저주받은 " + equipName;
+        }
+
+        // Equip 설정
+        IsEquip = Convert.ToBoolean(data["IsEquip"]);
+        if(IsEquip)
+        {
+            GameManager.instance.InventoryManager.EquippedEquips.Add(gameObject);
+        }
+        else
+        {
+            GameManager.instance.InventoryManager.Equips.Add(gameObject);
+        }
     }
 }

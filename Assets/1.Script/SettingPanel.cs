@@ -22,12 +22,12 @@ public class SettingPanel : MonoBehaviour
 
     void Start()
     {
-        SettingVolume();   
+        SettingVolume();
+        SettingInGameListener();
         if(_scene == Scene.InGame)
         {
             _volumePanel.SetActive(false);
             _quitPanel.SetActive(false);
-            SettingInGameListener();
         }
     }
 
@@ -41,7 +41,14 @@ public class SettingPanel : MonoBehaviour
     {
         _bgmSlider.onValueChanged.AddListener(AudioManager.instance.SetBgmVolume);
         _sfxSlider.onValueChanged.AddListener(AudioManager.instance.SetSfxVolume);
-        _volumePanel.transform.Find("SfxGroup").Find("SfxTestBtn").GetComponent<Button>().onClick.AddListener(AudioManager.instance.OnClickTestSfx);
+        if(_scene == Scene.Lobby)
+        {
+            gameObject.transform.Find("SfxGroup").Find("SfxTestBtn").GetComponent<Button>().onClick.AddListener(AudioManager.instance.OnClickTestSfx);
+        }
+        else
+        {
+            _volumePanel.transform.Find("SfxGroup").Find("SfxTestBtn").GetComponent<Button>().onClick.AddListener(AudioManager.instance.OnClickTestSfx);
+        }
     }
     
     void SettingSlot()

@@ -38,7 +38,6 @@ public class InventoryPanel : MonoBehaviour
 
     void Awake()
     {
-        Init();
         _sellPanel.SetActive(false);
         _upgradeBtn.interactable = false;
         _sellBtn.interactable = false;
@@ -46,7 +45,7 @@ public class InventoryPanel : MonoBehaviour
         ResetEquipStatus();
     }
 
-    void Init() // 플레이어의 가방 칸 초기생성
+    public void Init() // 플레이어의 가방 칸 초기생성
     {
         int count = GameManager.instance.InventoryManager.SlotCnt - _slots.Count; // 플레이어의 최대 슬롯 - 생성돼있는 슬롯
 
@@ -57,6 +56,7 @@ public class InventoryPanel : MonoBehaviour
                 CreateSlot();
             }
         }
+        ResetEquipStatus();
     }
 
     void CreateSlot() // 슬롯 1번 생성후 구매버튼 위치 이동
@@ -167,6 +167,7 @@ public class InventoryPanel : MonoBehaviour
         SetUpgradeCost();
         SetEquipStatusText();
         _selectEquipData = _selectObject.GetComponent<Equipment>();
+        LobbyManager.instance.ShowLoadingPanel(1.5f);
     }
     public void OnClickSellPanel() // 판매 버튼을 클릭했을때 등급이 높으면 Panel 염
     {
@@ -188,7 +189,9 @@ public class InventoryPanel : MonoBehaviour
         ResetSellPanel();
         GameManager.instance.Gold += _selectEquipData.SellCost;
         _selectEquipData.SubEquipStatus();
+        DBManager.instance.DeleteEquipInDB(_selectEquipData.GUID); // DB에서 제거
         StartCoroutine(WaitDestroying(_selectObject));
+        LobbyManager.instance.ShowLoadingPanel(1.5f);
     }
     public void OnClickSellCancleBtn()
     {
@@ -208,6 +211,7 @@ public class InventoryPanel : MonoBehaviour
         }
         ResetSelectData();
         ResetEquipStatus();
+        LobbyManager.instance.ShowLoadingPanel(1.5f);
     }
     // 이 아래론 Btn region 내부에서 쓰이는 함수
     void SetEquipStatus() // 선택한 장비의 옵션을 Status Panel에 표시
@@ -333,6 +337,9 @@ public class InventoryPanel : MonoBehaviour
         _equipSlots[(int)data.Part].ResetData();
         inven.SetItemSlot(obj);
         data.IsEquip = false;
+        Dictionary<string, object> dict = new Dictionary<string, object>();
+        dict["IsEquip"] = false;
+        DBManager.instance.UpdateEquipInDB(data.GUID, dict);
         GameManager.instance.InventoryManager.EquippedEquips.Remove(obj);
         GameManager.instance.InventoryManager.Equips.Add(obj);
 
@@ -353,6 +360,9 @@ public class InventoryPanel : MonoBehaviour
         // 장비 장착
         _equipSlots[(int)_selectEquipData.Part].SetItemSlot(_selectObject);
         _selectEquipData.IsEquip = true;
+        Dictionary<string, object> dict = new Dictionary<string, object>();
+        dict["IsEquip"] = true;
+        DBManager.instance.UpdateEquipInDB(_selectEquipData.GUID, dict);
         GameManager.instance.InventoryManager.Equips.Remove(_selectObject);
         GameManager.instance.InventoryManager.EquippedEquips.Add(_selectObject);
         if(_selectSlot != null) _selectSlot.ResetData();

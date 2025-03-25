@@ -72,7 +72,7 @@ public class UpgradePanel : MonoBehaviour
         }
     }
 
-    void LevelUpgradeSlots(UpgradeData data) // Upgrade 구매시 Level 이미지 변경
+    void LevelUpgradeSlots() // Upgrade 구매시 Level 이미지 변경
     {
         int level = GameManager.instance.StatusManager.UpgradeLevelDict[data.EnumName];
 
@@ -111,12 +111,9 @@ public class UpgradePanel : MonoBehaviour
     {
         AudioManager.instance.PlaySfx(Sfx.Click);
         // 강화에 사용된 골드 반환
-        int resetgold = PlayerPrefs.GetInt("UseUpgradeGold", 0);
-        GameManager.instance.Gold += resetgold;
-        
-        // UseUpgradeGold 초기화
-        PlayerPrefs.SetInt("UseUpgradeGold", 0);
-        PlayerPrefs.Save();
+        GameManager.instance.Gold += GameManager.instance.StatusManager.UpgradeCost;
+        GameManager.instance.StatusManager.UpgradeCost = 0;
+        DBManager.instance.UpdateUserData("UpgradeCost", 0);
 
         // 레벨에따라 슬롯별 체크되는거 전부 체크 해제
         ResetUpgradeSlots();
@@ -148,10 +145,8 @@ public class UpgradePanel : MonoBehaviour
         level++;
 
         // 강화에 사용된 골드 누적
-        int usedgold = PlayerPrefs.GetInt("UseUpgradeGold", 0);
-        usedgold += cost;
-        PlayerPrefs.SetInt("UseUpgradeGold", usedgold);
-        PlayerPrefs.Save();
+        GameManager.instance.StatusManager.UpgradeCost += cost;
+        DBManager.instance.UpdateUserData("UpgradeCost", GameManager.instance.StatusManager.UpgradeCost);
 
         // 레벨업
         GameManager.instance.StatusManager.SetUpgradeLevel(data.EnumName, level);
@@ -160,7 +155,7 @@ public class UpgradePanel : MonoBehaviour
         SetCost();
 
         // 레벨업 Image 변경
-        LevelUpgradeSlots(data);
+        LevelUpgradeSlots();
     }
     #endregion
 }

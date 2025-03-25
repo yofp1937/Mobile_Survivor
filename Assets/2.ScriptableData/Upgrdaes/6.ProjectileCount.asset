@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a04dfe70b6df7ee4a8c60a6bc4037f21, type: 3}
-  m_Name: 1.AttackPower
+  m_Name: 6.ProjectileCount
   m_EditorClassIdentifier: 
-  EnumName: 1
+  EnumName: 6
   Data:
     Hp: 0
     HpRegen: 0
-    AttackPower: 10
+    AttackPower: 0
     Defense: 0
     MoveSpeed: 0
-    ProjectileCount: 0
+    ProjectileCount: 1
     ProjectileSpeed: 0
     ProjectileSize: 0
     CoolTime: 0
@@ -30,6 +30,6 @@ MonoBehaviour:
     CriticalDamage: 0
     Luck: 0
     Curse: 0
-  MaxLevel: 5
-  CostList: 0a0000003200000064000000c8000000f4010000
-  Desc: "\uACF5\uACA9\uB825 +10"
+  MaxLevel: 2
+  CostList: f4010000e8030000
+  Desc: "\uD22C\uC0AC\uCCB4 \uAC2F\uC218 +1"

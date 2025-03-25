@@ -5,7 +5,7 @@ public enum Scene { Lobby, InGame }
 public enum Bgm { Lobby, InGame } // Bgm 종류
 public enum Sfx { Click, Heal, ThrowWeapon, Explosion, Laser, Thunder, Wave, Saprk } // 효과음 종류
 public enum DifficultyLevels{ Normal, Hard, Hell, God, Nightmare} // 난이도 종류
-public enum UpgradeEnum {Hp, AttackPower, ProjectileCount, ProjectileSpeed, CoolTime, Duration, AttackRange, ObtainRange} // 강화 능력치 종류
+public enum UpgradeEnum { AttackPower, AttackRange, CoolTime, Duration, Hp, ObtainRange, ProjectileCount, ProjectileSpeed } // 강화 능력치 종류
 public enum WeaponEnum{ RotateSword, ThrowWeapon, Laser, Fireball, Thunder, Spark, Wave} // 무기 종류
 public enum AccesorriesEnum { Ruby, Feather, Book, Candle, Gear, Belt, Coin } // 장신구 종류
 public enum DropItemEnum { ExpJewel_1, ExpJewel_3, ExpJewel_5, Gold, Magnet, Potion, Equipment} // 몬스터 드랍 아이템 종류

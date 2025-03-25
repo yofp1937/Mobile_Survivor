@@ -53,8 +53,7 @@ public class GameManager : MonoBehaviour
         set
         {
             gold = value;
-            PlayerPrefs.SetInt("Gold", gold);
-            PlayerPrefs.Save();
+            DBManager.instance.UpdateUserData("Gold", gold);
             LobbyManager.instance.LoadHaveGold();
         }
     }
@@ -64,7 +63,6 @@ public class GameManager : MonoBehaviour
     public int SelectArtifactId;
 
     [Header("# Sub Component")]
-    public GoogleManager GoogleManager;
     public InGameDataManager InGameDataManager;
     public StatusManager StatusManager;
     public InventoryManager InventoryManager;
@@ -74,10 +72,13 @@ public class GameManager : MonoBehaviour
     void Init() // Awake()에서 실행
     {
         Application.targetFrameRate = 60;
-        gold = PlayerPrefs.GetInt("Gold");
         CheckPlatform();
         LoadDifficulty();
-        SetFirebaseDatabase();
+    }
+
+    void Start()
+    {
+        LobbyManager.instance.ShowLoadingPanel(2f);
     }
 
     void Update()
@@ -109,11 +110,6 @@ public class GameManager : MonoBehaviour
     {
         string savedDif = PlayerPrefs.GetString("DifficultyLevel", DifficultyLevels.Normal.ToString());
         _difficultyLevel = Enum.TryParse(savedDif, out DifficultyLevels difficulty) ? difficulty : DifficultyLevels.Normal;
-    }
-
-    void SetFirebaseDatabase()
-    {
-        GoogleManager.InitFirebase();
     }
 
     public void LoadInGameScene()
