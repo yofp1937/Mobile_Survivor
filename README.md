@@ -1,5 +1,5 @@
 # 플레이 영상
-https://youtu.be/ID2S7tLrfuc
+https://youtu.be/FnrZnA2BjuU
 
 # PlayStore 주소
 https://play.google.com/store/apps/details?id=com.yofp.MobileSurvivors
